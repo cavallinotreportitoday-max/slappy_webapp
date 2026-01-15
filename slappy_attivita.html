@@ -1,0 +1,2051 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SLAPPY — Attività</title>
+    <style>
+        /* =====================================================
+           SLAPPY UI CORE --- FONT, BUTTONS, SPACING, ICONS
+           NON MODIFICARE PER SINGOLA PAGINA
+           ===================================================== */
+
+        :root {
+            /* Typography */
+            --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-title: 14px;
+            --font-body: 12px;
+            --font-meta: 11px;
+            --weight-title: 700;
+            --weight-body: 500;
+            --weight-meta: 400;
+
+            /* Spacing */
+            --padding-page: 16px;
+            --padding-card: 14px;
+            --gap-sections: 16px;
+            --gap-cards: 10px;
+            --gap-inner: 12px;
+
+            /* Radius */
+            --radius-card: 12px;
+            --radius-button: 12px;
+            --radius-icon: 10px;
+
+            /* Buttons */
+            --button-height: 48px;
+            --button-padding-x: 16px;
+            --button-font-size: 14px;
+            --button-font-weight: 600;
+
+            /* Icons */
+            --icon-size: 40px;
+
+            /* Colors */
+            --primary: #0d9488; --primary-light: #14b8a6; --primary-dark: #0f766e;
+            --primary-50: #f0fdfa; --primary-100: #ccfbf1;
+            --blue: #3b82f6; --blue-100: #dbeafe;
+            --cyan: #06b6d4; --cyan-100: #cffafe;
+            --green: #10b981; --green-100: #d1fae5;
+            --orange: #f59e0b; --orange-100: #fef3c7;
+            --purple: #8b5cf6; --purple-100: #ede9fe;
+            --red: #ef4444; --red-100: #fee2e2;
+            --gray-900: #111827; --gray-700: #374151; --gray-600: #4b5563;
+            --gray-500: #6b7280; --gray-400: #9ca3af; --gray-300: #d1d5db;
+            --gray-200: #e5e7eb; --gray-100: #f3f4f6; --gray-50: #f9fafb;
+            --white: #fff;
+
+            /* Borders */
+            --border-default: 1px solid var(--gray-200);
+            --border-hover: 1px solid var(--gray-300);
+
+            /* Shadow */
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: var(--font-system); 
+            font-size: var(--font-body);
+            font-weight: var(--weight-body);
+            color: var(--gray-900);
+            background: var(--gray-100); 
+            min-height: 100vh; 
+        }
+        .app { width: 100%; max-width: 480px; margin: 0 auto; background: var(--white); min-height: 100vh; display: flex; flex-direction: column; }
+        @media (min-width: 481px) { body { display: flex; justify-content: center; } .app { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); } }
+
+        /* HEADER */
+        .header { background: linear-gradient(135deg, var(--primary-light), var(--primary)); color: var(--white); padding: var(--padding-card) var(--padding-page); display: flex; align-items: center; gap: var(--gap-inner); position: sticky; top: 0; z-index: 100; }
+        .header-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); border-radius: 50%; cursor: pointer; border: none; color: var(--white); font-size: 18px; text-decoration: none; }
+        .header-back.hidden { visibility: hidden; }
+        .header-content { flex: 1; }
+        .header-title { font-size: var(--font-title); font-weight: var(--weight-title); }
+        .header-subtitle { font-size: var(--font-body); opacity: 0.9; margin-top: 2px; }
+
+        /* SCREENS */
+        .screens { flex: 1; overflow: hidden; position: relative; }
+        .screen { position: absolute; inset: 0; overflow-y: auto; padding: var(--padding-page); padding-bottom: 80px; background: var(--gray-50); opacity: 0; visibility: hidden; transition: opacity 0.2s; }
+        .screen.active { opacity: 1; visibility: visible; }
+
+        /* HERO COMPATTA */
+        .hero-compact { background: linear-gradient(135deg, var(--primary-light), var(--primary)); border-radius: var(--radius-card); padding: var(--padding-card) var(--padding-page); color: var(--white); margin-bottom: var(--gap-sections); text-align: center; }
+        .hero-compact-title { font-size: var(--font-title); font-weight: var(--weight-title); }
+        .hero-compact-subtitle { font-size: var(--font-meta); opacity: 0.9; margin-top: 2px; }
+        .hero-compact-stats { display: flex; justify-content: center; gap: 18px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.2); }
+        .hero-compact-stat-value { font-size: var(--font-title); font-weight: var(--weight-title); }
+        .hero-compact-stat-label { font-size: 9px; opacity: 0.8; }
+
+        /* 4 TASTI GUIDA */
+        .guide-choices { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-cards); margin-bottom: var(--gap-sections); }
+        .guide-card { border-radius: var(--radius-card); padding: var(--padding-card) 10px 12px; display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; transition: border-color 0.15s; position: relative; border: 1px solid transparent; }
+        .guide-card:hover { border-color: var(--gray-300); }
+        .guide-card:active { transform: scale(0.98); }
+        .guide-card.movimento { background: linear-gradient(180deg, var(--white) 0%, #d1fae5 100%); }
+        .guide-card.natura { background: linear-gradient(180deg, var(--white) 0%, #cffafe 100%); }
+        .guide-card.acqua { background: linear-gradient(180deg, var(--white) 0%, #dbeafe 100%); }
+        .guide-card.relax { background: linear-gradient(180deg, var(--white) 0%, #ede9fe 100%); }
+        .guide-icon { font-size: 26px; margin-bottom: 6px; }
+        .guide-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
+        .guide-subtitle { font-size: var(--font-meta); color: var(--gray-500); margin-top: 2px; }
+        .guide-count { position: absolute; top: 6px; right: 6px; font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 100px; }
+        .guide-card.movimento .guide-count { background: #bbf7d0; color: #065f46; }
+        .guide-card.natura .guide-count { background: #a5f3fc; color: #0e7490; }
+        .guide-card.acqua .guide-count { background: #bfdbfe; color: #1e40af; }
+        .guide-card.relax .guide-count { background: #ddd6fe; color: #5b21b6; }
+
+        /* DA NON PERDERE / HIGHLIGHT */
+        .highlight-section { margin-bottom: var(--gap-sections); }
+        .highlight-header { margin-bottom: 8px; }
+        .highlight-title { font-size: var(--font-body); font-weight: 600; color: var(--gray-900); }
+        .highlight-cards { display: flex; flex-direction: column; gap: var(--gap-cards); }
+        .highlight-card { background: var(--white); border: var(--border-default); border-radius: var(--radius-card); padding: var(--padding-card); display: flex; align-items: center; gap: var(--gap-inner); cursor: pointer; transition: border-color 0.15s; }
+        .highlight-card:hover { border-color: var(--gray-300); }
+        .highlight-icon { width: var(--icon-size); height: var(--icon-size); border-radius: var(--radius-icon); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .highlight-icon.outdoor { background: var(--green-100); }
+        .highlight-icon.natura { background: var(--cyan-100); }
+        .highlight-icon.acqua { background: var(--blue-100); }
+        .highlight-icon.pesca { background: var(--orange-100); }
+        .highlight-content { flex: 1; min-width: 0; }
+        .highlight-name { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
+        .highlight-desc { font-size: var(--font-meta); color: var(--gray-500); margin-top: 1px; }
+        .highlight-tags { display: flex; gap: 4px; margin-top: 4px; }
+        .highlight-tag { font-size: 9px; font-weight: var(--weight-body); padding: 2px 6px; border-radius: 100px; }
+        .highlight-tag.easy { background: var(--green-100); color: #065f46; }
+        .highlight-tag.free { background: var(--primary-100); color: var(--primary-dark); }
+        .highlight-tag.family { background: var(--purple-100); color: #5b21b6; }
+        .highlight-arrow { color: var(--gray-400); font-size: var(--font-title); }
+
+        /* TAB NAVIGAZIONE CATEGORIE */
+        .category-tabs { display: flex; gap: 8px; padding: 0 0 var(--gap-sections); overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        .category-tabs::-webkit-scrollbar { display: none; }
+        .category-tab { flex-shrink: 0; height: var(--button-height); padding: 0 var(--button-padding-x); background: var(--white); border: var(--border-default); border-radius: var(--radius-button); font-size: var(--button-font-size); font-weight: var(--button-font-weight); color: var(--gray-600); cursor: pointer; transition: border-color 0.15s; white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; }
+        .category-tab:hover { border-color: var(--gray-300); }
+        .category-tab.active { background: var(--primary); border-color: var(--primary); color: var(--white); }
+        .category-tab.movimento.active { background: var(--green); border-color: var(--green); }
+        .category-tab.natura.active { background: var(--cyan); border-color: var(--cyan); }
+        .category-tab.acqua.active { background: var(--blue); border-color: var(--blue); }
+        .category-tab.relax.active { background: var(--purple); border-color: var(--purple); }
+
+        /* SWIPE CARDS */
+        .swipe-section { margin-bottom: var(--gap-sections); }
+        .swipe-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--gap-cards); }
+        .swipe-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
+        .swipe-hint { font-size: var(--font-meta); color: var(--gray-400); }
+        .swipe-container { display: flex; gap: var(--gap-inner); overflow-x: auto; padding: 4px 0 12px; scrollbar-width: none; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
+        .swipe-container::-webkit-scrollbar { display: none; }
+        .swipe-card { flex: 0 0 260px; background: var(--white); border: var(--border-default); border-radius: var(--radius-card); overflow: hidden; cursor: pointer; scroll-snap-align: start; transition: border-color 0.15s; }
+        .swipe-card:hover { border-color: var(--gray-300); }
+        .swipe-card:active { transform: scale(0.98); }
+        .swipe-card-header { padding: var(--padding-card); display: flex; align-items: center; gap: var(--gap-inner); }
+        .swipe-card-header.green { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+        .swipe-card-header.cyan { background: linear-gradient(135deg, #cffafe, #a5f3fc); }
+        .swipe-card-header.blue { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+        .swipe-card-header.purple { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+        .swipe-card-header.orange { background: linear-gradient(135deg, #ffedd5, #fed7aa); }
+        .swipe-card-icon { width: 44px; height: 44px; border-radius: var(--radius-icon); display: flex; align-items: center; justify-content: center; font-size: 22px; background: var(--white); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .swipe-card-info { flex: 1; }
+        .swipe-card-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
+        .swipe-card-subtitle { font-size: var(--font-meta); color: var(--gray-600); margin-top: 2px; }
+        .swipe-card-body { padding: var(--padding-card); padding-top: 10px; }
+        .swipe-card-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+        .swipe-card-tag { font-size: 9px; font-weight: var(--weight-body); padding: 3px 8px; border-radius: 100px; }
+        .swipe-card-tag.easy { background: var(--green-100); color: #065f46; }
+        .swipe-card-tag.medium { background: var(--orange-100); color: #92400e; }
+        .swipe-card-tag.hard { background: var(--red-100); color: #991b1b; }
+        .swipe-card-tag.free { background: var(--primary-100); color: var(--primary-dark); }
+        .swipe-card-tag.family { background: var(--purple-100); color: #5b21b6; }
+        .swipe-card-tag.duration { background: var(--gray-100); color: var(--gray-600); }
+        .swipe-card-tag.price { background: var(--blue-100); color: #1e40af; }
+
+        /* SECTION LABEL */
+        .section-label { font-size: var(--font-meta); font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.6px; margin: 20px 0 8px; }
+        .section-label:first-child { margin-top: 0; }
+
+        /* ACTIVITY CARDS */
+        .activity-card { background: var(--white); border: var(--border-default); border-radius: var(--radius-card); padding: var(--padding-card); margin-bottom: var(--gap-cards); display: flex; align-items: center; gap: var(--gap-inner); cursor: pointer; transition: border-color 0.15s; }
+        .activity-card:hover { border-color: var(--gray-300); }
+        .activity-card:active { transform: scale(0.99); }
+        .activity-icon { width: var(--icon-size); height: var(--icon-size); border-radius: var(--radius-icon); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .activity-icon.outdoor { background: var(--green-100); }
+        .activity-icon.natura { background: var(--cyan-100); }
+        .activity-icon.acqua { background: var(--blue-100); }
+        .activity-icon.pesca { background: var(--orange-100); }
+        .activity-icon.eventi { background: var(--purple-100); }
+        .activity-content { flex: 1; min-width: 0; }
+        .activity-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
+        .activity-subtitle { font-size: var(--font-meta); color: var(--gray-500); margin-top: 2px; }
+        .activity-meta { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+        .activity-tag { font-size: 9px; font-weight: var(--weight-body); padding: 2px 6px; border-radius: 100px; }
+        .activity-tag.easy { background: var(--green-100); color: #065f46; }
+        .activity-tag.medium { background: var(--orange-100); color: #92400e; }
+        .activity-tag.hard { background: var(--red-100); color: #991b1b; }
+        .activity-tag.free { background: var(--primary-100); color: var(--primary-dark); }
+        .activity-tag.family { background: var(--purple-100); color: #5b21b6; }
+        .activity-tag.duration { background: var(--gray-100); color: var(--gray-600); }
+        .activity-tag.price { background: var(--blue-100); color: #1e40af; }
+        .activity-arrow { color: var(--gray-400); font-size: 16px; }
+
+        /* DETAIL CARDS */
+        .detail-card { background: var(--white); border-radius: var(--radius-card); overflow: hidden; margin-bottom: var(--gap-sections); box-shadow: var(--shadow-md); }
+        .detail-header { padding: var(--padding-page); text-align: center; color: var(--white); }
+        .detail-header.outdoor { background: linear-gradient(135deg, var(--green), #059669); }
+        .detail-header.natura { background: linear-gradient(135deg, var(--cyan), #0891b2); }
+        .detail-header.acqua { background: linear-gradient(135deg, var(--blue), #2563eb); }
+        .detail-header.pesca { background: linear-gradient(135deg, var(--orange), #d97706); }
+        .detail-header.eventi { background: linear-gradient(135deg, var(--purple), #7c3aed); }
+        .detail-icon { font-size: 36px; margin-bottom: 6px; }
+        .detail-title { font-size: 18px; font-weight: var(--weight-title); }
+        .detail-zone { font-size: var(--font-body); opacity: 0.9; margin-top: 4px; }
+        .detail-badges { display: flex; justify-content: center; gap: 6px; margin-top: 10px; }
+        .detail-badge { font-size: var(--font-meta); font-weight: var(--weight-body); padding: 4px 10px; border-radius: 100px; background: rgba(255,255,255,0.2); }
+        .detail-badge.easy { background: rgba(255,255,255,0.95); color: #065f46; }
+        .detail-badge.medium { background: rgba(255,255,255,0.95); color: #92400e; }
+        .detail-badge.hard { background: rgba(255,255,255,0.95); color: #991b1b; }
+        .detail-badge.free { background: rgba(255,255,255,0.95); color: var(--primary-dark); }
+        .detail-badge.family { background: rgba(255,255,255,0.95); color: #5b21b6; }
+        .detail-badge.price { background: rgba(255,255,255,0.95); color: #1e40af; }
+        .detail-body { padding: var(--padding-card); }
+        .detail-row { display: flex; align-items: flex-start; gap: var(--gap-inner); padding: 10px 0; border-bottom: 1px solid var(--gray-100); }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-row-icon { font-size: 18px; width: 24px; text-align: center; flex-shrink: 0; }
+        .detail-row-content { flex: 1; }
+        .detail-row-label { font-size: var(--font-meta); color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.3px; }
+        .detail-row-value { font-size: var(--font-body); color: var(--gray-900); margin-top: 2px; font-weight: var(--weight-body); }
+
+        /* INFO BOX */
+        .info-box { background: var(--primary-50); border: 1px solid var(--primary-100); border-radius: var(--radius-card); padding: var(--padding-card); margin-bottom: var(--gap-sections); }
+        .info-box.warning { background: var(--orange-100); border-color: #fcd34d; }
+        .info-box-title { font-size: var(--font-body); font-weight: 600; color: var(--primary-dark); margin-bottom: 4px; }
+        .info-box.warning .info-box-title { color: #92400e; }
+        .info-box-text { font-size: var(--font-meta); color: var(--gray-700); line-height: 1.5; }
+
+        /* PRICE TABLE */
+        .price-table { background: var(--white); border: var(--border-default); border-radius: var(--radius-card); overflow: hidden; margin-bottom: var(--gap-sections); }
+        .price-table-header { background: var(--gray-50); padding: 10px var(--padding-card); font-size: var(--font-body); font-weight: 600; color: var(--gray-700); }
+        .price-row { display: flex; justify-content: space-between; padding: 10px var(--padding-card); border-bottom: 1px solid var(--gray-100); }
+        .price-row:last-child { border-bottom: none; }
+        .price-item { font-size: var(--font-body); color: var(--gray-700); }
+        .price-value { font-size: var(--font-body); font-weight: 600; color: var(--primary-dark); }
+
+        /* CONTACT BOX */
+        .contact-box { background: var(--white); border: var(--border-default); border-radius: var(--radius-card); padding: var(--padding-card); margin-bottom: var(--gap-sections); }
+        .contact-row { display: flex; align-items: center; gap: var(--gap-cards); padding: 6px 0; }
+        .contact-icon { font-size: 16px; width: 20px; text-align: center; }
+        .contact-text { font-size: var(--font-body); color: var(--gray-700); }
+        .contact-text a { color: var(--primary); text-decoration: none; }
+
+        /* BOTTOM NAV */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: var(--border-default); display: flex; justify-content: space-around; padding: 8px 0 12px; z-index: 100; }
+        @media (min-width: 481px) { .bottom-nav { max-width: 480px; left: 50%; transform: translateX(-50%); } }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; background: none; border: none; color: var(--gray-400); cursor: pointer; padding: 4px 12px; }
+        .nav-btn.active { color: var(--primary); }
+        .nav-btn-icon { font-size: 22px; }
+        .nav-btn-label { font-size: var(--font-meta); font-weight: var(--weight-body); }
+    </style>
+</head>
+<body>
+<div class="app">
+    <header class="header">
+        <a href="slappy_home.html" class="header-back">←</a>
+        <div class="header-content">
+            <div class="header-title" id="headerTitle">🎯 Attività</div>
+            <div class="header-subtitle" id="headerSubtitle">Sport, natura ed esperienze</div>
+        </div>
+    </header>
+
+    <div class="screens">
+        <!-- ==================== MAIN SCREEN ==================== -->
+        <div class="screen active" id="screen-main">
+            
+            <!-- HERO -->
+            <div class="hero-compact">
+                <div class="hero-compact-title">Cosa vuoi fare oggi?</div>
+                <div class="hero-compact-subtitle">Sport, natura, avventure a Cavallino-Treporti</div>
+                <div class="hero-compact-stats">
+                    <div class="hero-compact-stat"><div class="hero-compact-stat-value">40+</div><div class="hero-compact-stat-label">km ciclabili</div></div>
+                    <div class="hero-compact-stat"><div class="hero-compact-stat-value">50+</div><div class="hero-compact-stat-label">specie</div></div>
+                    <div class="hero-compact-stat"><div class="hero-compact-stat-value">∞</div><div class="hero-compact-stat-label">esperienze</div></div>
+                </div>
+            </div>
+
+            <!-- 4 TASTI GUIDA -->
+            <div class="guide-choices">
+                <div class="guide-card movimento" onclick="guideChoice('movimento')">
+                    <span class="guide-count">7</span>
+                    <div class="guide-icon">🚴‍♂️</div>
+                    <div class="guide-title">Muoversi & Percorsi</div>
+                    <div class="guide-subtitle">Bici, passeggiate, itinerari</div>
+                </div>
+                <div class="guide-card natura" onclick="guideChoice('natura')">
+                    <span class="guide-count">5</span>
+                    <div class="guide-icon">🦅</div>
+                    <div class="guide-title">Natura & Scoperta</div>
+                    <div class="guide-subtitle">Laguna, dune, birdwatching</div>
+                </div>
+                <div class="guide-card acqua" onclick="guideChoice('acqua')">
+                    <span class="guide-count">4</span>
+                    <div class="guide-icon">🏄‍♂️</div>
+                    <div class="guide-title">Acqua & Avventura</div>
+                    <div class="guide-subtitle">SUP, kayak, vela</div>
+                </div>
+                <div class="guide-card relax" onclick="guideChoice('relax')">
+                    <span class="guide-count">8</span>
+                    <div class="guide-icon">👨‍👩‍👧</div>
+                    <div class="guide-title">Relax & Famiglia</div>
+                    <div class="guide-subtitle">Facile, gratis, bambini</div>
+                </div>
+            </div>
+
+            <!-- DA NON PERDERE -->
+            <div class="highlight-section">
+                <div class="highlight-header">
+                    <div class="highlight-title">🔥 Da non perdere</div>
+                </div>
+                <div class="highlight-cards">
+                    <div class="highlight-card" onclick="go('via-respiro')">
+                        <div class="highlight-icon outdoor">🚴</div>
+                        <div class="highlight-content">
+                            <div class="highlight-name">Via del Respiro</div>
+                            <div class="highlight-desc">Ciclabile a sbalzo più lunga d'Europa</div>
+                            <div class="highlight-tags"><span class="highlight-tag easy">Facile</span><span class="highlight-tag family">👨‍👩‍👧</span></div>
+                        </div>
+                        <span class="highlight-arrow">›</span>
+                    </div>
+                    <div class="highlight-card" onclick="go('birdwatching')">
+                        <div class="highlight-icon natura">🦅</div>
+                        <div class="highlight-content">
+                            <div class="highlight-name">Birdwatching</div>
+                            <div class="highlight-desc">50+ specie in area internazionale</div>
+                            <div class="highlight-tags"><span class="highlight-tag free">Gratuito</span></div>
+                        </div>
+                        <span class="highlight-arrow">›</span>
+                    </div>
+                    <div class="highlight-card" onclick="go('kayak-sup')">
+                        <div class="highlight-icon acqua">🚣</div>
+                        <div class="highlight-content">
+                            <div class="highlight-name">Kayak & SUP</div>
+                            <div class="highlight-desc">Tour guidati in laguna da €29</div>
+                            <div class="highlight-tags"><span class="highlight-tag easy">Facile</span><span class="highlight-tag family">👨‍👩‍👧</span></div>
+                        </div>
+                        <span class="highlight-arrow">›</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ==================== FILTRO MOVIMENTO ==================== -->
+        <div class="screen" id="screen-filtro-movimento">
+            <!-- Tab navigazione -->
+            <div class="category-tabs">
+                <button class="category-tab movimento active">🚴‍♂️ Muoversi</button>
+                <button class="category-tab natura" onclick="guideChoice('natura')">🦅 Natura</button>
+                <button class="category-tab acqua" onclick="guideChoice('acqua')">🏄 Acqua</button>
+                <button class="category-tab relax" onclick="guideChoice('relax')">👨‍👩‍👧 Relax</button>
+            </div>
+
+            <!-- Hero -->
+            <div class="hero-compact" style="background: linear-gradient(135deg, var(--green), #059669);">
+                <div class="hero-compact-title">Muoversi & Percorsi</div>
+                <div class="hero-compact-subtitle">40+ km di ciclabili, trekking, passeggiate</div>
+            </div>
+
+            <!-- Consigliati Swipe -->
+            <div class="swipe-section">
+                <div class="swipe-header">
+                    <div class="swipe-title">⭐ Consigliati per te</div>
+                    <div class="swipe-hint">← scorri →</div>
+                </div>
+                <div class="swipe-container">
+                    <div class="swipe-card" onclick="go('via-respiro')">
+                        <div class="swipe-card-header green">
+                            <div class="swipe-card-icon">🚴</div>
+                            <div class="swipe-card-info">
+                                <div class="swipe-card-title">Via del Respiro</div>
+                                <div class="swipe-card-subtitle">16,6 km • Ciclabile panoramica</div>
+                            </div>
+                        </div>
+                        <div class="swipe-card-body">
+                            <div class="swipe-card-tags">
+                                <span class="swipe-card-tag easy">Facile</span>
+                                <span class="swipe-card-tag family">👨‍👩‍👧 Famiglie</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swipe-card" onclick="go('lio-piccolo')">
+                        <div class="swipe-card-header green">
+                            <div class="swipe-card-icon">🏘️</div>
+                            <div class="swipe-card-info">
+                                <div class="swipe-card-title">Lio Piccolo</div>
+                                <div class="swipe-card-subtitle">13,8 km • Borgo lagunare</div>
+                            </div>
+                        </div>
+                        <div class="swipe-card-body">
+                            <div class="swipe-card-tags">
+                                <span class="swipe-card-tag medium">Media</span>
+                                <span class="swipe-card-tag duration">2+ ore</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swipe-card" onclick="go('noleggio-bici')">
+                        <div class="swipe-card-header green">
+                            <div class="swipe-card-icon">🔑</div>
+                            <div class="swipe-card-info">
+                                <div class="swipe-card-title">Noleggia una Bici</div>
+                                <div class="swipe-card-subtitle">5 operatori • Consegna a domicilio</div>
+                            </div>
+                        </div>
+                        <div class="swipe-card-body">
+                            <div class="swipe-card-tags">
+                                <span class="swipe-card-tag price">Da €8/giorno</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista completa -->
+            <div class="section-label">Tutte le attività</div>
+            <div class="activity-card" onclick="go('via-respiro')">
+                <div class="activity-icon outdoor">🚴</div>
+                <div class="activity-content">
+                    <div class="activity-title">Via del Respiro</div>
+                    <div class="activity-subtitle">16,6 km • Ca' Pasquali → Punta Sabbioni</div>
+                    <div class="activity-meta"><span class="activity-tag easy">Facile</span><span class="activity-tag family">👨‍👩‍👧</span><span class="activity-tag duration">~1 ora</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('lio-piccolo')">
+                <div class="activity-icon outdoor">🏘️</div>
+                <div class="activity-content">
+                    <div class="activity-title">Lio Piccolo</div>
+                    <div class="activity-subtitle">13,8 km • Borgo storico lagunare</div>
+                    <div class="activity-meta"><span class="activity-tag medium">Media</span><span class="activity-tag duration">2+ ore</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('cicloturismo-esperti')">
+                <div class="activity-icon outdoor">🚴</div>
+                <div class="activity-content">
+                    <div class="activity-title">Cicloturismo Esperti</div>
+                    <div class="activity-subtitle">40-90 km • Jesolo, Caposile, Musile</div>
+                    <div class="activity-meta"><span class="activity-tag hard">Impegnativo</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('sentiero-dune')">
+                <div class="activity-icon natura">🌿</div>
+                <div class="activity-content">
+                    <div class="activity-title">Sentiero delle Dune</div>
+                    <div class="activity-subtitle">3 km • Punta Sabbioni → Faro</div>
+                    <div class="activity-meta"><span class="activity-tag easy">Facile</span><span class="activity-tag free">Gratuito</span><span class="activity-tag duration">1,5 ore</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('giro-forti')">
+                <div class="activity-icon eventi">🏛️</div>
+                <div class="activity-content">
+                    <div class="activity-title">Giro dei Forti</div>
+                    <div class="activity-subtitle">15 km • Circuito storico WWI-WWII</div>
+                    <div class="activity-meta"><span class="activity-tag medium">Media</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('noleggio-bici')">
+                <div class="activity-icon outdoor">🔑</div>
+                <div class="activity-content">
+                    <div class="activity-title">Noleggia una Bici</div>
+                    <div class="activity-subtitle">5 operatori • City bike, e-bike, risciò</div>
+                    <div class="activity-meta"><span class="activity-tag price">Da €8/giorno</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('sport-spiaggia')">
+                <div class="activity-icon outdoor">🏐</div>
+                <div class="activity-content">
+                    <div class="activity-title">Sport da Spiaggia</div>
+                    <div class="activity-subtitle">Beach volley, tennis, calcetto</div>
+                    <div class="activity-meta"><span class="activity-tag easy">Tutti i livelli</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO VIA DEL RESPIRO ==================== -->
+        <div class="screen" id="screen-via-respiro">
+            <div class="detail-card">
+                <div class="detail-header outdoor">
+                    <div class="detail-icon">🚴</div>
+                    <div class="detail-title">Via del Respiro</div>
+                    <div class="detail-zone">📍 Ca' Pasquali → Punta Sabbioni</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge easy">Facile</span>
+                        <span class="detail-badge family">👨‍👩‍👧 Famiglie</span>
+                    </div>
+                </div>
+                <div class="detail-body">
+                    <div class="detail-row">
+                        <div class="detail-row-icon">📏</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Lunghezza</div>
+                            <div class="detail-row-value">16,6 km (completamente asfaltato)</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">⏱️</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Durata</div>
+                            <div class="detail-row-value">~1 ora (velocità turistica)</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🌟</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Caratteristica unica</div>
+                            <div class="detail-row-value">Ciclabile a sbalzo più lunga d'Europa (5 km sulla laguna)</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🚩</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Partenza</div>
+                            <div class="detail-row-value">Via Fausta, centro Cavallino → Lungomare Dante Alighieri</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🏁</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Arrivo</div>
+                            <div class="detail-row-value">Punta Sabbioni: Faro, Forte Vecchio, traghetto Venezia</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">💡 Consiglio</div>
+                <div class="info-box-text">Percorri il tratto a sbalzo al tramonto per panorami mozzafiato sulla laguna. Fontanelle pubbliche lungo il percorso (verifica presso IAT per calendario stagionale).</div>
+            </div>
+
+            <div class="section-label">🔑 Noleggio bici</div>
+            <div class="activity-card" onclick="go('noleggio-bici')">
+                <div class="activity-icon outdoor">🚲</div>
+                <div class="activity-content">
+                    <div class="activity-title">Trova un noleggio</div>
+                    <div class="activity-subtitle">5 operatori • Da €8/giorno</div>
+                    <div class="activity-meta"><span class="activity-tag price">E-bike €25-35</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+
+            <div class="section-label">📍 Cosa vedere all'arrivo</div>
+            <div class="activity-card" onclick="go('faro')">
+                <div class="activity-icon eventi">🗼</div>
+                <div class="activity-content">
+                    <div class="activity-title">Faro di Punta Sabbioni</div>
+                    <div class="activity-subtitle">Panorama 360° sulla laguna</div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('traghetto-venezia')">
+                <div class="activity-icon acqua">⛴️</div>
+                <div class="activity-content">
+                    <div class="activity-title">Traghetto per Venezia</div>
+                    <div class="activity-subtitle">30 min diretti • €15 A/R</div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO LIO PICCOLO ==================== -->
+        <div class="screen" id="screen-lio-piccolo">
+            <div class="detail-card">
+                <div class="detail-header outdoor">
+                    <div class="detail-icon">🏘️</div>
+                    <div class="detail-title">Lio Piccolo</div>
+                    <div class="detail-zone">📍 8 km da Cavallino centro</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge medium">Media</span>
+                        <span class="detail-badge">🌅 Tramonti</span>
+                    </div>
+                </div>
+                <div class="detail-body">
+                    <div class="detail-row">
+                        <div class="detail-row-icon">📏</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Distanza</div>
+                            <div class="detail-row-value">13,8 km da centro Cavallino</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">⏱️</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Durata</div>
+                            <div class="detail-row-value">2+ ore (pedalata lenta con soste)</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🛤️</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Fondo</div>
+                            <div class="detail-row-value">Argini sterrati, scenario lagunare</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🏛️</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Cosa vedere</div>
+                            <div class="detail-row-value">Chiesa S. Maria della Neve (XVII sec.), Palazzo Boldù, campanile armeno</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">🌅 Periodo consigliato</div>
+                <div class="info-box-text">Visita al tramonto per i famosi "tramonti infuocati" sulla laguna. Osserva aironi, cormorani, cavalieri d'Italia, fenicotteri rosa (stagionali).</div>
+            </div>
+
+            <div class="section-label">🍽️ Dove mangiare</div>
+            <div class="price-table">
+                <div class="price-table-header">Ristoranti a Lio Piccolo</div>
+                <div class="price-row">
+                    <span class="price-item">🍴 Al Notturno</span>
+                    <span class="price-value">Pesce km zero</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">🌾 Le Saline (Agriturismo)</span>
+                    <span class="price-value">Ortaggi locali</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">🏡 Le Manciane (Agriturismo)</span>
+                    <span class="price-value">Cucina casalinga</span>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <div class="info-box-title">🍽️ Specialità di stagione</div>
+                <div class="info-box-text"><strong>Maggio:</strong> Castraùre (carciofini) • <strong>Primavera:</strong> Moeche (granchi molli) • <strong>Ott-Nov:</strong> Masanete (granchi femmina)</div>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO SENTIERO DUNE ==================== -->
+        <div class="screen" id="screen-sentiero-dune">
+            <div class="detail-card">
+                <div class="detail-header natura">
+                    <div class="detail-icon">🌿</div>
+                    <div class="detail-title">Sentiero delle Dune</div>
+                    <div class="detail-zone">📍 Punta Sabbioni → Faro</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge easy">Facile</span>
+                        <span class="detail-badge free">Gratuito</span>
+                    </div>
+                </div>
+                <div class="detail-body">
+                    <div class="detail-row">
+                        <div class="detail-row-icon">📏</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Lunghezza</div>
+                            <div class="detail-row-value">~3 km pianeggiante</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">⏱️</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Durata</div>
+                            <div class="detail-row-value">1,5 ore con soste fotografiche</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🚩</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Partenza</div>
+                            <div class="detail-row-value">Lungomare Dante Alighieri → Via Montello</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🌳</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Habitat</div>
+                            <div class="detail-row-value">Dune naturali, pineta litoranea, spiaggia</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">📅</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Periodo</div>
+                            <div class="detail-row-value">Tutto l'anno (tramonti spettacolari marzo-settembre)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">🦎 Natura protetta</div>
+                <div class="info-box-text">Area SIC/ZPS protetta. Rimani sui sentieri segnalati. Possibile accesso alternativo direttamente dalla battigia.</div>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO GIRO DEI FORTI ==================== -->
+        <div class="screen" id="screen-giro-forti">
+            <div class="detail-card">
+                <div class="detail-header eventi">
+                    <div class="detail-icon">🏛️</div>
+                    <div class="detail-title">Giro dei Forti</div>
+                    <div class="detail-zone">📍 Circuito storico WWI-WWII</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge medium">Media</span>
+                    </div>
+                </div>
+                <div class="detail-body">
+                    <div class="detail-row">
+                        <div class="detail-row-icon">📏</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Lunghezza</div>
+                            <div class="detail-row-value">15 km complessivi</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🏰</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Tappe principali</div>
+                            <div class="detail-row-value">Forte Treporti, Ca' Ballarin, Ca' di Valle, Batteria Pisani, Batteria Amalfi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-label">🎫 Batteria Vettor Pisani</div>
+            <div class="info-box warning">
+                <div class="info-box-title">⚠️ Stato attuale</div>
+                <div class="info-box-text">CHIUSO fino primavera 2026. Museo principale della rete "Via dei Forti".</div>
+            </div>
+
+            <div class="price-table">
+                <div class="price-table-header">Tariffe (quando apre)</div>
+                <div class="price-row">
+                    <span class="price-item">Adulti</span>
+                    <span class="price-value">€10</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Bambini 6-17 / Over 65</span>
+                    <span class="price-value">€5</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Famiglia (2+2)</span>
+                    <span class="price-value">€20</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Bambini 0-5</span>
+                    <span class="price-value">Gratis</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Residenti adulti</span>
+                    <span class="price-value">€5</span>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Via Vettor Pisani 40, Ca' Savio</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">📞</span>
+                    <span class="contact-text">041 2909555 • 348 3164470</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">📧</span>
+                    <span class="contact-text"><a href="/cdn-cgi/l/email-protection#f39a9d959cb3859a9297969a959c81879add9a87"><span class="__cf_email__" data-cfemail="dbb2b5bdb49badb2babfbeb2bdb4a9afb2f5b2af">[email&#160;protected]</span></a></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO CICLOTURISMO ESPERTI ==================== -->
+        <div class="screen" id="screen-cicloturismo-esperti">
+            <div class="detail-card">
+                <div class="detail-header outdoor">
+                    <div class="detail-icon">🚴</div>
+                    <div class="detail-title">Cicloturismo Esperti</div>
+                    <div class="detail-zone">📍 40-90 km • Percorsi impegnativi</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge hard">Impegnativo</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-label">🗺️ Percorsi disponibili</div>
+            
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Portegrandi - Caposile - Jesolo</div>
+                <div class="contact-row">
+                    <span class="contact-icon">📏</span>
+                    <span class="contact-text">9,1 km su ghiaia/sentiero</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🚲</span>
+                    <span class="contact-text">MTB consigliata</span>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Greenway del Sile</div>
+                <div class="contact-row">
+                    <span class="contact-icon">🗺️</span>
+                    <span class="contact-text">Collega Treviso a Jesolo</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🌳</span>
+                    <span class="contact-text">Paesaggi della Pianura Veneta</span>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Terre della Venezia Orientale</div>
+                <div class="contact-row">
+                    <span class="contact-icon">📏</span>
+                    <span class="contact-text">83 km totali</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🗺️</span>
+                    <span class="contact-text">Cavallino → Fossalta → Musile di Piave</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🏕️</span>
+                    <span class="contact-text">Itinerario multi-giorno</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">🛤️ Fondo stradale</div>
+                <div class="info-box-text">Prevalentemente asfaltato/ghiaia, alcuni tratti su sentiero naturale. MTB o gravel bike consigliate per i percorsi misti.</div>
+            </div>
+
+            <div class="info-box warning">
+                <div class="info-box-title">🗺️ Mappe e tracce GPX</div>
+                <div class="info-box-text">Mappe disponibili presso IAT Cavallino (041 8626322) e noleggi bici. Per tracce GPX contattare Consorzio Parco Turistico.</div>
+            </div>
+
+            <div class="section-label">🔑 Noleggio bici</div>
+            <div class="activity-card" onclick="go('noleggio-bici')">
+                <div class="activity-icon outdoor">🚲</div>
+                <div class="activity-content">
+                    <div class="activity-title">Trova un noleggio</div>
+                    <div class="activity-subtitle">5 operatori • E-bike per percorsi lunghi</div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO NOLEGGIO BICI ==================== -->
+        <div class="screen" id="screen-noleggio-bici">
+            <div class="detail-card">
+                <div class="detail-header outdoor">
+                    <div class="detail-icon">🔑</div>
+                    <div class="detail-title">Noleggia una Bici</div>
+                    <div class="detail-zone">📍 5 operatori sul territorio</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge price">Da €8/giorno</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-label">🚲 Operatori</div>
+            
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Bike On Service</div>
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Via Thaon di Revel Paolo 56/A</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🚚</span>
+                    <span class="contact-text">Consegna a domicilio • Mappe percorsi incluse</span>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Cavallino Rent</div>
+                <div class="contact-row">
+                    <span class="contact-icon">📞</span>
+                    <span class="contact-text">+39 347 3030180</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🚲</span>
+                    <span class="contact-text">Risciò, bici, servizio completo</span>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Lio Piccolo in Bici</div>
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Via Thaon di Revel Paolo 56/A</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🕐</span>
+                    <span class="contact-text">9:00-13:00 / 15:30-19:30</span>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Cavallino Bike</div>
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Via delle Batterie 162</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">📞</span>
+                    <span class="contact-text">+39 349 882 0000</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🚲</span>
+                    <span class="contact-text">City bike, e-bike, accessori</span>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Vivo Venetia</div>
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Piazza S. Maria Elisabetta</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🌐</span>
+                    <span class="contact-text">Booking online • Consegna €5/bici</span>
+                </div>
+            </div>
+
+            <div class="price-table">
+                <div class="price-table-header">Prezzi indicativi</div>
+                <div class="price-row">
+                    <span class="price-item">City bike</span>
+                    <span class="price-value">€8-15/giorno</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">E-bike</span>
+                    <span class="price-value">€25-35/giorno</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Risciò</span>
+                    <span class="price-value">Su richiesta</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">💡 Consiglio</div>
+                <div class="info-box-text">Prenota in anticipo in alta stagione. Mappe percorsi disponibili presso tutti i noleggi e IAT.</div>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO SPORT SPIAGGIA ==================== -->
+        <div class="screen" id="screen-sport-spiaggia">
+            <div class="detail-card">
+                <div class="detail-header outdoor">
+                    <div class="detail-icon">🏐</div>
+                    <div class="detail-title">Sport da Spiaggia</div>
+                    <div class="detail-zone">📍 Campeggi e stabilimenti</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge easy">Tutti i livelli</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-label">📍 Dove giocare</div>
+            
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Union Lido - Cavallino Sport Center</div>
+                <div class="contact-row">
+                    <span class="contact-icon">🎾</span>
+                    <span class="contact-text">9 campi tennis (6 terra rossa, 2 cemento, 1 sintetico)</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🏐</span>
+                    <span class="contact-text">4 campi beach volley con tornei serali</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">⚽</span>
+                    <span class="contact-text">Calcetto • Mini-golf</span>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Marina di Venezia</div>
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Via Montello 6</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🏐</span>
+                    <span class="contact-text">Beach volley, tennis, calcetto, mini-golf</span>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Camping Ca'Savio</div>
+                <div class="contact-row">
+                    <span class="contact-icon">🏐</span>
+                    <span class="contact-text">Beach volley GRATUITO senza prenotazione</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🎯</span>
+                    <span class="contact-text">Tornei: bambini mattina, adulti pomeriggio</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Meeting point: Spiaggia uscita mare n.3</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">💡 Info</div>
+                <div class="info-box-text">Tariffe gestite dai singoli campeggi. Contattare direttamente per accesso giornaliero, corsi e noleggio attrezzature.</div>
+            </div>
+        </div>
+        <!-- ==================== FILTRO NATURA ==================== -->
+        <div class="screen" id="screen-filtro-natura">
+            <!-- Tab navigazione -->
+            <div class="category-tabs">
+                <button class="category-tab movimento" onclick="guideChoice('movimento')">🚴‍♂️ Muoversi</button>
+                <button class="category-tab natura active">🦅 Natura</button>
+                <button class="category-tab acqua" onclick="guideChoice('acqua')">🏄 Acqua</button>
+                <button class="category-tab relax" onclick="guideChoice('relax')">👨‍👩‍👧 Relax</button>
+            </div>
+
+            <!-- Hero -->
+            <div class="hero-compact" style="background: linear-gradient(135deg, var(--cyan), #0891b2);">
+                <div class="hero-compact-title">Natura & Scoperta</div>
+                <div class="hero-compact-subtitle">50+ specie, laguna, dune, tramonti</div>
+            </div>
+
+            <!-- Consigliati Swipe -->
+            <div class="swipe-section">
+                <div class="swipe-header">
+                    <div class="swipe-title">⭐ Consigliati per te</div>
+                    <div class="swipe-hint">← scorri →</div>
+                </div>
+                <div class="swipe-container">
+                    <div class="swipe-card" onclick="go('birdwatching')">
+                        <div class="swipe-card-header cyan">
+                            <div class="swipe-card-icon">🦅</div>
+                            <div class="swipe-card-info">
+                                <div class="swipe-card-title">Birdwatching</div>
+                                <div class="swipe-card-subtitle">50+ specie • Area internazionale</div>
+                            </div>
+                        </div>
+                        <div class="swipe-card-body">
+                            <div class="swipe-card-tags">
+                                <span class="swipe-card-tag free">Gratuito</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swipe-card" onclick="go('oasi-casavio')">
+                        <div class="swipe-card-header cyan">
+                            <div class="swipe-card-icon">🌿</div>
+                            <div class="swipe-card-info">
+                                <div class="swipe-card-title">Oasi Ca' Savio</div>
+                                <div class="swipe-card-subtitle">Dune fossili • Capanni</div>
+                            </div>
+                        </div>
+                        <div class="swipe-card-body">
+                            <div class="swipe-card-tags">
+                                <span class="swipe-card-tag free">Gratuito</span>
+                                <span class="swipe-card-tag easy">Facile</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swipe-card" onclick="go('cat-centro')">
+                        <div class="swipe-card-header cyan">
+                            <div class="swipe-card-icon">🏛️</div>
+                            <div class="swipe-card-info">
+                                <div class="swipe-card-title">C.A.T. Centro Ambientale</div>
+                                <div class="swipe-card-subtitle">Mostre • Escursioni guidate</div>
+                            </div>
+                        </div>
+                        <div class="swipe-card-body">
+                            <div class="swipe-card-tags">
+                                <span class="swipe-card-tag free">Gratuito</span>
+                                <span class="swipe-card-tag family">👨‍👩‍👧 Bambini</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista completa -->
+            <div class="section-label">Tutte le attività</div>
+            <div class="activity-card" onclick="go('birdwatching')">
+                <div class="activity-icon natura">🦅</div>
+                <div class="activity-content">
+                    <div class="activity-title">Birdwatching</div>
+                    <div class="activity-subtitle">50+ specie • Fenicotteri, aironi, cavalieri</div>
+                    <div class="activity-meta"><span class="activity-tag free">Gratuito</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('oasi-casavio')">
+                <div class="activity-icon natura">🌿</div>
+                <div class="activity-content">
+                    <div class="activity-title">Oasi Naturale Ca' Savio</div>
+                    <div class="activity-subtitle">Dune fossili • Capanni osservazione</div>
+                    <div class="activity-meta"><span class="activity-tag easy">Facile</span><span class="activity-tag free">Gratuito</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('cat-centro')">
+                <div class="activity-icon natura">🏛️</div>
+                <div class="activity-content">
+                    <div class="activity-title">C.A.T. Centro Ambientale</div>
+                    <div class="activity-subtitle">Laboratori bambini • Escursioni guidate</div>
+                    <div class="activity-meta"><span class="activity-tag free">Gratuito</span><span class="activity-tag family">👨‍👩‍👧</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('tramonto')">
+                <div class="activity-icon natura">🌅</div>
+                <div class="activity-content">
+                    <div class="activity-title">Passeggiata del Tramonto</div>
+                    <div class="activity-subtitle">Via del Respiro • Panorama laguna</div>
+                    <div class="activity-meta"><span class="activity-tag easy">Facile</span><span class="activity-tag free">Gratuito</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('faro')">
+                <div class="activity-icon eventi">🗼</div>
+                <div class="activity-content">
+                    <div class="activity-title">Faro di Punta Sabbioni</div>
+                    <div class="activity-subtitle">Panorama 360° • Laguna e mare</div>
+                    <div class="activity-meta"><span class="activity-tag free">Accesso libero</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO BIRDWATCHING ==================== -->
+        <div class="screen" id="screen-birdwatching">
+            <div class="detail-card">
+                <div class="detail-header natura">
+                    <div class="detail-icon">🦅</div>
+                    <div class="detail-title">Birdwatching</div>
+                    <div class="detail-zone">📍 Area internazionale riconosciuta</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge free">Gratuito</span>
+                    </div>
+                </div>
+                <div class="detail-body">
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🐦</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Specie</div>
+                            <div class="detail-row-value">50+ specie regolari osservabili</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">📍</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Punti osservazione</div>
+                            <div class="detail-row-value">P1: Argine fiume Sile • P2: Valle Dragojesolo</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🔭</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Attrezzatura</div>
+                            <div class="detail-row-value">Cannocchiale consigliato per osservazioni ottimali</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-label">📅 Calendario specie</div>
+            
+            <div class="info-box">
+                <div class="info-box-title">🌸 Primavera-Estate (Marzo-Agosto)</div>
+                <div class="info-box-text">Gabbiano corallino, pettegola, volpoca, avocetta, cavaliere d'Italia, beccaccia di mare, sterna comune, fraticelli</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">❄️ Inverno (Novembre-Febbraio)</div>
+                <div class="info-box-text">Anatidi (germani, mestoloni, moriglioni), ocche selvatiche, falco pescatore, cormorani, tuffetti</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">🦩 Fenicotteri Rosa</div>
+                <div class="info-box-text"><strong>Periodo picco:</strong> Maggio-Agosto • <strong>Punti migliori:</strong> Valle Dogà, percorsi da Ca' Savio verso Punta Sabbioni</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">🦢 Tutto l'anno (tranne giugno)</div>
+                <div class="info-box-text">Aironi (cenerino, rosso, bianco maggiore, garzetta), limicoli, rapaci, laridi</div>
+            </div>
+
+            <div class="contact-box">
+                <div class="contact-row">
+                    <span class="contact-icon">ℹ️</span>
+                    <span class="contact-text">Info complete: IAT Cavallino 041 8626322</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO OASI CA' SAVIO ==================== -->
+        <div class="screen" id="screen-oasi-casavio">
+            <div class="detail-card">
+                <div class="detail-header natura">
+                    <div class="detail-icon">🌿</div>
+                    <div class="detail-title">Oasi Ca' Savio</div>
+                    <div class="detail-zone">📍 Circolo AUSER Cavallino-Treporti</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge free">Gratuito</span>
+                        <span class="detail-badge easy">Facile</span>
+                    </div>
+                </div>
+                <div class="detail-body">
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🌳</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Caratteristiche</div>
+                            <div class="detail-row-value">Dune fossili, capanni osservazione uccelli</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🚶</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Accessibilità</div>
+                            <div class="detail-row-value">Passerelle accessibili</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Via Grisolera 21, Cavallino-Treporti</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">📞</span>
+                    <span class="contact-text">041 968647</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">👤</span>
+                    <span class="contact-text">Presidente: Augusto Luzietti</span>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <div class="info-box-title">⚠️ Nota</div>
+                <div class="info-box-text">Non confondere con OasiSun (solarium in Via Julia 73, Ca' Savio) che è una struttura diversa.</div>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO C.A.T. ==================== -->
+        <div class="screen" id="screen-cat-centro">
+            <div class="detail-card">
+                <div class="detail-header natura">
+                    <div class="detail-icon">🏛️</div>
+                    <div class="detail-title">C.A.T. Centro Ambientale</div>
+                    <div class="detail-zone">📍 Centro Ambientale Turistico</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge free">Gratuito</span>
+                        <span class="detail-badge family">👨‍👩‍👧 Bambini</span>
+                    </div>
+                </div>
+                <div class="detail-body">
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🎨</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Attività</div>
+                            <div class="detail-row-value">Laboratori educativi, escursioni guidate, esposizioni biodiversità</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🌍</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Programmi</div>
+                            <div class="detail-row-value">Sostenibilità, Bandiera Blu, Agenda 2030</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Piazza Papa Giovanni Paolo II n.1, Cavallino-Treporti</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🕐</span>
+                    <span class="contact-text">Mar e Ven: 9:30-12:30 / 15:30-19:00 (estate)</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">ℹ️</span>
+                    <span class="contact-text">Info: IAT Cavallino 041 8626322</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">👨‍👩‍👧 Ideale per famiglie</div>
+                <div class="info-box-text">Laboratori didattici sulla natura pensati per bambini. Escursioni guidate naturalistiche per tutte le età.</div>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO TRAMONTO ==================== -->
+        <div class="screen" id="screen-tramonto">
+            <div class="detail-card">
+                <div class="detail-header natura">
+                    <div class="detail-icon">🌅</div>
+                    <div class="detail-title">Passeggiata del Tramonto</div>
+                    <div class="detail-zone">📍 Via del Respiro - tratto a sbalzo</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge easy">Facile</span>
+                        <span class="detail-badge free">Gratuito</span>
+                    </div>
+                </div>
+                <div class="detail-body">
+                    <div class="detail-row">
+                        <div class="detail-row-icon">📍</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Punto migliore</div>
+                            <div class="detail-row-value">Tratto a sbalzo della Via del Respiro (5 km sulla laguna)</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">📅</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Periodo ideale</div>
+                            <div class="detail-row-value">Marzo-Settembre per tramonti più spettacolari</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">🌅 Perché è speciale</div>
+                <div class="info-box-text">I "tramonti infuocati" sulla laguna veneta sono famosi. Il tratto a sbalzo offre una vista a 180° senza ostacoli, perfetto per fotografie.</div>
+            </div>
+
+            <div class="section-label">🚴 Come arrivare</div>
+            <div class="activity-card" onclick="go('via-respiro')">
+                <div class="activity-icon outdoor">🚴</div>
+                <div class="activity-content">
+                    <div class="activity-title">Via del Respiro</div>
+                    <div class="activity-subtitle">Percorso completo con info noleggio</div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO FARO ==================== -->
+        <div class="screen" id="screen-faro">
+            <div class="detail-card">
+                <div class="detail-header eventi">
+                    <div class="detail-icon">🗼</div>
+                    <div class="detail-title">Faro di Punta Sabbioni</div>
+                    <div class="detail-zone">📍 Estremità nord Punta Sabbioni</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge free">Accesso libero</span>
+                    </div>
+                </div>
+                <div class="detail-body">
+                    <div class="detail-row">
+                        <div class="detail-row-icon">👁️</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Panorama</div>
+                            <div class="detail-row-value">360° sulla Laguna di Venezia e Mare Adriatico</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-icon">🚶</div>
+                        <div class="detail-row-content">
+                            <div class="detail-row-label">Accesso</div>
+                            <div class="detail-row-value">Passerella pedonale dalle dune via Via Montello</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div class="contact-row">
+                    <span class="contact-icon">ℹ️</span>
+                    <span class="contact-text">Orari visita: IAT Cavallino 041 8626322</span>
+                </div>
+            </div>
+
+            <div class="section-label">📍 Nelle vicinanze</div>
+            <div class="activity-card" onclick="go('traghetto-venezia')">
+                <div class="activity-icon acqua">⛴️</div>
+                <div class="activity-content">
+                    <div class="activity-title">Traghetto per Venezia</div>
+                    <div class="activity-subtitle">30 min • €15 A/R</div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('sentiero-dune')">
+                <div class="activity-icon natura">🌿</div>
+                <div class="activity-content">
+                    <div class="activity-title">Sentiero delle Dune</div>
+                    <div class="activity-subtitle">3 km pianeggiante</div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+        </div>
+        <!-- ==================== FILTRO ACQUA ==================== -->
+        <div class="screen" id="screen-filtro-acqua">
+            <!-- Tab navigazione -->
+            <div class="category-tabs">
+                <button class="category-tab movimento" onclick="guideChoice('movimento')">🚴‍♂️ Muoversi</button>
+                <button class="category-tab natura" onclick="guideChoice('natura')">🦅 Natura</button>
+                <button class="category-tab acqua active">🏄 Acqua</button>
+                <button class="category-tab relax" onclick="guideChoice('relax')">👨‍👩‍👧 Relax</button>
+            </div>
+
+            <!-- Hero -->
+            <div class="hero-compact" style="background: linear-gradient(135deg, var(--blue), #2563eb);">
+                <div class="hero-compact-title">Acqua & Avventura</div>
+                <div class="hero-compact-subtitle">SUP, kayak, vela, pesca in laguna</div>
+            </div>
+
+            <!-- Consigliati Swipe -->
+            <div class="swipe-section">
+                <div class="swipe-header">
+                    <div class="swipe-title">⭐ Consigliati per te</div>
+                    <div class="swipe-hint">← scorri →</div>
+                </div>
+                <div class="swipe-container">
+                    <div class="swipe-card" onclick="go('kayak-sup')">
+                        <div class="swipe-card-header blue">
+                            <div class="swipe-card-icon">🚣</div>
+                            <div class="swipe-card-info">
+                                <div class="swipe-card-title">Kayak & SUP</div>
+                                <div class="swipe-card-subtitle">Tour guidati in laguna</div>
+                            </div>
+                        </div>
+                        <div class="swipe-card-body">
+                            <div class="swipe-card-tags">
+                                <span class="swipe-card-tag easy">Facile</span>
+                                <span class="swipe-card-tag price">Da €15/ora</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swipe-card" onclick="go('vela-windsurf')">
+                        <div class="swipe-card-header blue">
+                            <div class="swipe-card-icon">⛵</div>
+                            <div class="swipe-card-info">
+                                <div class="swipe-card-title">Vela & Windsurf</div>
+                                <div class="swipe-card-subtitle">Corsi certificati VDWS</div>
+                            </div>
+                        </div>
+                        <div class="swipe-card-body">
+                            <div class="swipe-card-tags">
+                                <span class="swipe-card-tag medium">Da principianti</span>
+                                <span class="swipe-card-tag price">Da €35</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swipe-card" onclick="go('pescaturismo')">
+                        <div class="swipe-card-header orange">
+                            <div class="swipe-card-icon">🎣</div>
+                            <div class="swipe-card-info">
+                                <div class="swipe-card-title">Pescaturismo</div>
+                                <div class="swipe-card-subtitle">Uscite con pescatori locali</div>
+                            </div>
+                        </div>
+                        <div class="swipe-card-body">
+                            <div class="swipe-card-tags">
+                                <span class="swipe-card-tag duration">4-5 ore</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista completa -->
+            <div class="section-label">Tutte le attività</div>
+            <div class="activity-card" onclick="go('kayak-sup')">
+                <div class="activity-icon acqua">🚣</div>
+                <div class="activity-content">
+                    <div class="activity-title">Kayak & SUP</div>
+                    <div class="activity-subtitle">Tour guidati • SUP Yoga • Noleggio</div>
+                    <div class="activity-meta"><span class="activity-tag easy">Facile</span><span class="activity-tag family">👨‍👩‍👧</span><span class="activity-tag price">Da €15/ora</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('vela-windsurf')">
+                <div class="activity-icon acqua">⛵</div>
+                <div class="activity-content">
+                    <div class="activity-title">Vela, Windsurf & Kitesurf</div>
+                    <div class="activity-subtitle">Corsi certificati • Noleggio attrezzatura</div>
+                    <div class="activity-meta"><span class="activity-tag medium">Da principianti</span><span class="activity-tag price">Da €35</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('pescaturismo')">
+                <div class="activity-icon pesca">🎣</div>
+                <div class="activity-content">
+                    <div class="activity-title">Pesca & Pescaturismo</div>
+                    <div class="activity-subtitle">Casa della Pesca • Ittiturismo</div>
+                    <div class="activity-meta"><span class="activity-tag duration">4-5 ore</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('traghetto-venezia')">
+                <div class="activity-icon acqua">⛴️</div>
+                <div class="activity-content">
+                    <div class="activity-title">Traghetto per Venezia</div>
+                    <div class="activity-subtitle">Da Punta Sabbioni • 30 min diretti</div>
+                    <div class="activity-meta"><span class="activity-tag price">€15 A/R</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO KAYAK & SUP ==================== -->
+        <div class="screen" id="screen-kayak-sup">
+            <div class="detail-card">
+                <div class="detail-header acqua">
+                    <div class="detail-icon">🚣</div>
+                    <div class="detail-title">Kayak & SUP</div>
+                    <div class="detail-zone">📍 Laguna di Cavallino-Treporti</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge easy">Facile</span>
+                        <span class="detail-badge family">👨‍👩‍👧 Famiglie</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-label">💰 Tariffe Vivo Venetia Kayak</div>
+            <div class="price-table">
+                <div class="price-table-header">Noleggio</div>
+                <div class="price-row">
+                    <span class="price-item">Kayak singolo</span>
+                    <span class="price-value">€15/ora</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Kayak doppio</span>
+                    <span class="price-value">€20/ora</span>
+                </div>
+            </div>
+
+            <div class="price-table">
+                <div class="price-table-header">Tour guidati</div>
+                <div class="price-row">
+                    <span class="price-item">Short tour (1h 30m) - Adulti</span>
+                    <span class="price-value">€29</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Short tour - Bambini 7-13</span>
+                    <span class="price-value">€19</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Sunset tour (2h) - Adulti</span>
+                    <span class="price-value">€35</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Sunset tour - Bambini 7-13</span>
+                    <span class="price-value">€20</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Falconera tour - Adulti</span>
+                    <span class="price-value">€39</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Falconera tour - Bambini 7-13</span>
+                    <span class="price-value">€29</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Bambini 0-6 anni</span>
+                    <span class="price-value">GRATIS</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">📅 Orari tour</div>
+                <div class="info-box-text"><strong>Short tour:</strong> Lunedì mattina, valli lagunari<br><strong>Sunset tour:</strong> Giovedì, vista tramonto con prosecco</div>
+            </div>
+
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Vivo Venetia Kayak</div>
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Piazza S. Maria Elisabetta, Cavallino-Treporti</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🚣</span>
+                    <span class="contact-text">Kayak sit-on-top anti-ribaltamento</span>
+                </div>
+            </div>
+
+            <div class="section-label">🧘 SUP Yoga</div>
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Camping Ca'Savio</div>
+                <div class="contact-row">
+                    <span class="contact-icon">📅</span>
+                    <span class="contact-text">Luglio-Agosto • 2 volte/settimana</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🌅</span>
+                    <span class="contact-text">Alba e tramonto • Spiaggia o piscina</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">📞</span>
+                    <span class="contact-text">041 966 017 • 041 966 570</span>
+                </div>
+            </div>
+
+            <div class="section-label">🏄 Altri operatori</div>
+            <div class="contact-box">
+                <div class="contact-row">
+                    <span class="contact-icon">🚣</span>
+                    <span class="contact-text"><strong>LaguniAmo:</strong> Barche elettriche, kayak, tour privati</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🏄</span>
+                    <span class="contact-text"><strong>Water Sport Center Venezia:</strong> SUP group (VDWS)</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🧘</span>
+                    <span class="contact-text"><strong>Mare Pineta:</strong> SUP yoga, corsi • 340 76 28 893</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO VELA & WINDSURF ==================== -->
+        <div class="screen" id="screen-vela-windsurf">
+            <div class="detail-card">
+                <div class="detail-header acqua">
+                    <div class="detail-icon">⛵</div>
+                    <div class="detail-title">Vela, Windsurf & Kitesurf</div>
+                    <div class="detail-zone">📍 Scuole certificate VDWS/IKO</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge medium">Da principianti</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-label">⛵ Scuole Vela</div>
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Compagnia della Vela</div>
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Lungomare D. Alighieri, Punta Sabbioni</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">⛵</span>
+                    <span class="contact-text">Derive, catamarani, barche a vela</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">👶</span>
+                    <span class="contact-text">Corsi Junior: tutte le età, vele da 1 mq</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🚢</span>
+                    <span class="contact-text">Corsi Altura: barche cabinate, navigazione costiera</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">📞</span>
+                    <span class="contact-text">041 5222593 (lun-ven 9-13 / 14-17:30)</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">📱</span>
+                    <span class="contact-text">339 4787488</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">📧</span>
+                    <span class="contact-text"><a href="/cdn-cgi/l/email-protection#304353455f5c51545946555c5170535f5d4046555c511e535f5d"><span class="__cf_email__" data-cfemail="cab9a9bfa5a6abaea3bcafa6ab8aa9a5a7babcafa6abe4a9a5a7">[email&#160;protected]</span></a></span>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Water Sport Center Venezia</div>
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Parco Turistico Cavallino</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🏅</span>
+                    <span class="contact-text">Certificazione VDWS</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">👶</span>
+                    <span class="contact-text">Corsi vela base 4-90 anni, catamarani</span>
+                </div>
+            </div>
+
+            <div class="section-label">🏄 Windsurf & Kitesurf</div>
+            <div class="price-table">
+                <div class="price-table-header">Prezzi indicativi</div>
+                <div class="price-row">
+                    <span class="price-item">Lezione windsurf (giornaliera)</span>
+                    <span class="price-value">Da €35</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Lezione 3 ore</span>
+                    <span class="price-value">€70-80</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Noleggio attrezzatura</span>
+                    <span class="price-value">Su richiesta</span>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">Union Lido Windsurf</div>
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Via Fausta 258</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🏅</span>
+                    <span class="contact-text">Certificazione VDWS</span>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">RideWithUs Kite School</div>
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Ca' Savio, Cavallino</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🏅</span>
+                    <span class="contact-text">Certificazione IKO/VDWS</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">🪁</span>
+                    <span class="contact-text">Kitesurf, wingsurf</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO PESCATURISMO ==================== -->
+        <div class="screen" id="screen-pescaturismo">
+            <div class="detail-card">
+                <div class="detail-header pesca">
+                    <div class="detail-icon">🎣</div>
+                    <div class="detail-title">Pesca & Pescaturismo</div>
+                    <div class="detail-zone">📍 Casa della Pesca - Lio Grando</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge duration">4-5 ore</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-label">🏠 Casa della Pesca - Ittiturismo</div>
+            <div class="contact-box">
+                <div class="contact-row">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-text">Lungomare San Felice 7, Lio Grando</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">👤</span>
+                    <span class="contact-text">Gestore: Lucia Vidotto</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">📞</span>
+                    <span class="contact-text">347 2384000 (anche WhatsApp)</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">🎣 Servizi offerti</div>
+                <div class="info-box-text">Ittiturismo (escursioni con pescatori), degustazione pesce km zero, eventi pubblici e privati, punto sbarco autorizzato (pesce fresco giornaliero), cucina interna, giardino con vista laguna.</div>
+            </div>
+
+            <div class="section-label">🦀 Specialità di stagione</div>
+            <div class="price-table">
+                <div class="price-table-header">Cosa pescare e gustare</div>
+                <div class="price-row">
+                    <span class="price-item">🌸 Primavera (mar-mag)</span>
+                    <span class="price-value">Castraùre, moeche</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">☀️ Estate (giu-set)</span>
+                    <span class="price-value">Pesce azzurro, orate, branzini</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">🍂 Autunno (ott-nov)</span>
+                    <span class="price-value">Masanete, anguille</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">❄️ Inverno (dic-feb)</span>
+                    <span class="price-value">Cefali, anguille</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">🚤 Come arrivare</div>
+                <div class="info-box-text">In barca via canali Burano/Lio Piccolo/Treporti oppure in auto fino a Lio Grando.</div>
+            </div>
+
+            <div class="section-label">📋 Licenza pesca sportiva</div>
+            <div class="info-box warning">
+                <div class="info-box-title">ℹ️ Informazioni</div>
+                <div class="info-box-text"><strong>Italiani:</strong> Licenza presso Provincia di residenza<br><strong>Minori &lt;18 e over 70 (Veneto):</strong> Gratuita<br><strong>Stranieri:</strong> Licenza D 3 mesi €13 (Regione Veneto)</div>
+            </div>
+        </div>
+
+        <!-- ==================== DETTAGLIO TRAGHETTO VENEZIA ==================== -->
+        <div class="screen" id="screen-traghetto-venezia">
+            <div class="detail-card">
+                <div class="detail-header acqua">
+                    <div class="detail-icon">⛴️</div>
+                    <div class="detail-title">Traghetto per Venezia</div>
+                    <div class="detail-zone">📍 Punta Sabbioni → San Marco</div>
+                    <div class="detail-badges">
+                        <span class="detail-badge">30 min</span>
+                        <span class="detail-badge price">€15 A/R</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-label">🚤 Linea Privata - Vivo Venetia</div>
+            <div class="price-table">
+                <div class="price-table-header">Orari Estate (Giugno-Settembre)</div>
+                <div class="price-row">
+                    <span class="price-item">Punta Sabbioni → Venezia</span>
+                    <span class="price-value">9:15, 10:00, 10:30, 11:15, 12:00, 12:45</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-item">Venezia → Punta Sabbioni</span>
+                    <span class="price-value">12:00, 12:45, 14:15, 15:30, 16:45, 18:00, 19:00</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">💡 Info utili</div>
+                <div class="info-box-text"><strong>Prezzo:</strong> €15 A/R per persona<br><strong>Durata:</strong> 30 minuti diretti<br><strong>Presentazione:</strong> 15 min prima al pontile<br><strong>Ritorno:</strong> Flessibile, senza prenotazione aggiuntiva</div>
+            </div>
+
+            <div class="section-label">🚌 Linea Pubblica ACTV</div>
+            <div class="contact-box">
+                <div class="contact-row">
+                    <span class="contact-icon">🚌</span>
+                    <span class="contact-text"><strong>Linea 14:</strong> Numerose partenze giornaliere</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-icon">⏱️</span>
+                    <span class="contact-text">Durata: ~40-50 minuti</span>
+                </div>
+            </div>
+        </div>
+        <!-- ==================== FILTRO RELAX ==================== -->
+        <div class="screen" id="screen-filtro-relax">
+            <!-- Tab navigazione -->
+            <div class="category-tabs">
+                <button class="category-tab movimento" onclick="guideChoice('movimento')">🚴‍♂️ Muoversi</button>
+                <button class="category-tab natura" onclick="guideChoice('natura')">🦅 Natura</button>
+                <button class="category-tab acqua" onclick="guideChoice('acqua')">🏄 Acqua</button>
+                <button class="category-tab relax active">👨‍👩‍👧 Relax</button>
+            </div>
+
+            <!-- Hero -->
+            <div class="hero-compact" style="background: linear-gradient(135deg, var(--purple), #7c3aed);">
+                <div class="hero-compact-title">Relax & Famiglia</div>
+                <div class="hero-compact-subtitle">Attività facili, gratuite, adatte a bambini</div>
+            </div>
+
+            <!-- Consigliati Swipe -->
+            <div class="swipe-section">
+                <div class="swipe-header">
+                    <div class="swipe-title">⭐ Consigliati per te</div>
+                    <div class="swipe-hint">← scorri →</div>
+                </div>
+                <div class="swipe-container">
+                    <div class="swipe-card" onclick="go('via-respiro')">
+                        <div class="swipe-card-header purple">
+                            <div class="swipe-card-icon">🚴</div>
+                            <div class="swipe-card-info">
+                                <div class="swipe-card-title">Via del Respiro</div>
+                                <div class="swipe-card-subtitle">Perfetta per famiglie</div>
+                            </div>
+                        </div>
+                        <div class="swipe-card-body">
+                            <div class="swipe-card-tags">
+                                <span class="swipe-card-tag easy">Facile</span>
+                                <span class="swipe-card-tag family">👨‍👩‍👧 Famiglie</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swipe-card" onclick="go('birdwatching')">
+                        <div class="swipe-card-header purple">
+                            <div class="swipe-card-icon">🦅</div>
+                            <div class="swipe-card-info">
+                                <div class="swipe-card-title">Birdwatching</div>
+                                <div class="swipe-card-subtitle">Adatto a bambini</div>
+                            </div>
+                        </div>
+                        <div class="swipe-card-body">
+                            <div class="swipe-card-tags">
+                                <span class="swipe-card-tag free">Gratuito</span>
+                                <span class="swipe-card-tag family">👨‍👩‍👧 Famiglie</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swipe-card" onclick="go('kayak-sup')">
+                        <div class="swipe-card-header purple">
+                            <div class="swipe-card-icon">🚣</div>
+                            <div class="swipe-card-info">
+                                <div class="swipe-card-title">Kayak & SUP</div>
+                                <div class="swipe-card-subtitle">Bambini 0-6 gratis</div>
+                            </div>
+                        </div>
+                        <div class="swipe-card-body">
+                            <div class="swipe-card-tags">
+                                <span class="swipe-card-tag easy">Facile</span>
+                                <span class="swipe-card-tag family">👨‍👩‍👧 Famiglie</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista completa -->
+            <div class="section-label">✓ Attività facili</div>
+            <div class="activity-card" onclick="go('via-respiro')">
+                <div class="activity-icon outdoor">🚴</div>
+                <div class="activity-content">
+                    <div class="activity-title">Via del Respiro</div>
+                    <div class="activity-subtitle">16,6 km asfaltato • Adatto a tutti</div>
+                    <div class="activity-meta"><span class="activity-tag easy">Facile</span><span class="activity-tag family">👨‍👩‍👧</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('sentiero-dune')">
+                <div class="activity-icon natura">🌿</div>
+                <div class="activity-content">
+                    <div class="activity-title">Sentiero delle Dune</div>
+                    <div class="activity-subtitle">3 km pianeggiante • Area protetta</div>
+                    <div class="activity-meta"><span class="activity-tag easy">Facile</span><span class="activity-tag free">Gratuito</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('tramonto')">
+                <div class="activity-icon natura">🌅</div>
+                <div class="activity-content">
+                    <div class="activity-title">Passeggiata del Tramonto</div>
+                    <div class="activity-subtitle">Via del Respiro • Panorama laguna</div>
+                    <div class="activity-meta"><span class="activity-tag easy">Facile</span><span class="activity-tag free">Gratuito</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+
+            <div class="section-label">🆓 Attività gratuite</div>
+            <div class="activity-card" onclick="go('birdwatching')">
+                <div class="activity-icon natura">🦅</div>
+                <div class="activity-content">
+                    <div class="activity-title">Birdwatching</div>
+                    <div class="activity-subtitle">50+ specie • Fenicotteri, aironi</div>
+                    <div class="activity-meta"><span class="activity-tag free">Gratuito</span><span class="activity-tag family">👨‍👩‍👧</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('oasi-casavio')">
+                <div class="activity-icon natura">🌿</div>
+                <div class="activity-content">
+                    <div class="activity-title">Oasi Ca' Savio</div>
+                    <div class="activity-subtitle">Passerelle accessibili • Capanni</div>
+                    <div class="activity-meta"><span class="activity-tag free">Gratuito</span><span class="activity-tag easy">Facile</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('faro')">
+                <div class="activity-icon eventi">🗼</div>
+                <div class="activity-content">
+                    <div class="activity-title">Faro di Punta Sabbioni</div>
+                    <div class="activity-subtitle">Panorama 360° • Accesso libero</div>
+                    <div class="activity-meta"><span class="activity-tag free">Gratuito</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+
+            <div class="section-label">👶 Ideali per bambini</div>
+            <div class="activity-card" onclick="go('cat-centro')">
+                <div class="activity-icon natura">🏛️</div>
+                <div class="activity-content">
+                    <div class="activity-title">C.A.T. Centro Ambientale</div>
+                    <div class="activity-subtitle">Laboratori didattici per bambini</div>
+                    <div class="activity-meta"><span class="activity-tag free">Gratuito</span><span class="activity-tag family">👨‍👩‍👧</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('kayak-sup')">
+                <div class="activity-icon acqua">🚣</div>
+                <div class="activity-content">
+                    <div class="activity-title">Kayak & SUP</div>
+                    <div class="activity-subtitle">Kayak anti-ribaltamento • 0-6 anni gratis</div>
+                    <div class="activity-meta"><span class="activity-tag easy">Facile</span><span class="activity-tag family">👨‍👩‍👧</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+            <div class="activity-card" onclick="go('sport-spiaggia')">
+                <div class="activity-icon outdoor">🏐</div>
+                <div class="activity-content">
+                    <div class="activity-title">Sport da Spiaggia</div>
+                    <div class="activity-subtitle">Beach volley gratuito • Tornei bambini</div>
+                    <div class="activity-meta"><span class="activity-tag easy">Tutti i livelli</span><span class="activity-tag family">👨‍👩‍👧</span></div>
+                </div>
+                <span class="activity-arrow">›</span>
+            </div>
+        </div>
+
+    </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-btn" onclick="go('main')"><span class="nav-btn-icon">🏠</span><span class="nav-btn-label">Home</span></button>
+        <button class="nav-btn active"><span class="nav-btn-icon">🎯</span><span class="nav-btn-label">Attività</span></button>
+        <button class="nav-btn"><span class="nav-btn-icon">🍽️</span><span class="nav-btn-label">Mangiare</span></button>
+        <button class="nav-btn"><span class="nav-btn-icon">🚌</span><span class="nav-btn-label">Muoversi</span></button>
+    </nav>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    const history = ['main'];
+    const screens = {
+        'main': { title: '🎯 Attività', subtitle: 'Sport, natura ed esperienze' },
+        'filtro-movimento': { title: '🚴‍♂️ Muoversi & Percorsi', subtitle: 'Bici, passeggiate, itinerari' },
+        'filtro-natura': { title: '🦅 Natura & Scoperta', subtitle: 'Laguna, dune, birdwatching' },
+        'filtro-acqua': { title: '🏄‍♂️ Acqua & Avventura', subtitle: 'SUP, kayak, vela' },
+        'filtro-relax': { title: '👨‍👩‍👧 Relax & Famiglia', subtitle: 'Facile, gratis, bambini' },
+        'via-respiro': { title: '🚴 Via del Respiro', subtitle: 'Ciclabile panoramica' },
+        'lio-piccolo': { title: '🏘️ Lio Piccolo', subtitle: 'Borgo lagunare' },
+        'sentiero-dune': { title: '🌿 Sentiero Dune', subtitle: 'Punta Sabbioni' },
+        'giro-forti': { title: '🏛️ Giro dei Forti', subtitle: 'Circuito storico' },
+        'noleggio-bici': { title: '🔑 Noleggio Bici', subtitle: '5 operatori' },
+        'cicloturismo-esperti': { title: '🚴 Cicloturismo Esperti', subtitle: '40-90 km' },
+        'sport-spiaggia': { title: '🏐 Sport Spiaggia', subtitle: 'Beach volley, tennis' },
+        'birdwatching': { title: '🦅 Birdwatching', subtitle: '50+ specie' },
+        'oasi-casavio': { title: '🌿 Oasi Ca Savio', subtitle: 'Dune fossili' },
+        'cat-centro': { title: '🏛️ C.A.T.', subtitle: 'Centro Ambientale' },
+        'tramonto': { title: '🌅 Tramonto', subtitle: 'Via del Respiro' },
+        'faro': { title: '🗼 Faro', subtitle: 'Punta Sabbioni' },
+        'kayak-sup': { title: '🚣 Kayak & SUP', subtitle: 'Tour laguna' },
+        'vela-windsurf': { title: '⛵ Vela & Windsurf', subtitle: 'Corsi certificati' },
+        'pescaturismo': { title: '🎣 Pescaturismo', subtitle: 'Casa della Pesca' },
+        'traghetto-venezia': { title: '⛴️ Traghetto Venezia', subtitle: 'Punta Sabbioni' }
+    };
+
+    function go(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        const screen = document.getElementById('screen-' + id);
+        if (screen) { screen.classList.add('active'); screen.scrollTop = 0; }
+        if (id !== history[history.length - 1]) history.push(id);
+        document.getElementById('headerTitle').textContent = screens[id]?.tit

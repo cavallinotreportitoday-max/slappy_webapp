@@ -1,0 +1,2491 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SLAPPY — Laguna</title>
+    <style>
+        :root {
+            /* Typography - SLAPPY UI CORE */
+            --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-title: 14px;
+            --font-body: 12px;
+            --font-meta: 11px;
+            --weight-title: 700;
+            --weight-body: 500;
+            --weight-meta: 400;
+
+            /* Spacing */
+            --padding-page: 16px;
+            --padding-card: 14px;
+            --gap-sections: 16px;
+            --gap-cards: 10px;
+            --gap-inner: 12px;
+
+            /* Radius */
+            --radius-card: 12px;
+            --radius-button: 12px;
+            --radius-icon: 10px;
+
+            /* Icons */
+            --icon-size: 40px;
+
+            /* Borders */
+            --border-default: 1px solid var(--gray-200);
+
+            /* Colors */
+            --teal: #0d9488;
+            --teal-dark: #0f766e;
+            --teal-50: #f0fdfa;
+            --teal-100: #ccfbf1;
+            --green: #22c55e;
+            --green-50: #f0fdf4;
+            --green-100: #dcfce7;
+            --orange: #f59e0b;
+            --orange-50: #fffbeb;
+            --orange-100: #fef3c7;
+            --orange-border: #fcd34d;
+            --blue: #3b82f6;
+            --gray-900: #111827;
+            --gray-700: #374151;
+            --gray-600: #4b5563;
+            --gray-500: #6b7280;
+            --gray-400: #9ca3af;
+            --gray-300: #d1d5db;
+            --gray-200: #e5e7eb;
+            --gray-100: #f3f4f6;
+            --gray-50: #f9fafb;
+            --white: #fff;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-system); background: var(--gray-100); min-height: 100vh; }
+        .app { width: 100%; max-width: 480px; margin: 0 auto; background: var(--white); min-height: 100vh; display: flex; flex-direction: column; }
+        @media (min-width: 481px) { body { display: flex; justify-content: center; } .app { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); } }
+        
+        /* Header */
+        .header { background: linear-gradient(135deg, var(--teal), var(--teal-dark)); color: var(--white); padding: var(--padding-card) var(--padding-page); display: flex; align-items: center; gap: var(--gap-inner); }
+        .header-back { width: var(--icon-size); height: var(--icon-size); display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.15); border-radius: 50%; cursor: pointer; border: 1px solid transparent; color: var(--white); font-size: 18px; text-decoration: none; }
+        .header-back:hover { border-color: rgba(255,255,255,0.4); }
+        .header-back.hidden { visibility: hidden; }
+        .header-title { font-size: var(--font-title); font-weight: var(--weight-title); }
+        
+        /* Screens */
+        .screens { flex: 1; overflow: hidden; position: relative; }
+        .screen { position: absolute; inset: 0; overflow-y: auto; padding: var(--padding-page); padding-bottom: 80px; background: var(--gray-50); opacity: 0; visibility: hidden; transition: opacity 0.2s; }
+        .screen.active { opacity: 1; visibility: visible; }
+        
+        /* Section Label */
+        .section-label { font-size: var(--font-meta); font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.6px; margin: 20px 0 8px; }
+        .section-label:first-child { margin-top: 0; }
+        
+        /* Icon backgrounds */
+        .icon-bg-teal { background: var(--teal-100); }
+        .icon-bg-green { background: var(--green-100); }
+        .icon-bg-orange { background: var(--orange-100); }
+        
+        /* Overview Card (panoramica) */
+        .overview-card { background: var(--teal-50); border: 1px solid var(--teal-100); border-radius: var(--radius-card); padding: var(--padding-card); margin-bottom: 8px; display: flex; align-items: center; gap: var(--gap-inner); }
+        .overview-icon { width: var(--icon-size); height: var(--icon-size); border-radius: var(--radius-icon); background: var(--teal-100); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .overview-content { flex: 1; }
+        .overview-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
+        .overview-text { font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-600); margin-top: 2px; }
+        
+        /* Tagline emotiva */
+        .tagline { font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-500); font-style: italic; text-align: center; padding: 0 8px 12px; line-height: 1.4; }
+        
+        /* WOW element */
+        .wow-box { background: linear-gradient(135deg, var(--teal-50), var(--green-50)); border: 1px solid var(--teal-100); border-radius: var(--radius-card); padding: var(--padding-card); margin: var(--gap-sections) 0; text-align: center; }
+        .wow-text { font-size: 13px; font-weight: 600; color: var(--teal-dark); line-height: 1.4; }
+        
+        /* Micro-invito */
+        .micro-invite { font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-400); text-align: center; padding: 8px 0 4px; }
+        
+        /* Primary Actions Grid (3 bottoni) - con sottotitolo */
+        .primary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-cards); margin-bottom: 4px; }
+        .primary-btn { background: var(--white); border: var(--border-default); border-radius: var(--radius-card); padding: 12px 8px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; text-align: center; }
+        .primary-btn:hover { border-color: var(--gray-300); }
+        .primary-btn-icon { width: var(--icon-size); height: var(--icon-size); border-radius: var(--radius-icon); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .primary-btn-label { font-size: var(--font-body); font-weight: 600; color: var(--gray-900); line-height: 1.2; }
+        .primary-btn-sub { font-size: 10px; font-weight: var(--weight-meta); color: var(--gray-500); line-height: 1.3; }
+        
+        /* Nav Card */
+        .nav-card { background: var(--white); border: var(--border-default); border-radius: var(--radius-card); padding: var(--padding-card); display: flex; align-items: center; gap: var(--gap-inner); cursor: pointer; margin-bottom: var(--gap-cards); }
+        .nav-card:hover { border-color: var(--gray-300); }
+        .nav-icon { width: var(--icon-size); height: var(--icon-size); border-radius: var(--radius-icon); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .nav-content { flex: 1; }
+        .nav-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
+        .nav-subtitle { font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-500); margin-top: 2px; }
+        .nav-arrow { color: var(--gray-300); font-size: 18px; }
+        
+        /* List Card */
+        .list-card { background: var(--white); border: var(--border-default); border-radius: var(--radius-card); overflow: hidden; margin-bottom: var(--gap-cards); }
+        .list-item { padding: var(--padding-card); display: flex; align-items: center; gap: var(--gap-inner); border-bottom: 1px solid var(--gray-100); cursor: pointer; }
+        .list-item:last-child { border-bottom: none; }
+        .list-item:hover { border-color: var(--gray-300); }
+        .list-icon { width: var(--icon-size); height: var(--icon-size); border-radius: var(--radius-icon); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .list-content { flex: 1; }
+        .list-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
+        .list-meta { font-size: var(--font-meta); font-weight: var(--weight-meta); color: var(--gray-500); margin-top: 2px; }
+        
+        /* Info Card (dentro sezioni) */
+        .info-card { background: var(--white); border: var(--border-default); border-radius: var(--radius-card); padding: var(--padding-card); margin-bottom: var(--gap-cards); display: flex; align-items: flex-start; gap: var(--gap-inner); }
+        .info-card.overview { background: var(--teal-50); border-color: var(--teal-100); }
+        .info-card-icon { width: var(--icon-size); height: var(--icon-size); border-radius: var(--radius-icon); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .info-card-content { flex: 1; }
+        .info-card-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); margin-bottom: 2px; }
+        .info-card-text { font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-600); line-height: 1.4; }
+        
+        /* Tip Box (1 solo per screen) */
+        .tip-box { background: var(--teal-50); border: 1px solid var(--teal-100); border-radius: var(--radius-card); padding: var(--padding-card); margin-top: var(--gap-sections); display: flex; align-items: flex-start; gap: var(--gap-cards); }
+        .tip-box.warning { background: var(--orange-50); border-color: var(--orange-border); }
+        .tip-box-icon { font-size: 16px; flex-shrink: 0; }
+        .tip-box-text { font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-700); line-height: 1.5; }
+        
+        /* Secondary Link */
+        .secondary-link { font-size: var(--font-body); font-weight: var(--weight-body); color: var(--teal); text-align: center; padding: 8px; cursor: pointer; margin-top: 4px; }
+        .secondary-link:hover { text-decoration: underline; }
+        
+        /* CTA Button */
+        .btn-cta { display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--blue); color: var(--white); padding: var(--padding-card); border-radius: var(--radius-button); font-size: var(--font-title); font-weight: 600; text-decoration: none; margin-top: var(--gap-sections); }
+        .btn-cta:hover { opacity: 0.9; }
+        
+        /* CTA Percorso (con sottotitolo) */
+        .btn-journey { display: flex; flex-direction: column; align-items: center; gap: 4px; background: var(--teal); color: var(--white); padding: 14px 16px; border-radius: var(--radius-button); text-decoration: none; margin-top: var(--gap-sections); }
+        .btn-journey:hover { opacity: 0.9; }
+        .btn-journey-title { font-size: var(--font-title); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .btn-journey-sub { font-size: var(--font-meta); font-weight: var(--weight-meta); opacity: 0.85; }
+        
+        /* WOW inline */
+        .wow-inline { font-size: var(--font-body); font-weight: var(--weight-body); color: var(--teal-dark); text-align: center; padding: 8px 0; font-style: italic; }
+        
+        /* Percorso List (tappe numerate) */
+        .percorso-list { background: var(--white); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-card); }
+        .percorso-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; position: relative; cursor: pointer; }
+        .percorso-item:not(:last-child) { border-bottom: 1px solid var(--gray-100); }
+        .percorso-item:not(:last-child)::after { content: ''; position: absolute; left: 30px; bottom: -8px; width: 2px; height: 16px; background: var(--teal); z-index: 1; }
+        .percorso-marker { width: 28px; height: 28px; background: linear-gradient(135deg, var(--teal), #10b981); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 700; font-size: 13px; flex-shrink: 0; }
+        .percorso-content { flex: 1; }
+        .percorso-title { font-size: var(--font-body); font-weight: 600; color: var(--gray-900); }
+        .percorso-meta { font-size: var(--font-meta); color: var(--gray-500); margin-top: 1px; }
+        .percorso-icon { font-size: 18px; }
+        
+        /* Inner Tabs (tab doppio interno) */
+        .inner-tabs { display: flex; background: var(--gray-100); border-radius: 12px; padding: 4px; margin: 16px 0; }
+        .inner-tab { flex: 1; padding: 10px 12px; text-align: center; font-size: 13px; font-weight: 600; color: var(--gray-500); border-radius: 10px; cursor: pointer; transition: all 0.2s; }
+        .inner-tab.active { background: var(--white); color: var(--teal); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .inner-content { display: none; }
+        .inner-content.active { display: block; }
+        
+        /* Prose (testo narrativo) */
+        .prose { background: var(--white); border-radius: var(--radius-card); padding: 16px; box-shadow: var(--shadow-card); margin-bottom: var(--gap-cards); }
+        .prose p { font-size: var(--font-body); color: var(--gray-600); line-height: 1.7; margin-bottom: 12px; }
+        .prose p:last-child { margin-bottom: 0; }
+        
+        /* Info List (schede dettagliate) */
+        .info-list { background: var(--white); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-card); margin-bottom: var(--gap-cards); }
+        .info-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px; }
+        .info-item:not(:last-child) { border-bottom: 1px solid var(--gray-100); }
+        .info-icon { width: 36px; height: 36px; background: var(--teal-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+        .info-content { flex: 1; }
+        .info-title { font-size: var(--font-body); font-weight: 600; color: var(--gray-900); }
+        .info-text { font-size: var(--font-meta); color: var(--gray-500); margin-top: 3px; line-height: 1.5; }
+        
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: var(--white); border-top: var(--border-default); display: grid; grid-template-columns: repeat(5, 1fr); padding: 8px 0; padding-bottom: max(8px, env(safe-area-inset-bottom)); z-index: 100; }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; background: none; border: none; cursor: pointer; color: var(--gray-400); padding: 4px; }
+        .nav-btn.active { color: var(--teal); }
+        .nav-btn-icon { font-size: 20px; }
+        .nav-btn-label { font-size: 10px; font-weight: 600; }
+        
+        /* Accordion per "Altri" */
+        .accordion { margin-top: var(--gap-cards); }
+        .accordion-header { background: var(--gray-100); border: var(--border-default); border-radius: var(--radius-card); padding: var(--padding-card); display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: var(--font-body); font-weight: 600; color: var(--gray-600); }
+        .accordion-header:hover { border-color: var(--gray-300); }
+        .accordion-content { display: none; margin-top: var(--gap-cards); }
+        .accordion.open .accordion-content { display: block; }
+        .accordion.open .accordion-arrow { transform: rotate(180deg); }
+        
+        /* Tab Bar (scroll orizzontale) */
+        .tab-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            margin-bottom: var(--gap-sections);
+            padding: 2px 0;
+        }
+        .tab-bar::-webkit-scrollbar { display: none; }
+        .tab-item {
+            flex-shrink: 0;
+            padding: 8px 14px;
+            background: var(--white);
+            border: var(--border-default);
+            border-radius: 999px;
+            font-size: var(--font-body);
+            font-weight: var(--weight-body);
+            color: var(--gray-600);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .tab-item:hover { border-color: var(--gray-300); }
+        .tab-item.active {
+            background: var(--teal-50);
+            border-color: var(--teal);
+            color: var(--teal-dark);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <header class="header">
+        <a href="slappy_home.html" class="header-back">←</a>
+        <div class="header-title" id="headerTitle">Laguna</div>
+    </header>
+    <div class="screens">
+        
+        <!-- ===== HOME LAGUNA ===== -->
+        <div class="screen active" id="screen-main">
+            <!-- Panoramica + Tagline emotiva -->
+            <div class="overview-card">
+                <div class="overview-icon">🌊</div>
+                <div class="overview-content">
+                    <div class="overview-title">Laguna Nord di Venezia</div>
+                    <div class="overview-text">UNESCO · 550 km² · 300+ specie uccelli</div>
+                </div>
+            </div>
+            <div class="tagline">"Qui il tempo va più piano. Strade d'acqua, silenzio, orizzonti larghi."</div>
+            
+            <!-- 3 Scelte Primarie con sottotitoli evocativi -->
+            <div class="primary-grid">
+                <div class="primary-btn" onclick="go('percorsi')">
+                    <div class="primary-btn-icon icon-bg-teal">🚴</div>
+                    <div class="primary-btn-label">Percorsi</div>
+                    <div class="primary-btn-sub">Vento in faccia, barche lente</div>
+                </div>
+                <div class="primary-btn" onclick="go('borghi')">
+                    <div class="primary-btn-icon icon-bg-teal">🏘️</div>
+                    <div class="primary-btn-label">Borghi</div>
+                    <div class="primary-btn-sub">Posti veri, non cartoline</div>
+                </div>
+                <div class="primary-btn" onclick="go('natura')">
+                    <div class="primary-btn-icon icon-bg-green">🦩</div>
+                    <div class="primary-btn-label">Natura</div>
+                    <div class="primary-btn-sub">Fenicotteri, luce che cambia</div>
+                </div>
+            </div>
+            <div class="micro-invite">Scegline una e perditi un po'.</div>
+            
+            <!-- WOW element -->
+            <div class="wow-box">
+                <div class="wow-text">🦩 Qui vivono più fenicotteri che abitanti.</div>
+            </div>
+            
+            <!-- Da non perdere (max 3) -->
+            <div class="section-label">Da non perdere</div>
+            <div class="list-card">
+                <div class="list-item" onclick="go('via-respiro')">
+                    <div class="list-icon icon-bg-teal">🌊</div>
+                    <div class="list-content">
+                        <div class="list-title">Via del Respiro</div>
+                        <div class="list-meta">Pedali sospeso sull'acqua, 8.5 km</div>
+                    </div>
+                </div>
+                <div class="list-item" onclick="go('lio-piccolo')">
+                    <div class="list-icon icon-bg-teal">🏛️</div>
+                    <div class="list-content">
+                        <div class="list-title">Lio Piccolo</div>
+                        <div class="list-meta">20 anime, un campanile, il silenzio</div>
+                    </div>
+                </div>
+                <div class="list-item" onclick="go('fenicotteri')">
+                    <div class="list-icon icon-bg-green">🦩</div>
+                    <div class="list-content">
+                        <div class="list-title">Fenicotteri rosa</div>
+                        <div class="list-meta">All'alba, quando tutto è rosa</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Approfondimenti (secondari) -->
+            <div class="section-label">Approfondimenti</div>
+            <div class="nav-card" onclick="go('gastronomia')">
+                <div class="nav-icon icon-bg-orange">🦀</div>
+                <div class="nav-content">
+                    <div class="nav-title">Gastronomia lagunare</div>
+                    <div class="nav-subtitle">Moeche, Gò, sapori che non trovi altrove</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            <div class="nav-card" onclick="go('valli')">
+                <div class="nav-icon icon-bg-teal">🐟</div>
+                <div class="nav-content">
+                    <div class="nav-title">Valli da pesca</div>
+                    <div class="nav-subtitle">Dove il pesce nuota libero fino al piatto</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            
+            <!-- 1 solo tip - più evocativo -->
+            <div class="tip-box">
+                <span class="tip-box-icon">🍂</span>
+                <div class="tip-box-text">A settembre le barene diventano rosse. Succede solo qui, in tutto il pianeta.</div>
+            </div>
+        </div>
+        
+        <!-- ===== NATURA (nuovo - raggruppa Fauna + Flora) ===== -->
+        <div class="screen" id="screen-natura">
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-green">🌿</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Natura della Laguna</div>
+                    <div class="info-card-text">Un equilibrio raro e silenzioso</div>
+                </div>
+            </div>
+            <div class="wow-inline">Sale e acqua dolce, terra e laguna. Millenni di evoluzione in equilibrio precario.</div>
+            
+            <div class="section-label">Esplora</div>
+            <div class="nav-card" onclick="go('fauna')">
+                <div class="nav-icon icon-bg-green">🦩</div>
+                <div class="nav-content">
+                    <div class="nav-title">Fauna</div>
+                    <div class="nav-subtitle">Presenze discrete, incontri inattesi</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            <div class="nav-card" onclick="go('flora')">
+                <div class="nav-icon icon-bg-green">🌿</div>
+                <div class="nav-content">
+                    <div class="nav-title">Flora</div>
+                    <div class="nav-subtitle">Vegetazione nata per resistere</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            
+            <div class="section-label">Da non perdere</div>
+            <div class="list-card">
+                <div class="list-item" onclick="go('fenicotteri')">
+                    <div class="list-icon icon-bg-green">🦩</div>
+                    <div class="list-content">
+                        <div class="list-title">Fenicotteri rosa</div>
+                        <div class="list-meta">Non servono safari. Sono qui.</div>
+                    </div>
+                </div>
+                <div class="list-item" onclick="go('salicornia')">
+                    <div class="list-icon icon-bg-green">🌱</div>
+                    <div class="list-content">
+                        <div class="list-title">Salicornia veneta</div>
+                        <div class="list-meta">La pianta che vive dentro il sale</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <span class="tip-box-icon">📸</span>
+                <div class="tip-box-text">Settembre: barene rosso fuoco + fenicotteri rosa. Una palette che esiste solo qui.</div>
+            </div>
+        </div>
+        
+        <!-- ===== BORGHI ===== -->
+        <div class="screen" id="screen-borghi">
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-teal">🏘️</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Borghi storici</div>
+                    <div class="info-card-text">4 borghi lagunari fuori dal tempo</div>
+                </div>
+            </div>
+            <div class="wow-inline">Piccoli paesi, grande distanza dal mondo.</div>
+            
+            <div class="section-label">I borghi</div>
+            <div class="nav-card" onclick="go('lio-piccolo')">
+                <div class="nav-icon icon-bg-teal">🌅</div>
+                <div class="nav-content">
+                    <div class="nav-title">Lio Piccolo</div>
+                    <div class="nav-subtitle">20 anime, un campanile, il silenzio</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            <div class="nav-card" onclick="go('treporti')">
+                <div class="nav-icon icon-bg-teal">⛪</div>
+                <div class="nav-content">
+                    <div class="nav-title">Treporti</div>
+                    <div class="nav-subtitle">Qui la vita scorre al ritmo delle maree</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            <div class="nav-card" onclick="go('saccagnana')">
+                <div class="nav-icon icon-bg-teal">🏠</div>
+                <div class="nav-content">
+                    <div class="nav-title">Saccagnana</div>
+                    <div class="nav-subtitle">Case isolate, acqua intorno</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            <div class="nav-card" onclick="go('mesole')">
+                <div class="nav-icon icon-bg-teal">🦅</div>
+                <div class="nav-content">
+                    <div class="nav-title">Mesole</div>
+                    <div class="nav-subtitle">Dove la laguna entra nel borgo</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            
+            <a href="https://www.google.com/maps/dir/Saccagnana,+Cavallino-Treporti/Lio+Piccolo/Mesole,+Cavallino-Treporti/Treporti" target="_blank" class="btn-journey">
+                <span class="btn-journey-title">🚴 Tour dei borghi</span>
+                <span class="btn-journey-sub">15 km · 2-3 ore · in bici</span>
+            </a>
+            
+            <div class="tip-box warning">
+                <span class="tip-box-icon">⚠️</span>
+                <div class="tip-box-text">ZTRU: festivi 7-18:30 accesso limitato. Parti da Saccagnana e prosegui in bici.</div>
+            </div>
+        </div>
+        
+        <!-- ===== PERCORSI ===== -->
+        <div class="screen" id="screen-percorsi">
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-teal">🚴</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Percorsi</div>
+                    <div class="info-card-text">Itinerari lenti tra acqua e orizzonte</div>
+                </div>
+            </div>
+            <div class="wow-inline">Non sono spostamenti. Sono meditazioni sul territorio.</div>
+            
+            <div class="section-label">I percorsi</div>
+            <div class="nav-card" onclick="go('via-respiro')">
+                <div class="nav-icon icon-bg-teal">🌊</div>
+                <div class="nav-content">
+                    <div class="nav-title">Via del Respiro</div>
+                    <div class="nav-subtitle">8.5 km sospesi sull'acqua</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            <div class="nav-card" onclick="go('percorso-borghi')">
+                <div class="nav-icon icon-bg-teal">🏘️</div>
+                <div class="nav-content">
+                    <div class="nav-title">Tour dei Borghi</div>
+                    <div class="nav-subtitle">15 km tra paesi che il tempo ha dimenticato</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            <div class="nav-card" onclick="go('percorso-faro')">
+                <div class="nav-icon icon-bg-teal">🗼</div>
+                <div class="nav-content">
+                    <div class="nav-title">Al Faro</div>
+                    <div class="nav-subtitle">Verso l'acqua, senza deviazioni</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            <div class="nav-card" onclick="go('percorso-principale')">
+                <div class="nav-icon icon-bg-teal">🚴</div>
+                <div class="nav-content">
+                    <div class="nav-title">Dorsale Cavallino</div>
+                    <div class="nav-subtitle">Tra mare aperto e laguna, acqua da entrambi i lati</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            <div class="nav-card" onclick="go('percorso-casson')">
+                <div class="nav-icon icon-bg-teal">🦅</div>
+                <div class="nav-content">
+                    <div class="nav-title">Ca' Savio - Casòn</div>
+                    <div class="nav-subtitle">Un percorso che accompagna, adatto a tutti</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            
+            <div class="tip-box">
+                <span class="tip-box-icon">🌅</span>
+                <div class="tip-box-text">Primavera e autunno: i colori migliori. Tramonto: la luce che trasforma tutto.</div>
+            </div>
+        </div>
+        
+        <!-- ===== LIO PICCOLO (dettaglio) ===== -->
+        <div class="screen" id="screen-lio-piccolo">
+            <!-- Tab bar Highlights -->
+            <div class="tab-bar" data-group="highlights">
+                <div class="tab-item" onclick="switchTab('via-respiro', 'highlights')">🌊 Via del Respiro</div>
+                <div class="tab-item active" onclick="switchTab('lio-piccolo', 'highlights')">🏛️ Lio Piccolo</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-teal">🌅</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Lio Piccolo</div>
+                    <div class="info-card-text">Borgo UNESCO con 20 abitanti permanenti</div>
+                </div>
+            </div>
+            <div class="wow-inline">Qui vivono meno persone che fenicotteri.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="percorso" onclick="switchInnerTab('lio-piccolo', 'percorso')">🚶 Percorso</div>
+                <div class="inner-tab" data-tab="storia" onclick="switchInnerTab('lio-piccolo', 'storia')">📜 Storia</div>
+            </div>
+            
+            <!-- Tab: Percorso -->
+            <div class="inner-content active" id="lio-piccolo-percorso">
+                <div class="section-label">Le 3 tappe</div>
+                <div class="percorso-list">
+                    <div class="percorso-item" onclick="window.open('https://maps.google.com/?q=Chiesa+Santa+Maria+Lio+Piccolo', '_blank')">
+                        <div class="percorso-marker">1</div>
+                        <div class="percorso-content">
+                            <div class="percorso-title">Chiesa Santa Maria</div>
+                            <div class="percorso-meta">Il cuore silenzioso del borgo</div>
+                        </div>
+                        <span class="percorso-icon">⛪</span>
+                    </div>
+                    <div class="percorso-item" onclick="window.open('https://maps.google.com/?q=Palazzo+Boldu+Lio+Piccolo', '_blank')">
+                        <div class="percorso-marker">2</div>
+                        <div class="percorso-content">
+                            <div class="percorso-title">Palazzo Boldù</div>
+                            <div class="percorso-meta">Una Venezia lontana da Venezia</div>
+                        </div>
+                        <span class="percorso-icon">🏛️</span>
+                    </div>
+                    <div class="percorso-item" onclick="window.open('https://maps.google.com/?q=Valle+Olivara+Cavallino+Treporti', '_blank')">
+                        <div class="percorso-marker">3</div>
+                        <div class="percorso-content">
+                            <div class="percorso-title">Sentiero Valle Olivara</div>
+                            <div class="percorso-meta">Qui i fenicotteri arrivano all'alba</div>
+                        </div>
+                        <span class="percorso-icon">🦩</span>
+                    </div>
+                </div>
+                
+                <a href="https://www.google.com/maps/dir/Chiesa+Santa+Maria+Elisabetta,+Lio+Piccolo/Palazzo+Boldù,+Lio+Piccolo/Valle+Olivara,+Cavallino-Treporti" target="_blank" class="btn-journey">
+                    <span class="btn-journey-title">🗺️ Segui il percorso consigliato</span>
+                    <span class="btn-journey-sub">3 tappe · 30-45 min · a piedi o bici</span>
+                </a>
+                
+                <div class="tip-box warning">
+                    <span class="tip-box-icon">⚠️</span>
+                    <div class="tip-box-text">ZTRU: festivi/prefestivi 7-18:30 accesso limitato. Parcheggia a Saccagnana.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Storia -->
+            <div class="inner-content" id="lio-piccolo-storia">
+                <div class="section-label">La storia</div>
+                <div class="prose">
+                    <p>Lio Piccolo è il borgo più antico della penisola, sorto su una delle poche isole stabili della laguna nord. Il nome deriva da "Lido" — la lingua di terra che separava la laguna dal mare aperto.</p>
+                    <p>Nel XIV secolo era un centro fiorente con centinaia di abitanti. Oggi ne restano venti. Ma il campanile del XII secolo è ancora lì, e suona ancora.</p>
+                    <p>È uno dei siti UNESCO della Laguna di Venezia: un equilibrio tra uomo e acqua che dura da mille anni.</p>
+                </div>
+                
+                <div class="section-label">Da sapere</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">⛪</div>
+                        <div class="info-content">
+                            <div class="info-title">Chiesa Santa Maria</div>
+                            <div class="info-text">Campanile romanico del XII secolo. Una delle strutture più antiche della laguna, ancora in funzione.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🏛️</div>
+                        <div class="info-content">
+                            <div class="info-title">Palazzo Boldù</div>
+                            <div class="info-text">Residenza nobiliare veneziana del XVII secolo. Testimonia l'importanza che il borgo aveva per la Serenissima.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🦩</div>
+                        <div class="info-content">
+                            <div class="info-title">Valle Olivara</div>
+                            <div class="info-text">Valle da pesca tradizionale. Oggi rifugio per fenicotteri rosa che arrivano da aprile a settembre.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">💡</span>
+                    <div class="tip-box-text">Vieni all'alba o al tramonto. È quando il borgo rivela la sua vera natura.</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ===== VIA DEL RESPIRO (dettaglio) ===== -->
+        <div class="screen" id="screen-via-respiro">
+            <!-- Tab bar Highlights -->
+            <div class="tab-bar" data-group="highlights">
+                <div class="tab-item active" onclick="switchTab('via-respiro', 'highlights')">🌊 Via del Respiro</div>
+                <div class="tab-item" onclick="switchTab('lio-piccolo', 'highlights')">🏛️ Lio Piccolo</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-teal">🌊</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Via del Respiro</div>
+                    <div class="info-card-text">Pista ciclabile a sbalzo più lunga d'Europa</div>
+                </div>
+            </div>
+            <div class="wow-inline">Pedali sospeso sull'acqua. Sotto di te, solo laguna.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="percorso" onclick="switchInnerTab('via-respiro', 'percorso')">🚴 Percorso</div>
+                <div class="inner-tab" data-tab="info" onclick="switchInnerTab('via-respiro', 'info')">ℹ️ Info</div>
+            </div>
+            
+            <!-- Tab: Percorso -->
+            <div class="inner-content active" id="via-respiro-percorso">
+                <div class="section-label">L'esperienza</div>
+                <div class="list-card">
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-teal">📏</div>
+                        <div class="list-content">
+                            <div class="list-title">8.5 km di silenzio</div>
+                            <div class="list-meta">Da Lio Piccolo a Treporti, senza auto</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-teal">⏱️</div>
+                        <div class="list-content">
+                            <div class="list-title">40-60 minuti</div>
+                            <div class="list-meta">Ma nessuno ha fretta qui</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">🌅</div>
+                        <div class="list-content">
+                            <div class="list-title">Al tramonto</div>
+                            <div class="list-meta">LED per rientrare anche col buio</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://maps.google.com/?q=Via+del+Respiro+Cavallino+Treporti" target="_blank" class="btn-journey">
+                    <span class="btn-journey-title">🚴 Inizia il percorso</span>
+                    <span class="btn-journey-sub">Partenza consigliata: Saccagnana</span>
+                </a>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🦩</span>
+                    <div class="tip-box-text">A metà strada, fermati. Guarda verso la laguna. Spesso ci sono i fenicotteri.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Info -->
+            <div class="inner-content" id="via-respiro-info">
+                <div class="section-label">L'opera</div>
+                <div class="prose">
+                    <p>La Via del Respiro è un'infrastruttura unica in Europa: una pista ciclabile costruita su palafitte di legno che attraversa la laguna nord di Venezia.</p>
+                    <p>Inaugurata nel 2020, collega Saccagnana a Lio Piccolo seguendo il tracciato di un'antica via di comunicazione lagunare usata per secoli dai pescatori.</p>
+                </div>
+                
+                <div class="section-label">Consigli pratici</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">🚲</div>
+                        <div class="info-content">
+                            <div class="info-title">Noleggio bici</div>
+                            <div class="info-text">Disponibile a Saccagnana, Treporti e nei camping. Anche e-bike.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">💡</div>
+                        <div class="info-content">
+                            <div class="info-title">Illuminazione LED</div>
+                            <div class="info-text">Attiva dal tramonto. Puoi pedalare in sicurezza anche di sera.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🏔️</div>
+                        <div class="info-content">
+                            <div class="info-title">Vista Dolomiti</div>
+                            <div class="info-text">Nelle giornate limpide, le montagne sono visibili a 100 km di distanza.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🌅</span>
+                    <div class="tip-box-text">Il momento perfetto: un'ora prima del tramonto. Arrivi a Lio Piccolo con la luce dorata.</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ===== FENICOTTERI (dettaglio) ===== -->
+        <div class="screen" id="screen-fenicotteri">
+            <!-- Tab bar Fauna -->
+            <div class="tab-bar" data-group="fauna">
+                <div class="tab-item active" onclick="switchTab('fenicotteri', 'fauna')">🦩 Fenicotteri</div>
+                <div class="tab-item" onclick="switchTab('aironi', 'fauna')">🦅 Aironi</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-green">🦩</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Fenicotteri rosa</div>
+                    <div class="info-card-text">200-500 esemplari · Aprile-Settembre</div>
+                </div>
+            </div>
+            <div class="wow-inline">Non servono safari. Sono qui, a 10 minuti dalla spiaggia.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="dove" onclick="switchInnerTab('fenicotteri', 'dove')">📍 Dove e quando</div>
+                <div class="inner-tab" data-tab="bio" onclick="switchInnerTab('fenicotteri', 'bio')">🔬 Biologia</div>
+            </div>
+            
+            <!-- Tab: Dove e quando -->
+            <div class="inner-content active" id="fenicotteri-dove">
+                <div class="section-label">Dove trovarli</div>
+                <div class="list-card">
+                    <div class="list-item" onclick="window.open('https://maps.google.com/?q=Valle+Olivara+Cavallino+Treporti', '_blank')">
+                        <div class="list-icon icon-bg-green">📍</div>
+                        <div class="list-content">
+                            <div class="list-title">Sentiero Valle Olivara</div>
+                            <div class="list-meta">Il punto migliore. Capanni per osservarli da vicino.</div>
+                        </div>
+                    </div>
+                    <div class="list-item" onclick="go('via-respiro')">
+                        <div class="list-icon icon-bg-green">📍</div>
+                        <div class="list-content">
+                            <div class="list-title">Via del Respiro</div>
+                            <div class="list-meta">Li vedi pedalando, senza scendere dalla bici.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section-label">Quando andare</div>
+                <div class="list-card">
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">🌅</div>
+                        <div class="list-content">
+                            <div class="list-title">All'alba, 06:00-08:00</div>
+                            <div class="list-meta">Luce dorata. Sono più attivi. Pochi turisti.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">🌇</div>
+                        <div class="list-content">
+                            <div class="list-title">Al tramonto, 18:00-20:30</div>
+                            <div class="list-meta">Il cielo diventa rosa come loro.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://maps.google.com/?q=Valle+Olivara+Cavallino+Treporti" target="_blank" class="btn-journey">
+                    <span class="btn-journey-title">🦩 Vai al punto di osservazione</span>
+                    <span class="btn-journey-sub">Valle Olivara · 5 min da Lio Piccolo</span>
+                </a>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🤫</span>
+                    <div class="tip-box-text">Silenzio assoluto. Movimenti lenti. Binocolo. E tanta pazienza.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Biologia -->
+            <div class="inner-content" id="fenicotteri-bio">
+                <div class="section-label">La specie</div>
+                <div class="prose">
+                    <p>Il fenicottero rosa (Phoenicopterus roseus) ha colonizzato la laguna veneta negli ultimi decenni. Una volta assente, oggi è una presenza stabile da aprile a settembre.</p>
+                    <p>Il colore rosa deriva dai carotenoidi presenti nelle alghe e nei crostacei di cui si nutrono. Più mangiano, più diventano rosa.</p>
+                </div>
+                
+                <div class="section-label">Caratteristiche</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">📏</div>
+                        <div class="info-content">
+                            <div class="info-title">Dimensioni</div>
+                            <div class="info-text">80-90 cm di altezza, apertura alare fino a 150 cm.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🦐</div>
+                        <div class="info-content">
+                            <div class="info-title">Alimentazione</div>
+                            <div class="info-text">Filtrano l'acqua con il becco: alghe, crostacei, diatomee.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">👥</div>
+                        <div class="info-content">
+                            <div class="info-title">Socialità</div>
+                            <div class="info-text">Vivono in colonie. Qui se ne vedono 200-500 insieme.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section-label">Stagionalità</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">🌸</div>
+                        <div class="info-content">
+                            <div class="info-title">Aprile-Maggio</div>
+                            <div class="info-text">Picco migratorio. Centinaia di esemplari. Probabilità massima.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🍂</div>
+                        <div class="info-content">
+                            <div class="info-title">Settembre-Novembre</div>
+                            <div class="info-text">Secondo picco. Concentrazioni significative prima dell'inverno.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">📸</span>
+                    <div class="tip-box-text">Binocolo 8x42 consigliato. Mantieniti a 100 metri di distanza.</div>
+                </div>
+            </div>
+        </div>
+        <div class="screen" id="screen-fauna">
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-green">🦩</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Fauna</div>
+                    <div class="info-card-text">Presenze discrete, incontri inattesi</div>
+                </div>
+            </div>
+            <div class="wow-inline">La fauna non si mostra facilmente. Richiede pazienza, silenzio, disponibilità a essere sorpresi.</div>
+            
+            <div class="section-label">Gli abitanti della laguna</div>
+            <div class="nav-card" onclick="go('fenicotteri')">
+                <div class="nav-icon icon-bg-green">🦩</div>
+                <div class="nav-content">
+                    <div class="nav-title">Fenicotteri rosa</div>
+                    <div class="nav-subtitle">Presenze rosa nella laguna</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            <div class="nav-card" onclick="go('aironi')">
+                <div class="nav-icon icon-bg-green">🦅</div>
+                <div class="nav-content">
+                    <div class="nav-title">Aironi</div>
+                    <div class="nav-subtitle">I filosofi della laguna</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            
+            <div class="tip-box">
+                <span class="tip-box-icon">🌅</span>
+                <div class="tip-box-text">Alba 06-08, tramonto 18-20. Emergono dagli spazi marginali quando la luce cambia.</div>
+            </div>
+        </div>
+        
+        <!-- ===== FLORA ===== -->
+        <div class="screen" id="screen-flora">
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-green">🌿</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Flora</div>
+                    <div class="info-card-text">Vegetazione nata per resistere</div>
+                </div>
+            </div>
+            <div class="wow-inline">Queste piante non sono delicate. Sono temprate da millenni in un ambiente ostile.</div>
+            
+            <div class="section-label">Le piante della laguna</div>
+            <div class="nav-card" onclick="go('salicornia')">
+                <div class="nav-icon icon-bg-green">🌱</div>
+                <div class="nav-content">
+                    <div class="nav-title">Salicornia veneta</div>
+                    <div class="nav-subtitle">Vita che cresce nel sale</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            <div class="nav-card" onclick="go('spartina')">
+                <div class="nav-icon icon-bg-green">🌾</div>
+                <div class="nav-content">
+                    <div class="nav-title">Spartina</div>
+                    <div class="nav-subtitle">L'erba che sostiene la laguna</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            <div class="nav-card" onclick="go('limonio')">
+                <div class="nav-icon icon-bg-green">💜</div>
+                <div class="nav-content">
+                    <div class="nav-title">Limonio</div>
+                    <div class="nav-subtitle">Fioriture leggere, condizioni estreme</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            
+            <div class="tip-box">
+                <span class="tip-box-icon">📸</span>
+                <div class="tip-box-text">Metà settembre: Limonio viola + Salicornia rossa. Una tavolozza che non trovi altrove.</div>
+            </div>
+        </div>
+        
+        <!-- ===== GASTRONOMIA ===== -->
+        <div class="screen" id="screen-gastronomia">
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-orange">🦀</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Gastronomia lagunare</div>
+                    <div class="info-card-text">Sapori legati a stagioni e maree</div>
+                </div>
+            </div>
+            <div class="wow-inline">Non è raffinatezza elaborata. È purezza: il sapore della laguna distillato in piatti semplici.</div>
+            
+            <div class="section-label">Le specialità</div>
+            <div class="nav-card" onclick="go('moeche')">
+                <div class="nav-icon icon-bg-orange">🦀</div>
+                <div class="nav-content">
+                    <div class="nav-title">Moeche</div>
+                    <div class="nav-subtitle">Rarità stagionale della laguna</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            <div class="nav-card" onclick="go('go-ghiozzo')">
+                <div class="nav-icon icon-bg-orange">🐟</div>
+                <div class="nav-content">
+                    <div class="nav-title">Gò</div>
+                    <div class="nav-subtitle">Il pesce della gente</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            <div class="nav-card" onclick="go('valli')">
+                <div class="nav-icon icon-bg-teal">🌊</div>
+                <div class="nav-content">
+                    <div class="nav-title">Valli da pesca</div>
+                    <div class="nav-subtitle">Dove il pesce nuota libero fino al piatto</div>
+                </div>
+                <span class="nav-arrow">→</span>
+            </div>
+            
+            <div class="tip-box">
+                <span class="tip-box-icon">🍽️</span>
+                <div class="tip-box-text">Chiedi "pesce di valle" o "pesce lagunare". Km zero. Ogni piatto racconta una stagione.</div>
+            </div>
+        </div>
+        
+        <!-- ===== VALLI DA PESCA ===== -->
+        <div class="screen" id="screen-valli">
+            <!-- Tab bar Gastronomia -->
+            <div class="tab-bar" data-group="gastronomia">
+                <div class="tab-item" onclick="switchTab('moeche', 'gastronomia')">🦀 Moeche</div>
+                <div class="tab-item" onclick="switchTab('go-ghiozzo', 'gastronomia')">🐟 Gò</div>
+                <div class="tab-item active" onclick="switchTab('valli', 'gastronomia')">🌊 Valli</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-teal">🌊</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Valli da pesca</div>
+                    <div class="info-card-text">Specchi d'acqua e confini invisibili</div>
+                </div>
+            </div>
+            <div class="wow-inline">Ecosistemi artificiali diventati natura. Secoli di sapienza in equilibrio con l'acqua.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="info" onclick="switchInnerTab('valli', 'info')">🌊 Il sistema</div>
+                <div class="inner-tab" data-tab="pesce" onclick="switchInnerTab('valli', 'pesce')">🐟 Il pesce</div>
+            </div>
+            
+            <!-- Tab: Info -->
+            <div class="inner-content active" id="valli-info">
+                <div class="section-label">Il sistema</div>
+                <div class="list-card">
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-teal">🌊</div>
+                        <div class="list-content">
+                            <div class="list-title">Bacini controllati</div>
+                            <div class="list-meta">Argini bassi, chiuse regolabili. Acqua salmastra, profondità 0.5-1.5 m.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-teal">🐟</div>
+                        <div class="list-content">
+                            <div class="list-title">Il pesce nuota libero</div>
+                            <div class="list-meta">Orate, branzini, anguille. Crescono lenti, sapore superiore.</div>
+                        </div>
+                    </div>
+                    <div class="list-item" onclick="go('moeche')">
+                        <div class="list-icon icon-bg-orange">🦀</div>
+                        <div class="list-content">
+                            <div class="list-title">Moeche</div>
+                            <div class="list-meta">Raccolte a mano, una per una. Presidio Slow Food.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🦅</span>
+                    <div class="tip-box-text">Le valli attirano aironi e cormorani. Birdwatching garantito.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Il pesce -->
+            <div class="inner-content" id="valli-pesce">
+                <div class="section-label">Stagionalità</div>
+                <div class="list-card">
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-teal">❄️</div>
+                        <div class="list-content">
+                            <div class="list-title">Inverno: anguille</div>
+                            <div class="list-meta">Dicembre-marzo. Cattura intensiva.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">🌸</div>
+                        <div class="list-content">
+                            <div class="list-title">Primavera e autunno: moeche</div>
+                            <div class="list-meta">Maggio e ottobre. Finestra di pochi giorni.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-teal">☀️</div>
+                        <div class="list-content">
+                            <div class="list-title">Estate: orate e branzini</div>
+                            <div class="list-meta">Il pesce di valle è più saporito di quello allevato.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section-label">Perché è speciale</div>
+                <div class="prose">
+                    <p>Il pesce di valle cresce in semi-libertà, nutrendosi naturalmente. Non ha il sapore "piatto" del pesce allevato in vasche.</p>
+                    <p>Chiedi "pesce di valle" o "pesce lagunare" nei ristoranti. È km zero garantito.</p>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🍽️</span>
+                    <div class="tip-box-text">Nei ristoranti locali, chiedi sempre se il pesce è "di valle". Fa la differenza.</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Placeholder screens per dettagli mancanti -->
+        <div class="screen" id="screen-treporti">
+            <!-- Tab bar Borghi -->
+            <div class="tab-bar" data-group="borghi">
+                <div class="tab-item active" onclick="switchTab('treporti', 'borghi')">⛪ Treporti</div>
+                <div class="tab-item" onclick="switchTab('saccagnana', 'borghi')">🏠 Saccagnana</div>
+                <div class="tab-item" onclick="switchTab('mesole', 'borghi')">🦅 Mesole</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-teal">⛪</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Treporti</div>
+                    <div class="info-card-text">Il cuore pulsante della penisola</div>
+                </div>
+            </div>
+            <div class="wow-inline">Un paese sospeso sulla laguna. Qui la vita scorre al ritmo delle maree.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="visita" onclick="switchInnerTab('treporti', 'visita')">📍 Visita</div>
+                <div class="inner-tab" data-tab="storia" onclick="switchInnerTab('treporti', 'storia')">📜 Storia</div>
+            </div>
+            
+            <!-- Tab: Visita -->
+            <div class="inner-content active" id="treporti-visita">
+                <div class="section-label">Da vivere</div>
+                <div class="list-card">
+                    <div class="list-item" onclick="window.open('https://maps.google.com/?q=Chiesa+Treporti+Venezia', '_blank')">
+                        <div class="list-icon icon-bg-teal">⛪</div>
+                        <div class="list-content">
+                            <div class="list-title">Oratori del XVII secolo</div>
+                            <div class="list-meta">Testimonianze di una comunità antica</div>
+                        </div>
+                    </div>
+                    <div class="list-item" onclick="window.open('https://maps.google.com/?q=Treporti+Venezia', '_blank')">
+                        <div class="list-icon icon-bg-orange">🛒</div>
+                        <div class="list-content">
+                            <div class="list-title">Mercato del giovedì</div>
+                            <div class="list-meta">Prodotti locali, voci del territorio, nessun turista</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-green">🥬</div>
+                        <div class="list-content">
+                            <div class="list-title">Orti tradizionali</div>
+                            <div class="list-meta">Case su argini, verdure che si riflettono nell'acqua</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://maps.google.com/?q=Treporti+Venezia" target="_blank" class="btn-journey">
+                    <span class="btn-journey-title">📍 Esplora Treporti</span>
+                    <span class="btn-journey-sub">Punto di partenza per tutti i percorsi</span>
+                </a>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🌊</span>
+                    <div class="tip-box-text">Il paesaggio cambia due volte al giorno. Torna con la marea diversa: è un altro posto.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Storia -->
+            <div class="inner-content" id="treporti-storia">
+                <div class="section-label">La storia</div>
+                <div class="prose">
+                    <p>Treporti è il cuore pulsante di Cavallino-Treporti, un borgo antico sorto dove la terra confina con l'acqua in modo quasi irreale.</p>
+                    <p>Il paese conserva il suo assetto originario: case costruite su piccoli argini e fondamenta, circondate da orti che si riflettono nell'acqua. Gli oratori del XVII secolo testimoniano una comunità fondata su valori religiosi e civici.</p>
+                </div>
+                
+                <div class="section-label">Da sapere</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">🌊</div>
+                        <div class="info-content">
+                            <div class="info-title">Le maree</div>
+                            <div class="info-text">Le acque salgono e scendono due volte al giorno, trasformando il paesaggio.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🚴</div>
+                        <div class="info-content">
+                            <div class="info-title">Punto di partenza</div>
+                            <div class="info-text">Accesso diretto ai percorsi ciclabili e ai canali navigabili verso i borghi.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🐟</div>
+                        <div class="info-content">
+                            <div class="info-title">Valli da pesca</div>
+                            <div class="info-text">Accesso alle valli da pesca tradizionali della laguna nord.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🛒</span>
+                    <div class="tip-box-text">Giovedì mattina: mercato con prodotti locali e atmosfera d'altri tempi.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="screen" id="screen-saccagnana">
+            <!-- Tab bar Borghi -->
+            <div class="tab-bar" data-group="borghi">
+                <div class="tab-item" onclick="switchTab('treporti', 'borghi')">⛪ Treporti</div>
+                <div class="tab-item active" onclick="switchTab('saccagnana', 'borghi')">🏠 Saccagnana</div>
+                <div class="tab-item" onclick="switchTab('mesole', 'borghi')">🦅 Mesole</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-teal">🏠</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Saccagnana</div>
+                    <div class="info-card-text">Case isolate, acqua intorno</div>
+                </div>
+            </div>
+            <div class="wow-inline">Le case sembrano galleggiare. L'uomo qui ha imparato a vivere con l'acqua, non contro.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="visita" onclick="switchInnerTab('saccagnana', 'visita')">📍 Visita</div>
+                <div class="inner-tab" data-tab="info" onclick="switchInnerTab('saccagnana', 'info')">ℹ️ Info</div>
+            </div>
+            
+            <!-- Tab: Visita -->
+            <div class="inner-content active" id="saccagnana-visita">
+                <div class="section-label">Il borgo</div>
+                <div class="list-card">
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-teal">🌊</div>
+                        <div class="list-content">
+                            <div class="list-title">"Sacca Magna"</div>
+                            <div class="list-meta">Il nome racconta: grande sacca d'acqua che circonda tutto</div>
+                        </div>
+                    </div>
+                    <div class="list-item" onclick="window.open('https://maps.google.com/?q=Piazza+del+Pra+Saccagnana+Cavallino', '_blank')">
+                        <div class="list-icon icon-bg-teal">🅿️</div>
+                        <div class="list-content">
+                            <div class="list-title">Piazza del Prà</div>
+                            <div class="list-meta">Lascia l'auto qui. Da questo punto, solo bici e silenzio.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">🎉</div>
+                        <div class="list-content">
+                            <div class="list-title">Sagra del Carmine</div>
+                            <div class="list-meta">2ª domenica di luglio · Regata dea Sucheta</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://www.google.com/maps/dir/Saccagnana,+Cavallino-Treporti/Lio+Piccolo" target="_blank" class="btn-journey">
+                    <span class="btn-journey-title">🚴 Verso Lio Piccolo</span>
+                    <span class="btn-journey-sub">Da qui inizia la Via del Respiro</span>
+                </a>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🦩</span>
+                    <div class="tip-box-text">Lungo la strada per Lio Piccolo, guarda a sinistra. Spesso ci sono i fenicotteri.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Info -->
+            <div class="inner-content" id="saccagnana-info">
+                <div class="section-label">Il luogo</div>
+                <div class="prose">
+                    <p>Saccagnana rappresenta l'isolamento affettuoso della laguna. Il nome stesso — "sacca magna" o grande sacca — richiama la forma delle secche che circondano il borgo.</p>
+                    <p>Qui le case sembrano galleggiare su piccoli lembi di terra, circondate da canali e paesaggi che cambiano continuamente con le maree.</p>
+                </div>
+                
+                <div class="section-label">Consigli pratici</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">🅿️</div>
+                        <div class="info-content">
+                            <div class="info-title">Parcheggio ZTRU</div>
+                            <div class="info-text">Punto consigliato per lasciare l'auto nei giorni di accesso limitato a Lio Piccolo.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🚴</div>
+                        <div class="info-content">
+                            <div class="info-title">Porta per Lio Piccolo</div>
+                            <div class="info-text">Da qui parte la Via del Respiro. 8.5 km di pista ciclabile sulla laguna.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🏔️</span>
+                    <div class="tip-box-text">Nelle giornate limpide, dal ponte di Saccagnana si vedono le Dolomiti.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="screen" id="screen-mesole">
+            <!-- Tab bar Borghi -->
+            <div class="tab-bar" data-group="borghi">
+                <div class="tab-item" onclick="switchTab('treporti', 'borghi')">⛪ Treporti</div>
+                <div class="tab-item" onclick="switchTab('saccagnana', 'borghi')">🏠 Saccagnana</div>
+                <div class="tab-item active" onclick="switchTab('mesole', 'borghi')">🦅 Mesole</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-teal">🦅</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Mesole</div>
+                    <div class="info-card-text">Dove la laguna entra nel borgo</div>
+                </div>
+            </div>
+            <div class="wow-inline">La distinzione tra terra e acqua qui si dissolve. Case, orti, canali: tutto si mescola.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="visita" onclick="switchInnerTab('mesole', 'visita')">📍 Visita</div>
+                <div class="inner-tab" data-tab="natura" onclick="switchInnerTab('mesole', 'natura')">🦅 Natura</div>
+            </div>
+            
+            <!-- Tab: Visita -->
+            <div class="inner-content active" id="mesole-visita">
+                <div class="section-label">Da scoprire</div>
+                <div class="list-card">
+                    <div class="list-item" onclick="window.open('https://maps.google.com/?q=Mesole+Cavallino+Treporti', '_blank')">
+                        <div class="list-icon icon-bg-teal">⛪</div>
+                        <div class="list-content">
+                            <div class="list-title">Convento del XIV secolo</div>
+                            <div class="list-meta">Spiritualità medievale, ancora in piedi</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-green">🥬</div>
+                        <div class="list-content">
+                            <div class="list-title">Orti in suoli salini</div>
+                            <div class="list-meta">Verdure che crescono dove non dovrebbero</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://maps.google.com/?q=Mesole+Cavallino+Treporti" target="_blank" class="btn-journey">
+                    <span class="btn-journey-title">📍 Esplora Mesole</span>
+                    <span class="btn-journey-sub">Il borgo più selvaggio della penisola</span>
+                </a>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🦅</span>
+                    <div class="tip-box-text">Ogni generazione qui ha imparato a leggere il linguaggio dell'acqua. Tu ascolta.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Natura -->
+            <div class="inner-content" id="mesole-natura">
+                <div class="section-label">Le garzaie</div>
+                <div class="prose">
+                    <p>Mesole ospita alcune delle garzaie più importanti della laguna nord. Da marzo a luglio, centinaia di aironi nidificano qui, creando un concerto continuo di richiami e gracchii.</p>
+                </div>
+                
+                <div class="section-label">Cosa vedere</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">🦅</div>
+                        <div class="info-content">
+                            <div class="info-title">Aironi cenerini</div>
+                            <div class="info-text">I più comuni. Li vedi immobili sulle barene, in attesa.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🦉</div>
+                        <div class="info-content">
+                            <div class="info-title">Nitticore</div>
+                            <div class="info-text">Notturne, con dorso verde iridato. Escono al tramonto.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🐣</div>
+                        <div class="info-content">
+                            <div class="info-title">Pulcini</div>
+                            <div class="info-text">Maggio-giugno: i nidi sono pieni. Gracchiano per il cibo.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">📸</span>
+                    <div class="tip-box-text">Porta il binocolo. I nidi sono in alto sugli alberi. Non avvicinarti troppo.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="screen" id="screen-percorso-borghi">
+            <!-- Tab bar Percorsi -->
+            <div class="tab-bar" data-group="percorsi">
+                <div class="tab-item active" onclick="switchTab('percorso-borghi', 'percorsi')">🏘️ Borghi</div>
+                <div class="tab-item" onclick="switchTab('percorso-faro', 'percorsi')">🗼 Faro</div>
+                <div class="tab-item" onclick="switchTab('percorso-principale', 'percorsi')">🚴 Dorsale</div>
+                <div class="tab-item" onclick="switchTab('percorso-casson', 'percorsi')">🦅 Casòn</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-teal">🏘️</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Tour dei Borghi</div>
+                    <div class="info-card-text">15 km attraverso paesi che il tempo ha dimenticato</div>
+                </div>
+            </div>
+            <div class="wow-inline">Piccoli paesi, grande distanza dal mondo. Storie di pescatori, agricoltori, artigiani.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="tappe" onclick="switchInnerTab('percorso-borghi', 'tappe')">🚴 Tappe</div>
+                <div class="inner-tab" data-tab="info" onclick="switchInnerTab('percorso-borghi', 'info')">ℹ️ Info</div>
+            </div>
+            
+            <!-- Tab: Tappe -->
+            <div class="inner-content active" id="percorso-borghi-tappe">
+                <div class="section-label">Le tappe</div>
+                <div class="percorso-list">
+                    <div class="percorso-item" onclick="go('saccagnana')">
+                        <div class="percorso-marker">1</div>
+                        <div class="percorso-content">
+                            <div class="percorso-title">Saccagnana → Lio Piccolo</div>
+                            <div class="percorso-meta">Via del Respiro. Fenicotteri a sinistra, Dolomiti all'orizzonte.</div>
+                        </div>
+                        <span class="percorso-icon">🦩</span>
+                    </div>
+                    <div class="percorso-item" onclick="go('lio-piccolo')">
+                        <div class="percorso-marker">2</div>
+                        <div class="percorso-content">
+                            <div class="percorso-title">Lio Piccolo → Mesole</div>
+                            <div class="percorso-meta">Strada lagunare. Aironi nelle garzaie, silenzio assoluto.</div>
+                        </div>
+                        <span class="percorso-icon">🦅</span>
+                    </div>
+                    <div class="percorso-item" onclick="go('treporti')">
+                        <div class="percorso-marker">3</div>
+                        <div class="percorso-content">
+                            <div class="percorso-title">Mesole → Treporti</div>
+                            <div class="percorso-meta">Ritorno tra orti e canali. Fermati al mercato se è giovedì.</div>
+                        </div>
+                        <span class="percorso-icon">🛒</span>
+                    </div>
+                </div>
+                
+                <a href="https://www.google.com/maps/dir/Saccagnana,+Cavallino-Treporti/Lio+Piccolo/Mesole,+Cavallino-Treporti/Treporti" target="_blank" class="btn-journey">
+                    <span class="btn-journey-title">🚴 Inizia il tour</span>
+                    <span class="btn-journey-sub">2-3 ore · in bici · senza fretta</span>
+                </a>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🏔️</span>
+                    <div class="tip-box-text">Nelle giornate limpide, dal tratto Saccagnana-Lio Piccolo vedi le Dolomiti a 100 km.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Info -->
+            <div class="inner-content" id="percorso-borghi-info">
+                <div class="section-label">Il percorso</div>
+                <div class="prose">
+                    <p>Il Tour dei Borghi è un itinerario circolare che tocca i quattro borghi lagunari della penisola: Saccagnana, Lio Piccolo, Mesole e Treporti.</p>
+                    <p>Si pedala su strade sterrate e asfaltate, sempre tra acqua e cielo. È un percorso lento, pensato per chi vuole immergersi nel territorio.</p>
+                </div>
+                
+                <div class="section-label">Consigli</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">⏱️</div>
+                        <div class="info-content">
+                            <div class="info-title">Durata</div>
+                            <div class="info-text">2-3 ore pedalando con calma, di più se ti fermi a esplorare.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🚲</div>
+                        <div class="info-content">
+                            <div class="info-title">Bici consigliata</div>
+                            <div class="info-text">City bike o MTB. Alcuni tratti sterrati ma sempre pianeggianti.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">⚠️</div>
+                        <div class="info-content">
+                            <div class="info-title">ZTRU</div>
+                            <div class="info-text">Festivi/prefestivi 7-18:30 accesso auto limitato. Parti da Saccagnana.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🌅</span>
+                    <div class="tip-box-text">Parti nel tardo pomeriggio: arrivi a Lio Piccolo per il tramonto.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="screen" id="screen-percorso-faro">
+            <!-- Tab bar Percorsi -->
+            <div class="tab-bar" data-group="percorsi">
+                <div class="tab-item" onclick="switchTab('percorso-borghi', 'percorsi')">🏘️ Borghi</div>
+                <div class="tab-item active" onclick="switchTab('percorso-faro', 'percorsi')">🗼 Faro</div>
+                <div class="tab-item" onclick="switchTab('percorso-principale', 'percorsi')">🚴 Dorsale</div>
+                <div class="tab-item" onclick="switchTab('percorso-casson', 'percorsi')">🦅 Casòn</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-teal">🗼</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Al Faro</div>
+                    <div class="info-card-text">Verso l'acqua, senza deviazioni</div>
+                </div>
+            </div>
+            <div class="wow-inline">Il percorso più semplice. La vista più spettacolare.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="percorso" onclick="switchInnerTab('percorso-faro', 'percorso')">🚶 Percorso</div>
+                <div class="inner-tab" data-tab="faro" onclick="switchInnerTab('percorso-faro', 'faro')">🗼 Il Faro</div>
+            </div>
+            
+            <!-- Tab: Percorso -->
+            <div class="inner-content active" id="percorso-faro-percorso">
+                <div class="section-label">Il cammino</div>
+                <div class="list-card">
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-teal">📏</div>
+                        <div class="list-content">
+                            <div class="list-title">3 km tra dune e pineta</div>
+                            <div class="list-meta">Facile, adatto a tutti. Anche con bambini.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">🌅</div>
+                        <div class="list-content">
+                            <div class="list-title">Al tramonto</div>
+                            <div class="list-meta">Il sole illumina l'orizzonte con tonalità dorate</div>
+                        </div>
+                    </div>
+                    <div class="list-item" onclick="window.open('https://maps.google.com/?q=Faro+Punta+Sabbioni', '_blank')">
+                        <div class="list-icon icon-bg-teal">🗼</div>
+                        <div class="list-content">
+                            <div class="list-title">Il Faro</div>
+                            <div class="list-meta">Laguna a ovest, Adriatico a est. Due mondi in un punto.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://www.google.com/maps/dir/Piazza+Santa+Maria+Elisabetta,+Cavallino-Treporti/Faro+Punta+Sabbioni" target="_blank" class="btn-journey">
+                    <span class="btn-journey-title">🚶 Inizia il cammino</span>
+                    <span class="btn-journey-sub">45 min a piedi · partenza da Piazza S. Maria Elisabetta</span>
+                </a>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🌅</span>
+                    <div class="tip-box-text">Parti un'ora prima del tramonto. Arriverai al faro nel momento perfetto.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Il Faro -->
+            <div class="inner-content" id="percorso-faro-faro">
+                <div class="section-label">Il faro di Punta Sabbioni</div>
+                <div class="prose">
+                    <p>Il faro di Punta Sabbioni segna l'ingresso alla laguna di Venezia dal mare Adriatico. Costruito nel 1871, è ancora oggi un punto di riferimento per la navigazione.</p>
+                    <p>Dalla sua base si gode una vista unica: a ovest la laguna con Venezia all'orizzonte, a est il mare aperto fino all'infinito.</p>
+                </div>
+                
+                <div class="section-label">Curiosità</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">💡</div>
+                        <div class="info-content">
+                            <div class="info-title">Luce visibile a 15 miglia</div>
+                            <div class="info-text">Il segnale luminoso guida le navi verso il porto di Venezia.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🚢</div>
+                        <div class="info-content">
+                            <div class="info-title">Bocca di porto</div>
+                            <div class="info-text">Qui passano traghetti, navi da crociera e pescherecci ogni giorno.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">📸</span>
+                    <div class="tip-box-text">Punto foto perfetto: il faro con Venezia sullo sfondo al tramonto.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="screen" id="screen-percorso-principale">
+            <!-- Tab bar Percorsi -->
+            <div class="tab-bar" data-group="percorsi">
+                <div class="tab-item" onclick="switchTab('percorso-borghi', 'percorsi')">🏘️ Borghi</div>
+                <div class="tab-item" onclick="switchTab('percorso-faro', 'percorsi')">🗼 Faro</div>
+                <div class="tab-item active" onclick="switchTab('percorso-principale', 'percorsi')">🚴 Dorsale</div>
+                <div class="tab-item" onclick="switchTab('percorso-casson', 'percorsi')">🦅 Casòn</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-teal">🚴</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Dorsale Cavallino</div>
+                    <div class="info-card-text">Tra mare aperto e laguna</div>
+                </div>
+            </div>
+            <div class="wow-inline">Il peso dell'acqua da entrambi i lati. L'aria salmastra che carica il vento.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="percorso" onclick="switchInnerTab('percorso-principale', 'percorso')">🚴 Percorso</div>
+                <div class="inner-tab" data-tab="tappe" onclick="switchInnerTab('percorso-principale', 'tappe')">📍 Tappe</div>
+            </div>
+            
+            <!-- Tab: Percorso -->
+            <div class="inner-content active" id="percorso-principale-percorso">
+                <div class="section-label">Il percorso</div>
+                <div class="list-card">
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-teal">📏</div>
+                        <div class="list-content">
+                            <div class="list-title">38 km sulla cresta della penisola</div>
+                            <div class="list-meta">Da Punta Sabbioni a Jesolo. Percorribile a tappe.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-teal">🌊</div>
+                        <div class="list-content">
+                            <div class="list-title">Un cammino contemplativo</div>
+                            <div class="list-meta">Pinete, campi, valli da pesca, barene. Ogni sosta rivela dettagli.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-teal">🏖️</div>
+                        <div class="list-content">
+                            <div class="list-title">38 accessi all'acqua</div>
+                            <div class="list-meta">Fermati quando vuoi. Tuffati se fa caldo.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://maps.google.com/?q=Punta+Sabbioni" target="_blank" class="btn-journey">
+                    <span class="btn-journey-title">🚴 Inizia la Dorsale</span>
+                    <span class="btn-journey-sub">2-3 ore · in bici · partenza Punta Sabbioni</span>
+                </a>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🌸</span>
+                    <div class="tip-box-text">Primavera (apr-giu): fioritura. Autunno (set-nov): migrazioni. Tramonto: sempre perfetto.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Tappe -->
+            <div class="inner-content" id="percorso-principale-tappe">
+                <div class="section-label">Le tappe consigliate</div>
+                <div class="percorso-list">
+                    <div class="percorso-item">
+                        <div class="percorso-marker">1</div>
+                        <div class="percorso-content">
+                            <div class="percorso-title">Punta Sabbioni → Treporti</div>
+                            <div class="percorso-meta">10 km · Faro, pineta, primi scorci lagunari</div>
+                        </div>
+                        <span class="percorso-icon">🗼</span>
+                    </div>
+                    <div class="percorso-item">
+                        <div class="percorso-marker">2</div>
+                        <div class="percorso-content">
+                            <div class="percorso-title">Treporti → Ca' Savio</div>
+                            <div class="percorso-meta">12 km · Borghi, valli da pesca, barene</div>
+                        </div>
+                        <span class="percorso-icon">🏘️</span>
+                    </div>
+                    <div class="percorso-item">
+                        <div class="percorso-marker">3</div>
+                        <div class="percorso-content">
+                            <div class="percorso-title">Ca' Savio → Jesolo</div>
+                            <div class="percorso-meta">16 km · Spiagge, dune, arrivo in città</div>
+                        </div>
+                        <span class="percorso-icon">🏖️</span>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">💡</span>
+                    <div class="tip-box-text">Puoi fare una tappa al giorno o tutto in una volta. Il percorso è sempre pianeggiante.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="screen" id="screen-percorso-casson">
+            <!-- Tab bar Percorsi -->
+            <div class="tab-bar" data-group="percorsi">
+                <div class="tab-item" onclick="switchTab('percorso-borghi', 'percorsi')">🏘️ Borghi</div>
+                <div class="tab-item" onclick="switchTab('percorso-faro', 'percorsi')">🗼 Faro</div>
+                <div class="tab-item" onclick="switchTab('percorso-principale', 'percorsi')">🚴 Dorsale</div>
+                <div class="tab-item active" onclick="switchTab('percorso-casson', 'percorsi')">🦅 Casòn</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-teal">🦅</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Ca' Savio - Casòn</div>
+                    <div class="info-card-text">Un percorso che accompagna</div>
+                </div>
+            </div>
+            <div class="wow-inline">Adatto a tutti. Non esclude nessuno. Birdwatching garantito.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="percorso" onclick="switchInnerTab('percorso-casson', 'percorso')">🚶 Percorso</div>
+                <div class="inner-tab" data-tab="natura" onclick="switchInnerTab('percorso-casson', 'natura')">🦅 Natura</div>
+            </div>
+            
+            <!-- Tab: Percorso -->
+            <div class="inner-content active" id="percorso-casson-percorso">
+                <div class="section-label">Il percorso</div>
+                <div class="list-card">
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-teal">📏</div>
+                        <div class="list-content">
+                            <div class="list-title">2.5 km lungo il Canale Casson</div>
+                            <div class="list-meta">Pianeggiante. Accessibile a carrozzine e passeggini.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-green">🦅</div>
+                        <div class="list-content">
+                            <div class="list-title">Birdwatching facile</div>
+                            <div class="list-meta">Aironi, nitticore, germani. Li vedi senza cercarli.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-green">🌿</div>
+                        <div class="list-content">
+                            <div class="list-title">Vegetazione palustre</div>
+                            <div class="list-meta">Salicornia sulle sponde, anguille in primavera</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://www.google.com/maps/dir/Piazza+Santa+Maria+Elisabetta,+Cavallino-Treporti/Foce+del+Sile" target="_blank" class="btn-journey">
+                    <span class="btn-journey-title">🚶 Inizia il cammino</span>
+                    <span class="btn-journey-sub">30-45 min · a piedi o bici · accessibile</span>
+                </a>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🌸</span>
+                    <div class="tip-box-text">Aprile-maggio e settembre-ottobre: stagioni migliori. Estate: porta antizanzare.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Natura -->
+            <div class="inner-content" id="percorso-casson-natura">
+                <div class="section-label">Cosa vedere</div>
+                <div class="prose">
+                    <p>Il Canale Casson è un habitat perfetto per il birdwatching: acque calme, vegetazione fitta sulle sponde, poca presenza umana.</p>
+                    <p>Non serve cercare: gli uccelli si mostrano da soli. Basta camminare lentamente e guardare.</p>
+                </div>
+                
+                <div class="section-label">Specie comuni</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">🦅</div>
+                        <div class="info-content">
+                            <div class="info-title">Airone cenerino</div>
+                            <div class="info-text">Immobile sulle sponde, in attesa. Presente tutto l'anno.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🦆</div>
+                        <div class="info-content">
+                            <div class="info-title">Germano reale</div>
+                            <div class="info-text">Famiglie con pulcini in primavera. Molto confidenti.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🐟</div>
+                        <div class="info-content">
+                            <div class="info-title">Anguille</div>
+                            <div class="info-text">Aprile-maggio: risalgono il canale. A volte visibili in superficie.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">♿</span>
+                    <div class="tip-box-text">Percorso completamente accessibile. Ideale per famiglie con passeggini.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="screen" id="screen-aironi">
+            <!-- Tab bar Fauna -->
+            <div class="tab-bar" data-group="fauna">
+                <div class="tab-item" onclick="switchTab('fenicotteri', 'fauna')">🦩 Fenicotteri</div>
+                <div class="tab-item active" onclick="switchTab('aironi', 'fauna')">🦅 Aironi</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-green">🦅</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Aironi</div>
+                    <div class="info-card-text">I filosofi della laguna</div>
+                </div>
+            </div>
+            <div class="wow-inline">Restano immobili per ore. Quando colpiscono, il movimento dura frazioni di secondo.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="specie" onclick="switchInnerTab('aironi', 'specie')">🦅 Specie</div>
+                <div class="inner-tab" data-tab="osservare" onclick="switchInnerTab('aironi', 'osservare')">📍 Dove</div>
+            </div>
+            
+            <!-- Tab: Specie -->
+            <div class="inner-content active" id="aironi-specie">
+                <div class="section-label">Le specie</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">🦅</div>
+                        <div class="info-content">
+                            <div class="info-title">Airone cenerino</div>
+                            <div class="info-text">Il più comune. Cacciatore solitario, presente tutto l'anno. Lo riconosci dal piumaggio grigio-blu.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🦅</div>
+                        <div class="info-content">
+                            <div class="info-title">Airone rosso</div>
+                            <div class="info-text">Più timido e discreto. Piumaggio bruno-rossastro. Da aprile a settembre.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🦉</div>
+                        <div class="info-content">
+                            <div class="info-title">Nitticora</div>
+                            <div class="info-text">Notturna. Esce al tramonto. Dorso verde iridato, occhi rossi. Più piccola degli altri aironi.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🤫</span>
+                    <div class="tip-box-text">Muoviti lentamente. Niente movimenti bruschi. La pazienza è la chiave.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Dove osservare -->
+            <div class="inner-content" id="aironi-osservare">
+                <div class="section-label">Dove trovarli</div>
+                <div class="list-card">
+                    <div class="list-item" onclick="go('mesole')">
+                        <div class="list-icon icon-bg-green">📍</div>
+                        <div class="list-content">
+                            <div class="list-title">Garzaie di Mesole</div>
+                            <div class="list-meta">Mar-Lug: colonie nidificanti, pulcini rumorosi</div>
+                        </div>
+                    </div>
+                    <div class="list-item" onclick="go('percorso-casson')">
+                        <div class="list-icon icon-bg-green">📍</div>
+                        <div class="list-content">
+                            <div class="list-title">Canale Casson</div>
+                            <div class="list-meta">Tutto l'anno: aironi in caccia sulle sponde</div>
+                        </div>
+                    </div>
+                    <div class="list-item" onclick="go('valli')">
+                        <div class="list-icon icon-bg-green">📍</div>
+                        <div class="list-content">
+                            <div class="list-title">Valli da pesca</div>
+                            <div class="list-meta">Pesci abbondanti = aironi abbondanti</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://maps.google.com/?q=Mesole+Cavallino+Treporti" target="_blank" class="btn-journey">
+                    <span class="btn-journey-title">🦅 Vai alle garzaie</span>
+                    <span class="btn-journey-sub">Mesole · Mar-Lug · mattina presto</span>
+                </a>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">📸</span>
+                    <div class="tip-box-text">Binocolo 8x42 consigliato. Alba e tramonto: momenti migliori.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="screen" id="screen-salicornia">
+            <!-- Tab bar Flora -->
+            <div class="tab-bar" data-group="flora">
+                <div class="tab-item active" onclick="switchTab('salicornia', 'flora')">🌱 Salicornia</div>
+                <div class="tab-item" onclick="switchTab('spartina', 'flora')">🌾 Spartina</div>
+                <div class="tab-item" onclick="switchTab('limonio', 'flora')">💜 Limonio</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-green">🌱</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Salicornia veneta</div>
+                    <div class="info-card-text">Vita che cresce nel sale</div>
+                </div>
+            </div>
+            <div class="wow-inline">Ha letteralmente imparato a vivere dentro il sale. Endemica qui. Non esiste altrove nel mondo.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="info" onclick="switchInnerTab('salicornia', 'info')">🌱 Info</div>
+                <div class="inner-tab" data-tab="cucina" onclick="switchInnerTab('salicornia', 'cucina')">🍽️ In cucina</div>
+            </div>
+            
+            <!-- Tab: Info -->
+            <div class="inner-content active" id="salicornia-info">
+                <div class="section-label">La pianta</div>
+                <div class="list-card">
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-green">💧</div>
+                        <div class="list-content">
+                            <div class="list-title">Foglie carnose</div>
+                            <div class="list-meta">Immagazzinano acqua dolce. Sopravvivono dove nient'altro cresce.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">🍂</div>
+                        <div class="list-content">
+                            <div class="list-title">Rosso-viola in autunno</div>
+                            <div class="list-meta">Agosto-settembre: le barene diventano tappeti di fuoco.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-teal">🌍</div>
+                        <div class="list-content">
+                            <div class="list-title">Endemica mondiale</div>
+                            <div class="list-meta">Esiste SOLO qui. Non la trovi in nessun altro posto al mondo.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">📸</span>
+                    <div class="tip-box-text">Metà settembre: barene rosse + fenicotteri rosa. Una palette che esiste solo qui.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: In cucina -->
+            <div class="inner-content" id="salicornia-cucina">
+                <div class="section-label">L'asparago di mare</div>
+                <div class="prose">
+                    <p>La salicornia è commestibile e molto apprezzata in cucina. Il sapore è sapido, croccante, con note marine intense.</p>
+                    <p>Viene raccolta a mano tra maggio e settembre. La trovi nei menu dei ristoranti locali come antipasto o contorno.</p>
+                </div>
+                
+                <div class="section-label">Come gustarla</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">🥗</div>
+                        <div class="info-content">
+                            <div class="info-title">Cruda in insalata</div>
+                            <div class="info-text">Con olio e limone. Croccante e sapida.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🍳</div>
+                        <div class="info-content">
+                            <div class="info-title">Saltata in padella</div>
+                            <div class="info-text">Con aglio e olio. Accompagna perfettamente il pesce.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🍽️</span>
+                    <div class="tip-box-text">Chiedi "asparago di mare" o "salicornia" nei ristoranti locali. Km zero garantito.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="screen" id="screen-spartina">
+            <!-- Tab bar Flora -->
+            <div class="tab-bar" data-group="flora">
+                <div class="tab-item" onclick="switchTab('salicornia', 'flora')">🌱 Salicornia</div>
+                <div class="tab-item active" onclick="switchTab('spartina', 'flora')">🌾 Spartina</div>
+                <div class="tab-item" onclick="switchTab('limonio', 'flora')">💜 Limonio</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-green">🌾</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Spartina</div>
+                    <div class="info-card-text">L'erba che sostiene la laguna</div>
+                </div>
+            </div>
+            <div class="wow-inline">Senza spartina, la laguna non avrebbe solidità. Sarebbe solo un'estensione d'acqua.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="info" onclick="switchInnerTab('spartina', 'info')">🌾 Info</div>
+                <div class="inner-tab" data-tab="ruolo" onclick="switchInnerTab('spartina', 'ruolo')">🌍 Ecosistema</div>
+            </div>
+            
+            <!-- Tab: Info -->
+            <div class="inner-content active" id="spartina-info">
+                <div class="section-label">La fondatrice invisibile</div>
+                <div class="list-card">
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-green">🏗️</div>
+                        <div class="list-content">
+                            <div class="list-title">Costruisce le isole</div>
+                            <div class="list-meta">Intrappola sedimenti. Innalza le barene di 2-5 mm ogni anno.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-green">🌊</div>
+                        <div class="list-content">
+                            <div class="list-title">Radici profonde</div>
+                            <div class="list-meta">Cementano il sedimento. Resistono a qualsiasi marea.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">🍂</div>
+                        <div class="list-content">
+                            <div class="list-title">Colorazione autunnale</div>
+                            <div class="list-meta">Da verde a ramato. In inverno secca, ma le radici restano.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🌱</span>
+                    <div class="tip-box-text">Prepara il terreno per salicornia e limonio. Senza di lei, niente barene.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Ecosistema -->
+            <div class="inner-content" id="spartina-ruolo">
+                <div class="section-label">Il ruolo ecologico</div>
+                <div class="prose">
+                    <p>La spartina è la prima colonizzatrice delle zone di marea. Le sue radici intrecciate creano una rete che trattiene fango e sedimenti.</p>
+                    <p>Anno dopo anno, millimetro dopo millimetro, costruisce terra dove c'era solo acqua. È l'ingegnere invisibile della laguna.</p>
+                </div>
+                
+                <div class="section-label">Importanza</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">🏠</div>
+                        <div class="info-content">
+                            <div class="info-title">Habitat</div>
+                            <div class="info-text">Rifugio per pesci, crostacei, uccelli limicoli.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🌊</div>
+                        <div class="info-content">
+                            <div class="info-title">Protezione costiera</div>
+                            <div class="info-text">Le barene assorbono l'energia delle onde e delle mareggiate.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">💡</span>
+                    <div class="tip-box-text">Senza spartina non esisterebbero le barene. Senza barene, niente ecosistema lagunare.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="screen" id="screen-limonio">
+            <!-- Tab bar Flora -->
+            <div class="tab-bar" data-group="flora">
+                <div class="tab-item" onclick="switchTab('salicornia', 'flora')">🌱 Salicornia</div>
+                <div class="tab-item" onclick="switchTab('spartina', 'flora')">🌾 Spartina</div>
+                <div class="tab-item active" onclick="switchTab('limonio', 'flora')">💜 Limonio</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-green">💜</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Limonio</div>
+                    <div class="info-card-text">Fioriture leggere, condizioni estreme</div>
+                </div>
+            </div>
+            <div class="wow-inline">La bellezza fragile della laguna. Fiori delicati dove quasi nulla sopravvive.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="info" onclick="switchInnerTab('limonio', 'info')">💜 Fioritura</div>
+                <div class="inner-tab" data-tab="foto" onclick="switchInnerTab('limonio', 'foto')">📸 Fotografia</div>
+            </div>
+            
+            <!-- Tab: Info -->
+            <div class="inner-content active" id="limonio-info">
+                <div class="section-label">La pianta</div>
+                <div class="list-card">
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-green">💜</div>
+                        <div class="list-content">
+                            <div class="list-title">Fioritura viola-lilla</div>
+                            <div class="list-meta">Giugno-settembre. Le barene diventano prati porpora.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">🌅</div>
+                        <div class="list-content">
+                            <div class="list-title">Al tramonto</div>
+                            <div class="list-meta">Colori più intensi. Perfetto per fotografie.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-green">🌿</div>
+                        <div class="list-content">
+                            <div class="list-title">Fiori durevoli</div>
+                            <div class="list-meta">Anche essiccati restano colorati. Usati in tintoria.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">📸</span>
+                    <div class="tip-box-text">Luglio-agosto: picco della fioritura. Vieni al tramonto.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Fotografia -->
+            <div class="inner-content" id="limonio-foto">
+                <div class="section-label">Consigli fotografici</div>
+                <div class="prose">
+                    <p>Il limonio è uno dei soggetti più fotografati della laguna. I suoi fiori viola creano un contrasto spettacolare con il verde delle barene e il blu del cielo.</p>
+                </div>
+                
+                <div class="section-label">Quando e come</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">📅</div>
+                        <div class="info-content">
+                            <div class="info-title">Picco fioritura</div>
+                            <div class="info-text">Metà luglio - metà agosto. Il viola è più intenso.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🌅</div>
+                        <div class="info-content">
+                            <div class="info-title">Luce migliore</div>
+                            <div class="info-text">Tramonto. La luce dorata esalta i toni viola.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🦩</div>
+                        <div class="info-content">
+                            <div class="info-title">Combo perfetta</div>
+                            <div class="info-text">Settembre: limonio viola + salicornia rossa + fenicotteri.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">💡</span>
+                    <div class="tip-box-text">Vai verso Valle Olivara per le composizioni migliori.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="screen" id="screen-moeche">
+            <!-- Tab bar Gastronomia -->
+            <div class="tab-bar" data-group="gastronomia">
+                <div class="tab-item active" onclick="switchTab('moeche', 'gastronomia')">🦀 Moeche</div>
+                <div class="tab-item" onclick="switchTab('go-ghiozzo', 'gastronomia')">🐟 Gò</div>
+                <div class="tab-item" onclick="switchTab('valli', 'gastronomia')">🌊 Valli</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-orange">🦀</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Moeche</div>
+                    <div class="info-card-text">Rarità stagionale della laguna</div>
+                </div>
+            </div>
+            <div class="wow-inline">Un granchio colto nell'attimo in cui cambia pelle. Dura 24-48 ore. Poi scompare.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="quando" onclick="switchInnerTab('moeche', 'quando')">📅 Quando</div>
+                <div class="inner-tab" data-tab="come" onclick="switchInnerTab('moeche', 'come')">🍽️ Come</div>
+            </div>
+            
+            <!-- Tab: Quando -->
+            <div class="inner-content active" id="moeche-quando">
+                <div class="section-label">La finestra</div>
+                <div class="list-card">
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">🌸</div>
+                        <div class="list-content">
+                            <div class="list-title">Aprile-Maggio</div>
+                            <div class="list-meta">Prima ondata di mute. È la stagione migliore.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">🍂</div>
+                        <div class="list-content">
+                            <div class="list-title">Settembre-Novembre</div>
+                            <div class="list-meta">Seconda ondata, più intensa. Picco a ottobre.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section-label">La tradizione</div>
+                <div class="list-card">
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-teal">👐</div>
+                        <div class="list-content">
+                            <div class="list-title">Raccolte a mano</div>
+                            <div class="list-meta">Pescatori esperti riconoscono i granchi in pre-muta. Uno per uno.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">💰</div>
+                        <div class="list-content">
+                            <div class="list-title">Presidio Slow Food</div>
+                            <div class="list-meta">Rarità assoluta. Costose ma valgono ogni euro.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box warning">
+                    <span class="tip-box-icon">⚠️</span>
+                    <div class="tip-box-text">Fuori stagione? Probabilmente congelate. Chiedi sempre "moeche fresche".</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Come -->
+            <div class="inner-content" id="moeche-come">
+                <div class="section-label">Come ordinarle</div>
+                <div class="prose">
+                    <p>Le moeche sono granchi in muta: per 24-48 ore il carapace è molle e commestibile. Si mangiano intere, senza scarti.</p>
+                    <p>Il sapore è delicato, marino, con una consistenza unica. Sono considerate una delle prelibatezze più rare della laguna veneta.</p>
+                </div>
+                
+                <div class="section-label">Preparazioni</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">🍳</div>
+                        <div class="info-content">
+                            <div class="info-title">Fritte</div>
+                            <div class="info-text">La preparazione classica. Passate nell'uovo e fritte. Croccanti fuori, morbide dentro.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🥘</div>
+                        <div class="info-content">
+                            <div class="info-title">In umido</div>
+                            <div class="info-text">Con pomodoro, aglio e prezzemolo. Più delicato.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🍽️</span>
+                    <div class="tip-box-text">Chiedile nei ristoranti di Burano o Treporti. Sono il test della vera cucina lagunare.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="screen" id="screen-go-ghiozzo">
+            <!-- Tab bar Gastronomia -->
+            <div class="tab-bar" data-group="gastronomia">
+                <div class="tab-item" onclick="switchTab('moeche', 'gastronomia')">🦀 Moeche</div>
+                <div class="tab-item active" onclick="switchTab('go-ghiozzo', 'gastronomia')">🐟 Gò</div>
+                <div class="tab-item" onclick="switchTab('valli', 'gastronomia')">🌊 Valli</div>
+            </div>
+            
+            <div class="info-card overview">
+                <div class="info-card-icon icon-bg-orange">🐟</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Gò</div>
+                    <div class="info-card-text">Il pesce della gente</div>
+                </div>
+            </div>
+            <div class="wow-inline">Non è pregiato per aspetto. Ma le carni sono straordinarie quando cucinate con semplicità.</div>
+            
+            <!-- Inner tabs -->
+            <div class="inner-tabs">
+                <div class="inner-tab active" data-tab="storia" onclick="switchInnerTab('go-ghiozzo', 'storia')">📜 Storia</div>
+                <div class="inner-tab" data-tab="cucina" onclick="switchInnerTab('go-ghiozzo', 'cucina')">🍽️ Ricette</div>
+            </div>
+            
+            <!-- Tab: Storia -->
+            <div class="inner-content active" id="go-ghiozzo-storia">
+                <div class="section-label">La storia</div>
+                <div class="prose">
+                    <p>Il gò (ghiozzo) è un piccolo pesce di laguna che ha sfamato generazioni di veneziani. Non è bello da vedere, ma il sapore è unico: delicato, quasi dolce.</p>
+                    <p>Oggi è in declino per la degradazione dell'habitat lagunare. È diventato Presidio Slow Food: ordinarlo significa sostenere chi lo pesca ancora.</p>
+                </div>
+                
+                <div class="section-label">Perché è importante</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-icon">📜</div>
+                        <div class="info-content">
+                            <div class="info-title">Tradizione secolare</div>
+                            <div class="info-text">Era il pesce dei poveri. Oggi è una rarità da conservare.</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🌿</div>
+                        <div class="info-content">
+                            <div class="info-title">Presidio Slow Food</div>
+                            <div class="info-text">Pesca sostenibile, tutela dell'habitat, economia locale.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">💚</span>
+                    <div class="tip-box-text">Ordinarlo sostiene la pesca tradizionale. È un atto di conservazione.</div>
+                </div>
+            </div>
+            
+            <!-- Tab: Ricette -->
+            <div class="inner-content" id="go-ghiozzo-cucina">
+                <div class="section-label">Come ordinarlo</div>
+                <div class="list-card">
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">🍚</div>
+                        <div class="list-content">
+                            <div class="list-title">Risotto de gò</div>
+                            <div class="list-meta">Il piatto iconico di Burano. Sapore delicato, quasi dolce.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">🥘</div>
+                        <div class="list-content">
+                            <div class="list-title">Gò in umido</div>
+                            <div class="list-meta">Ricetta dei pescatori. Soffritto, vino bianco, pane scuro.</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon icon-bg-orange">📅</div>
+                        <div class="list-content">
+                            <div class="list-title">Settembre-Marzo</div>
+                            <div class="list-meta">Stagione migliore. Fuori stagione è difficile trovarlo fresco.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <span class="tip-box-icon">🍽️</span>
+                    <div class="tip-box-text">Cercalo nei ristoranti di Burano. È il test della vera cucina lagunare.</div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <button class="nav-btn" onclick="goHome()"><span class="nav-btn-icon">🏠</span><span class="nav-btn-label">Home</span></button>
+        <button class="nav-btn"><span class="nav-btn-icon">☀️</span><span class="nav-btn-label">Meteo</span></button>
+        <button class="nav-btn active"><span class="nav-btn-icon">🌊</span><span class="nav-btn-label">Laguna</span></button>
+        <button class="nav-btn"><span class="nav-btn-icon">🚌</span><span class="nav-btn-label">Trasporti</span></button>
+        <button class="nav-btn"><span class="nav-btn-icon">🆘</span><span class="nav-btn-label">SOS</span></button>
+    </nav>
+</div>
+
+<script>
+const navHistory = [];
+const titles = {
+    'main': 'Laguna',
+    'natura': 'Natura',
+    'borghi': 'Borghi',
+    'percorsi': 'Percorsi',
+    'fauna': 'Fauna',
+    'flora': 'Flora',
+    'gastronomia': 'Gastronomia',
+    'valli': 'Valli da pesca',
+    'lio-piccolo': 'Lio Piccolo',
+    'treporti': 'Treporti',
+    'saccagnana': 'Saccagnana',
+    'mesole': 'Mesole',
+    'via-respiro': 'Via del Respiro',
+    'percorso-borghi': 'Tour Borghi',
+    'percorso-faro': 'Al Faro',
+    'percorso-principale': 'Dorsale',
+    'percorso-casson': 'Ca\'Savio-Casòn',
+    'fenicotteri': 'Fenicotteri',
+    'aironi': 'Aironi',
+    'salicornia': 'Salicornia',
+    'spartina': 'Spartina',
+    'limonio': 'Limonio',
+    'moeche': 'Moeche',
+    'go-ghiozzo': 'Gò'
+};
+
+function go(screenId) {
+    const current = document.querySelector('.screen.active');
+    const target = document.getElementById('screen-' + screenId);
+    
+    if (!target) {
+        console.error('Screen not found:', screenId);
+        return;
+    }
+    
+    if (current) {
+        navHistory.push(current.id.replace('screen-', ''));
+        current.classList.remove('active');
+    }
+    target.classList.add('active');
+    document.getElementById('headerTitle').textContent = titles[screenId] || 'Laguna';
+    document.getElementById('backBtn').classList.remove('hidden');
+}
+
+function goBack() {
+    if (navHistory.length === 0) return;
+    const current = document.querySelector('.screen.active');
+    if (current) current.classList.remove('active');
+    const prev = navHistory.pop();
+    document.getElementById('screen-' + prev).classList.add('active');
+    document.getElementById('headerTitle').textContent = titles[prev] || 'Laguna';
+    if (navHistory.length === 0) {
+        document.getElementById('backBtn').classList.add('hidden');
+    }
+}
+
+function goHome() {
+    navHistory.length = 0;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-main').classList.add('active');
+    document.getElementById('headerTitle').textContent = 'Laguna';
+    document.getElementById('backBtn').classList.add('hidden');
+}
+
+function toggleAccordion(id) {
+    document.getElementById(id).classList.toggle('open');
+}
+
+// Tab groups
+const tabGroups = {
+    'highlights': ['via-respiro', 'lio-piccolo'],
+    'gastronomia': ['moeche', 'go-ghiozzo', 'valli'],
+    'borghi': ['treporti', 'saccagnana', 'mesole'],
+    'percorsi': ['percorso-borghi', 'percorso-faro', 'percorso-principale', 'percorso-casson'],
+    'flora': ['salicornia', 'spartina', 'limonio'],
+    'fauna': ['fenicotteri', 'aironi']
+};
+
+// Switch tab istantaneo (senza animazione)
+function switchTab(screenId, group) {
+    const current = document.querySelector('.screen.active');
+    const target = document.getElementById('screen-' + screenId);
+    
+    if (!target || current === target) return;
+    
+    // Switch istantaneo
+    if (current) current.classList.remove('active');
+    target.classList.add('active');
+    
+    // Aggiorna titolo
+    document.getElementById('headerTitle').textContent = titles[screenId] || 'Laguna';
+    
+    // Aggiorna tab attiva
+    const tabBar = target.querySelector('.tab-bar');
+    if (tabBar) {
+        tabBar.querySelectorAll('.tab-item').forEach(tab => {
+            tab.classList.remove('active');
+            if (tab.getAttribute('onclick') && tab.getAttribute('onclick').includes("'" + screenId + "'")) {
+                tab.classList.add('active');
+                tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+        });
+    }
+}
+
+// Swipe per navigare tra tab
+let touchStartX = 0;
+let touchStartY = 0;
+let currentGroup = null;
+
+document.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+    
+    // Identifica gruppo corrente
+    const activeScreen = document.querySelector('.screen.active');
+    if (activeScreen) {
+        const tabBar = activeScreen.querySelector('.tab-bar');
+        if (tabBar) {
+            currentGroup = tabBar.getAttribute('data-group');
+        } else {
+            currentGroup = null;
+        }
+    }
+}, { passive: true });
+
+document.addEventListener('touchend', (e) => {
+    if (!currentGroup) return;
+    
+    const diffX = touchStartX - e.changedTouches[0].screenX;
+    const diffY = Math.abs(touchStartY - e.changedTouches[0].screenY);
+    
+    // Ignora scroll verticale
+    if (diffY > 50) return;
+    
+    // Threshold swipe
+    if (Math.abs(diffX) < 80) return;
+    
+    // Trova tab corrente nel gruppo
+    const activeScreen = document.querySelector('.screen.active');
+    const currentId = activeScreen.id.replace('screen-', '');
+    const group = tabGroups[currentGroup];
+    
+    if (!group) return;
+    
+    const idx = group.indexOf(currentId);
+    if (idx === -1) return;
+    
+    if (diffX > 0 && idx < group.length - 1) {
+        // Swipe left → next
+        switchTab(group[idx + 1], currentGroup);
+    } else if (diffX < 0 && idx > 0) {
+        // Swipe right → prev
+        switchTab(group[idx - 1], currentGroup);
+    }
+}, { passive: true });
+
+// Switch inner tab (tab doppio interno)
+function switchInnerTab(screenId, tabId) {
+    const screen = document.getElementById('screen-' + screenId);
+    if (!screen) return;
+    
+    // Aggiorna tab attiva
+    screen.querySelectorAll('.inner-tab').forEach(t => t.classList.remove('active'));
+    screen.querySelector('[data-tab="' + tabId + '"]').classList.add('active');
+    
+    // Mostra contenuto
+    screen.querySelectorAll('.inner-content').forEach(c => c.classList.remove('active'));
+    screen.querySelector('#' + screenId + '-' + tabId).classList.add('active');
+}
+</script>
+</body>
+</html>

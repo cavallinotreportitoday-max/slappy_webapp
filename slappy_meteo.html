@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SLAPPY — Meteo</title>
+    <style>
+        :root {
+            /* Typography */
+            --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-title: 14px;
+            --font-body: 12px;
+            --font-meta: 11px;
+            --weight-title: 700;
+            --weight-body: 500;
+            --weight-meta: 400;
+
+            /* Spacing */
+            --padding-page: 16px;
+            --padding-card: 14px;
+            --gap-sections: 16px;
+            --gap-cards: 10px;
+            --gap-inner: 12px;
+
+            /* Radius */
+            --radius-card: 12px;
+            --radius-button: 12px;
+            --radius-icon: 10px;
+
+            /* Buttons */
+            --button-height: 48px;
+            --button-padding-x: 16px;
+            --button-font-size: 14px;
+            --button-font-weight: 600;
+
+            /* Icons */
+            --icon-size: 40px;
+
+            /* Layout */
+            --header-height: 56px;
+            --nav-height: 60px;
+
+            /* Borders */
+            --border-default: 1px solid var(--gray-200);
+            --border-hover: 1px solid var(--gray-300);
+
+            /* Colors */
+            --teal: #0d9488;
+            --teal-dark: #0f766e;
+            --teal-light: #14b8a6;
+            --teal-50: #f0fdfa;
+            --teal-100: #ccfbf1;
+            --green: #22c55e;
+            --green-dark: #16a34a;
+            --green-50: #f0fdf4;
+            --green-100: #dcfce7;
+            --green-border: #86efac;
+            --red: #dc2626;
+            --red-dark: #b91c1c;
+            --red-50: #fef2f2;
+            --red-100: #fee2e2;
+            --red-border: #fca5a5;
+            --orange: #f59e0b;
+            --orange-dark: #d97706;
+            --orange-50: #fffbeb;
+            --orange-100: #fef3c7;
+            --orange-border: #fcd34d;
+            --blue: #3b82f6;
+            --blue-dark: #2563eb;
+            --blue-50: #eff6ff;
+            --blue-100: #dbeafe;
+            --blue-border: #93c5fd;
+            --yellow: #facc15;
+            --yellow-50: #fefce8;
+            --yellow-100: #fef9c3;
+            --yellow-border: #fde047;
+            --gray-900: #111827;
+            --gray-700: #374151;
+            --gray-600: #4b5563;
+            --gray-500: #6b7280;
+            --gray-400: #9ca3af;
+            --gray-300: #d1d5db;
+            --gray-200: #e5e7eb;
+            --gray-100: #f3f4f6;
+            --gray-50: #f9fafb;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; }
+        body { 
+            font-family: var(--font-system); 
+            font-size: var(--font-body);
+            font-weight: var(--weight-body);
+            background: var(--gray-100); 
+            color: var(--gray-900);
+            line-height: 1.4;
+            -webkit-font-smoothing: antialiased;
+        }
+        .app { 
+            width: 100%; 
+            max-width: 480px;
+            height: 100vh;
+            height: 100dvh;
+            margin: 0 auto;
+            display: flex; 
+            flex-direction: column; 
+            background: var(--gray-50);
+            position: relative;
+            overflow: hidden;
+        }
+        @media (min-width: 481px) { body { display: flex; justify-content: center; } .app { box-shadow: 0 0 20px rgba(0,0,0,0.1); } }
+
+        .header { 
+            background: linear-gradient(135deg, var(--teal), var(--teal-dark)); 
+            color: var(--white); 
+            padding: 14px var(--padding-page);
+            height: var(--header-height);
+            min-height: var(--header-height);
+            display: flex; 
+            align-items: center; 
+            gap: var(--gap-inner);
+            flex-shrink: 0;
+        }
+        .header-back { 
+            width: 36px; 
+            height: 36px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background: rgba(255,255,255,0.15); 
+            border-radius: 50%; 
+            cursor: pointer; 
+            border: 1px solid transparent; 
+            color: var(--white); 
+            font-size: 18px;
+            text-decoration: none;
+        }
+        .header-back:hover { border-color: rgba(255,255,255,0.4); }
+        .header-back.hidden { visibility: hidden; }
+        .header-content { flex: 1; }
+        .header-title { font-size: 17px; font-weight: 600; }
+        .header-subtitle { font-size: var(--font-body); opacity: 0.9; margin-top: 2px; }
+        
+        .screens { flex: 1; overflow: hidden; position: relative; }
+        .screen { 
+            position: absolute; 
+            inset: 0; 
+            overflow-y: auto; 
+            padding: var(--padding-page); 
+            padding-bottom: 80px; 
+            background: var(--gray-50); 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 0.2s; 
+        }
+        .screen.active { opacity: 1; visibility: visible; }
+        
+        .section-label { 
+            font-size: var(--font-meta); 
+            font-weight: 600; 
+            color: var(--gray-500); 
+            text-transform: uppercase; 
+            letter-spacing: 0.6px; 
+            margin: 20px 0 8px; 
+        }
+        .section-label:first-child { margin-top: 0; }
+
+        .intro-text {
+            font-size: var(--font-body);
+            font-weight: var(--weight-body);
+            color: var(--gray-700);
+            line-height: 1.5;
+            padding: var(--padding-card);
+            background: var(--teal-50);
+            border: 1px solid var(--teal-100);
+            border-radius: var(--radius-card);
+            margin-bottom: var(--gap-sections);
+        }
+        .intro-text + .section-label { margin-top: 0; }
+
+        .hero-card { 
+            border-radius: var(--radius-card); 
+            padding: 16px; 
+            color: var(--white); 
+            margin-bottom: var(--gap-cards); 
+            background: linear-gradient(135deg, #60a5fa, var(--blue)); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+        }
+        .hero-left { display: flex; align-items: center; gap: var(--gap-inner); }
+        .hero-icon { font-size: 44px; line-height: 1; }
+        .hero-temps { display: flex; flex-direction: column; }
+        .hero-value { font-size: 40px; font-weight: var(--weight-title); line-height: 1; }
+        .hero-feels { font-size: var(--font-body); font-weight: var(--weight-meta); opacity: 0.9; margin-top: 4px; }
+        .hero-right { text-align: right; }
+        .hero-date { font-size: var(--font-meta); font-weight: var(--weight-meta); opacity: 0.85; margin-bottom: 4px; }
+        .hero-title { font-size: 16px; font-weight: var(--weight-title); }
+        .hero-subtitle { font-size: var(--font-meta); font-weight: var(--weight-meta); opacity: 0.85; margin-top: 2px; }
+
+        /* Tip card - standard con varianti colore */
+        .tip-card {
+            display: flex;
+            align-items: center;
+            gap: var(--gap-inner);
+            border-radius: var(--radius-card);
+            padding: var(--padding-card);
+            margin-bottom: var(--gap-sections);
+            cursor: pointer;
+        }
+        .tip-card:hover { border-color: var(--gray-300); }
+        .tip-card.green { background: var(--green-50); border: 1px solid var(--green-border); }
+        .tip-card.yellow { background: var(--yellow-50); border: 1px solid var(--yellow-border); }
+        .tip-card.red { background: var(--red-50); border: 1px solid var(--red-border); }
+        
+        .tip-card-icon {
+            width: var(--icon-size);
+            height: var(--icon-size);
+            border-radius: var(--radius-icon);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .tip-card.green .tip-card-icon { background: var(--green); }
+        .tip-card.yellow .tip-card-icon { background: var(--yellow); }
+        .tip-card.red .tip-card-icon { background: var(--red); }
+        
+        .tip-card-content { flex: 1; }
+        .tip-card-title { font-size: var(--font-title); font-weight: var(--weight-title); }
+        .tip-card.green .tip-card-title { color: #166534; }
+        .tip-card.yellow .tip-card-title { color: #854d0e; }
+        .tip-card.red .tip-card-title { color: #991b1b; }
+        .tip-card-desc { font-size: var(--font-body); font-weight: var(--weight-body); margin-top: 2px; }
+        .tip-card.green .tip-card-desc { color: #15803d; }
+        .tip-card.yellow .tip-card-desc { color: #a16207; }
+        .tip-card.red .tip-card-desc { color: #b91c1c; }
+        
+        .tip-card-arrow { font-size: 18px; }
+        .tip-card.green .tip-card-arrow { color: #166534; }
+        .tip-card.yellow .tip-card-arrow { color: #854d0e; }
+        .tip-card.red .tip-card-arrow { color: #991b1b; }
+
+        /* Info row compatta */
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: var(--gap-inner);
+            background: var(--white);
+            border: var(--border-default);
+            border-radius: var(--radius-card);
+            padding: var(--padding-card);
+            margin-bottom: var(--gap-cards);
+        }
+        .info-row:hover { border-color: var(--gray-300); }
+        .info-row-icon {
+            width: var(--icon-size);
+            height: var(--icon-size);
+            border-radius: var(--radius-icon);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .info-row-label {
+            font-size: var(--font-title);
+            font-weight: var(--weight-title);
+            color: var(--gray-900);
+            width: 50px;
+            flex-shrink: 0;
+        }
+        .info-row-value {
+            flex: 1;
+            font-size: var(--font-body);
+            font-weight: var(--weight-body);
+            color: var(--gray-600);
+        }
+
+        /* 3 tasti dati primari */
+        .data-buttons {
+            display: flex;
+            gap: var(--gap-cards);
+            margin-bottom: 8px;
+        }
+        .data-btn {
+            flex: 1;
+            background: var(--white);
+            border: var(--border-default);
+            border-radius: var(--radius-card);
+            padding: 12px 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .data-btn:hover { border-color: var(--gray-300); }
+        .data-btn-icon { display: block; font-size: 18px; margin-bottom: 2px; }
+        .data-btn-value { display: block; font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); line-height: 1.2; }
+        .data-btn-label { display: block; font-size: var(--font-meta); font-weight: var(--weight-meta); color: var(--gray-500); }
+
+        /* Tendine dettagli */
+        .detail-panel {
+            display: none;
+            background: var(--gray-50);
+            border: var(--border-default);
+            border-radius: var(--radius-card);
+            padding: var(--padding-card);
+            margin-bottom: var(--gap-cards);
+        }
+        .detail-panel.open { display: block; }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-row span:first-child { font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-600); }
+        .detail-row span:last-child { font-size: var(--font-body); font-weight: var(--weight-title); color: var(--gray-900); }
+
+        .flag-wrapper { margin-bottom: var(--gap-cards); }
+        .flag-note { font-size: var(--font-meta); font-weight: var(--weight-meta); color: var(--gray-500); margin-top: 6px; text-align: center; }
+        .safety-note { font-size: 10px; font-weight: var(--weight-meta); color: var(--gray-400); text-align: center; padding: 8px 0; margin-bottom: var(--gap-cards); }
+        .flag-banner { 
+            border-radius: var(--radius-card); 
+            padding: var(--padding-card); 
+            display: flex;
+            align-items: center;
+            gap: var(--gap-inner);
+        }
+        .flag-banner.green { background: var(--green-50); border: 1px solid var(--green-border); }
+        .flag-banner.yellow { background: var(--yellow-50); border: 1px solid var(--yellow-border); }
+        .flag-banner.red { background: var(--red-50); border: 1px solid var(--red-border); }
+        
+        .flag-icon {
+            width: var(--icon-size);
+            height: var(--icon-size);
+            border-radius: var(--radius-icon);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .flag-icon.green { background: var(--green); }
+        .flag-icon.yellow { background: var(--yellow); }
+        .flag-icon.red { background: var(--red); }
+        
+        .flag-content { flex: 1; }
+        .flag-title { font-size: var(--font-title); font-weight: var(--weight-title); margin-bottom: 2px; }
+        .flag-banner.green .flag-title { color: #166534; }
+        .flag-banner.yellow .flag-title { color: #854d0e; }
+        .flag-banner.red .flag-title { color: #991b1b; }
+        .flag-desc { font-size: var(--font-body); font-weight: var(--weight-body); line-height: 1.4; }
+        .flag-banner.green .flag-desc { color: #15803d; }
+        .flag-banner.yellow .flag-desc { color: #a16207; }
+        .flag-banner.red .flag-desc { color: #b91c1c; }
+        
+        .flag-meta { text-align: right; flex-shrink: 0; }
+        .flag-rain { font-size: var(--font-body); font-weight: var(--weight-title); }
+        .flag-banner.green .flag-rain { color: #166534; }
+        .flag-banner.yellow .flag-rain { color: #854d0e; }
+        .flag-banner.red .flag-rain { color: #991b1b; }
+        .flag-time { font-size: 10px; font-weight: var(--weight-meta); color: var(--gray-500); margin-top: 2px; }
+
+        .rain-alert {
+            background: var(--blue-50);
+            border: 1px solid var(--blue-border);
+            border-radius: var(--radius-icon);
+            padding: 8px 12px;
+            margin-top: 8px;
+            font-size: var(--font-body);
+            font-weight: var(--weight-body);
+            color: #1e40af;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .rain-alert-icon { font-size: var(--font-title); }
+
+        .icon-bg-teal { background: var(--teal-100); }
+        .icon-bg-orange { background: var(--orange-100); }
+        .icon-bg-blue { background: var(--blue-100); }
+        .icon-bg-green { background: var(--green-100); }
+        .icon-bg-yellow { background: var(--yellow-100); }
+        .icon-bg-red { background: var(--red-100); }
+
+        .info-card {
+            background: var(--white);
+            border: var(--border-default);
+            border-radius: var(--radius-card);
+            padding: var(--padding-card);
+            margin-bottom: var(--gap-cards);
+            display: flex;
+            align-items: center;
+            gap: var(--gap-inner);
+        }
+        .info-card.clickable { cursor: pointer; }
+        .info-card.clickable:hover { border-color: var(--gray-300); }
+        .info-card.overview {
+            background: var(--teal-50);
+            border: 1px solid var(--teal-100);
+        }
+        .info-card.overview.green {
+            background: var(--green-50);
+            border: 1px solid var(--green-border);
+        }
+        .info-card.overview.yellow {
+            background: var(--yellow-50);
+            border: 1px solid var(--yellow-border);
+        }
+        .info-card.overview.red {
+            background: var(--red-50);
+            border: 1px solid var(--red-border);
+        }
+        .info-card.overview.green .info-card-title { color: #166534; }
+        .info-card.overview.yellow .info-card-title { color: #854d0e; }
+        .info-card.overview.red .info-card-title { color: #991b1b; }
+        .info-card.overview.green .info-card-line { color: #15803d; }
+        .info-card.overview.yellow .info-card-line { color: #a16207; }
+        .info-card.overview.red .info-card-line { color: #b91c1c; }
+        .info-card-icon {
+            width: var(--icon-size);
+            height: var(--icon-size);
+            border-radius: var(--radius-icon);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .info-card-content { flex: 1; }
+        .info-card-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
+        .info-card-line { font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-600); line-height: 1.4; }
+        .info-card-line + .info-card-line { margin-top: 2px; }
+
+        .forecast-scroll { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: var(--gap-sections); }
+        .forecast-scroll::-webkit-scrollbar { display: none; }
+        .forecast-item { flex-shrink: 0; width: 72px; background: var(--white); border: var(--border-default); border-radius: var(--radius-card); padding: 10px 6px; text-align: center; cursor: pointer; position: relative; }
+        .forecast-item:hover { border-color: var(--gray-300); }
+        .forecast-item.today { background: var(--teal-50); border-color: var(--teal-100); }
+        .forecast-item.best { border: 2px solid var(--green); }
+        .forecast-item.best::after { content: '👍'; position: absolute; top: -8px; right: -4px; font-size: 12px; }
+        .forecast-day { font-size: var(--font-meta); font-weight: 600; color: var(--gray-500); margin-bottom: 4px; }
+        .forecast-item.today .forecast-day { color: var(--teal-dark); }
+        .forecast-icon { font-size: 22px; margin-bottom: 4px; }
+        .forecast-temp { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
+        .forecast-temp-min { font-size: var(--font-meta); font-weight: var(--weight-meta); color: var(--gray-400); }
+        .forecast-status { margin-top: 6px; font-size: 14px; line-height: 1; }
+
+        .smart-tip { background: var(--green-50); border: 1px solid var(--green-border); border-radius: var(--radius-card); padding: var(--padding-card); }
+        .smart-tip.warning { background: var(--orange-50); border-color: var(--orange-border); }
+        .smart-tip.info { background: var(--blue-50); border-color: var(--blue-border); }
+        .smart-tip-content { margin-bottom: var(--gap-inner); }
+        .smart-tip-content.no-margin { margin-bottom: 0; }
+        .smart-tip-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); margin-bottom: 4px; }
+        .smart-tip-text { font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-700); line-height: 1.4; }
+        .smart-tip-cta { display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--white); border: 1px solid var(--teal); color: var(--teal); padding: 12px; border-radius: var(--radius-button); font-size: var(--button-font-size); font-weight: var(--button-font-weight); cursor: pointer; width: 100%; }
+        .smart-tip-cta:hover { border-color: var(--gray-300); }
+
+        .nav-card { background: var(--white); border: var(--border-default); border-radius: var(--radius-card); padding: var(--padding-card); display: flex; align-items: center; gap: var(--gap-inner); margin-bottom: var(--gap-cards); }
+        .nav-card.clickable, .nav-card[onclick] { cursor: pointer; }
+        .nav-card:hover, .nav-card.clickable:hover, .nav-card[onclick]:hover { border-color: var(--gray-300); }
+        .nav-icon { width: var(--icon-size); height: var(--icon-size); border-radius: var(--radius-icon); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .nav-content { flex: 1; }
+        .nav-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
+        .nav-subtitle { font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-500); }
+        .nav-arrow { color: var(--gray-300); font-size: 18px; }
+
+        .quick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap-cards); margin-bottom: var(--gap-sections); }
+        .quick-card { background: var(--white); border: var(--border-default); border-radius: var(--radius-card); padding: var(--padding-card); display: flex; align-items: center; gap: var(--gap-inner); }
+        .quick-icon { width: var(--icon-size); height: var(--icon-size); background: var(--gray-100); border-radius: var(--radius-icon); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .quick-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
+        .quick-sub { font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-500); }
+
+        .hourly-scroll { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: var(--gap-sections); }
+        .hourly-scroll::-webkit-scrollbar { display: none; }
+        .hourly-item { flex-shrink: 0; width: 60px; background: var(--white); border: var(--border-default); border-radius: var(--radius-icon); padding: 10px 6px; text-align: center; }
+        .hourly-item.now { background: var(--teal-50); border-color: var(--teal-100); }
+        .hourly-time { font-size: 10px; font-weight: 600; color: var(--gray-500); margin-bottom: 4px; }
+        .hourly-item.now .hourly-time { color: var(--teal-dark); }
+        .hourly-icon { font-size: 20px; margin-bottom: 2px; }
+        .hourly-temp { font-size: 13px; font-weight: var(--weight-title); color: var(--gray-900); }
+        .hourly-rain { font-size: 9px; font-weight: 600; color: var(--blue); margin-top: 2px; }
+
+        .info-list { background: var(--white); border: var(--border-default); border-radius: var(--radius-card); overflow: hidden; margin-bottom: var(--gap-sections); }
+        .info-list-item { padding: var(--padding-card); display: flex; align-items: center; gap: var(--gap-inner); border-bottom: 1px solid var(--gray-100); }
+        .info-list-item:last-child { border-bottom: none; }
+        .info-list-icon { font-size: 20px; }
+        .info-list-label { font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-500); }
+        .info-list-value { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
+
+        .bottom-nav { background: var(--white); border-top: 1px solid var(--gray-200); display: grid; grid-template-columns: repeat(5, 1fr); height: var(--nav-height); min-height: var(--nav-height); padding: 8px 0; padding-bottom: max(8px, env(safe-area-inset-bottom)); flex-shrink: 0; }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; background: none; border: none; cursor: pointer; color: var(--gray-400); padding: 4px; }
+        .nav-btn.active { color: var(--teal); }
+        .nav-btn-icon { font-size: 20px; }
+        .nav-btn-label { font-size: 10px; font-weight: 600; }
+    </style>
+</head>
+<body>
+<div class="app">
+    <header class="header">
+        <a href="slappy_home.html" class="header-back">←</a>
+        <div class="header-content">
+            <div class="header-title" id="headerTitle">☀️ Meteo</div>
+            <div class="header-subtitle" id="headerSubtitle">Cavallino-Treporti</div>
+        </div>
+    </header>
+
+    <div class="screens">
+        <div class="screen active" id="screen-main">
+            <div class="hero-card" id="heroCard">
+                <div class="hero-left">
+                    <span class="hero-icon" id="heroIcon">☀️</span>
+                    <div class="hero-temps">
+                        <div class="hero-value" id="heroTemp">8°</div>
+                        <div class="hero-feels" id="heroFeels">Percepita 5°</div>
+                    </div>
+                </div>
+                <div class="hero-right">
+                    <div class="hero-date" id="heroDate">Lunedì 13 Gennaio</div>
+                    <div class="hero-title" id="heroTitle">Sereno</div>
+                    <div class="hero-subtitle" id="heroMinMax">Min 4° / Max 12°</div>
+                </div>
+            </div>
+            <!-- 1. BANDIERA = decisione primaria -->
+            <div class="flag-wrapper">
+                <div class="flag-banner green" id="flagBanner">
+                    <div class="flag-icon green" id="flagIcon">🏳️</div>
+                    <div class="flag-content">
+                        <div class="flag-title" id="flagTitle">Bandiera Verde</div>
+                        <div class="flag-desc" id="flagDesc">Balneazione generalmente consentita.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. TIP = cosa fare (suggerimento) -->
+            <div class="tip-card green" id="tipCard" onclick="go('tip')">
+                <div class="tip-card-icon" id="tipIcon">💡</div>
+                <div class="tip-card-content">
+                    <div class="tip-card-title" id="tipAction">Ideale per escursioni</div>
+                    <div class="tip-card-desc" id="tipDesc">Bici sui fortini consigliata.</div>
+                </div>
+                <span class="tip-card-arrow">→</span>
+            </div>
+
+            <!-- 3. DATI PRIMARI - 3 tasti con tendina -->
+            <div class="data-buttons">
+                <div class="data-btn" onclick="toggleDetail('acqua')">
+                    <span class="data-btn-icon">🌡️</span>
+                    <span class="data-btn-value" id="dataAcqua">13°</span>
+                    <span class="data-btn-label">Acqua</span>
+                </div>
+                <div class="data-btn" onclick="toggleDetail('mare')">
+                    <span class="data-btn-icon">🌊</span>
+                    <span class="data-btn-value" id="dataMare">0.3m</span>
+                    <span class="data-btn-label">Mare</span>
+                </div>
+                <div class="data-btn" onclick="toggleDetail('pioggia')">
+                    <span class="data-btn-icon">☔</span>
+                    <span class="data-btn-value" id="dataPioggia">0%</span>
+                    <span class="data-btn-label">Pioggia</span>
+                </div>
+            </div>
+
+            <!-- Tendine dettagli (nascoste) -->
+            <div class="detail-panel" id="detail-acqua">
+                <div class="detail-row"><span>Temperatura acqua</span><span id="detailAcquaTemp">13°C</span></div>
+                <div class="detail-row"><span>Stato mare</span><span id="detailAcquaStato">Calmo</span></div>
+            </div>
+            <div class="detail-panel" id="detail-mare">
+                <div class="detail-row"><span>Altezza onde</span><span id="detailMareOnde">0.3m</span></div>
+                <div class="detail-row"><span>Vento</span><span id="detailMareVento">NE 12 km/h (raffiche 18)</span></div>
+                <div class="detail-row"><span>Marea attuale</span><span id="detailMareMarea">+45cm ↗</span></div>
+                <div class="detail-row"><span>Alta marea</span><span id="detailMareAlta">12:58 (+78cm)</span></div>
+                <div class="detail-row"><span>Bassa marea</span><span id="detailMareBassa">19:15 (-12cm)</span></div>
+            </div>
+            <div class="detail-panel" id="detail-pioggia">
+                <div class="detail-row"><span>Probabilità pioggia</span><span id="detailPioggiaProb">0%</span></div>
+                <div class="detail-row"><span>Alba</span><span id="detailPioggiaAlba">07:42</span></div>
+                <div class="detail-row"><span>Tramonto</span><span id="detailPioggiaTramonto">16:58</span></div>
+                <div class="detail-row"><span>Ore di luce</span><span id="detailPioggiaLuce">9h 16m</span></div>
+            </div>
+
+            <!-- 5. NOTA VERIFICA -->
+            <div class="safety-note">Verifica sempre la bandiera in spiaggia.</div>
+
+            <div class="section-label">Prossimi giorni</div>
+            <div class="forecast-scroll">
+                <div class="forecast-item today" data-day="lun" onclick="selectDay('lun')"><div class="forecast-day">Oggi</div><div class="forecast-icon">☀️</div><div class="forecast-temp">12°</div><div class="forecast-temp-min">4°</div><div class="forecast-status">✅</div></div>
+                <div class="forecast-item" data-day="mar" onclick="selectDay('mar')"><div class="forecast-day">Mar</div><div class="forecast-icon">🌤️</div><div class="forecast-temp">10°</div><div class="forecast-temp-min">3°</div><div class="forecast-status">⚠️</div></div>
+                <div class="forecast-item" data-day="mer" onclick="selectDay('mer')"><div class="forecast-day">Mer</div><div class="forecast-icon">🌧️</div><div class="forecast-temp">9°</div><div class="forecast-temp-min">5°</div><div class="forecast-status">⛔</div></div>
+                <div class="forecast-item" data-day="gio" onclick="selectDay('gio')"><div class="forecast-day">Gio</div><div class="forecast-icon">☀️</div><div class="forecast-temp">12°</div><div class="forecast-temp-min">4°</div><div class="forecast-status">✅</div></div>
+                <div class="forecast-item" data-day="ven" onclick="selectDay('ven')"><div class="forecast-day">Ven</div><div class="forecast-icon">☀️</div><div class="forecast-temp">13°</div><div class="forecast-temp-min">5°</div><div class="forecast-status">✅</div></div>
+                <div class="forecast-item" data-day="sab" onclick="selectDay('sab')"><div class="forecast-day">Sab</div><div class="forecast-icon">⛅</div><div class="forecast-temp">11°</div><div class="forecast-temp-min">4°</div><div class="forecast-status">⚠️</div></div>
+                <div class="forecast-item best" data-day="dom" onclick="selectDay('dom')"><div class="forecast-day">Dom</div><div class="forecast-icon">☀️</div><div class="forecast-temp">14°</div><div class="forecast-temp-min">6°</div><div class="forecast-status">✅</div></div>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-day-lun">
+            <div class="hero-card">
+                <div class="hero-left">
+                    <span class="hero-icon">☀️</span>
+                    <div class="hero-temps">
+                        <div class="hero-value">12°</div>
+                        <div class="hero-feels">Percepita 9°</div>
+                    </div>
+                </div>
+                <div class="hero-right"><div class="hero-date">Lunedì 13 Gennaio</div><div class="hero-title">Sereno</div><div class="hero-subtitle">Min 4° / Max 12°</div></div>
+            </div>
+            
+            <div class="flag-wrapper">
+                <div class="section-label">Stato balneazione</div>
+                <div class="flag-banner green">
+                    <div class="flag-icon green">🏳️</div>
+                    <div class="flag-content">
+                        <div class="flag-title">Bandiera Verde</div>
+                        <div class="flag-desc">Bagno sicuro. Condizioni ideali tutto il giorno.</div>
+                    </div>
+                    <div class="flag-meta"><div class="flag-rain">☔ 0%</div></div>
+                </div>
+            </div>
+
+            <div class="section-label">Orari</div>
+            <div class="hourly-scroll">
+                <div class="hourly-item"><div class="hourly-time">06:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">4°</div></div>
+                <div class="hourly-item now"><div class="hourly-time">09:00</div><div class="hourly-icon">☀️</div><div class="hourly-temp">7°</div></div>
+                <div class="hourly-item"><div class="hourly-time">12:00</div><div class="hourly-icon">☀️</div><div class="hourly-temp">11°</div></div>
+                <div class="hourly-item"><div class="hourly-time">15:00</div><div class="hourly-icon">☀️</div><div class="hourly-temp">12°</div></div>
+                <div class="hourly-item"><div class="hourly-time">18:00</div><div class="hourly-icon">🌅</div><div class="hourly-temp">9°</div></div>
+                <div class="hourly-item"><div class="hourly-time">21:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">6°</div></div>
+                <div class="hourly-item"><div class="hourly-time">00:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">5°</div></div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-icon icon-bg-teal">🌊</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Mare & Vento</div>
+                    <div class="info-card-line">Calmo · onde 0.2m · acqua 13°C</div>
+                    <div class="info-card-line">Vento 8 km/h (raffiche 12) N</div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-icon icon-bg-orange">🌅</div>
+                <div class="info-card-content">
+                    <div class="info-card-title">Sole</div>
+                    <div class="info-card-line">Alba 07:42 · Tramonto 16:58</div>
+                    <div class="info-card-line">Umidità 62%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-day-mar">
+            <div class="hero-card" style="background: linear-gradient(135deg, #94a3b8, #64748b);">
+                <div class="hero-left">
+                    <span class="hero-icon">🌤️</span>
+                    <div class="hero-temps">
+                        <div class="hero-value">10°</div>
+                        <div class="hero-feels">Percepita 6°</div>
+                    </div>
+                </div>
+                <div class="hero-right"><div class="hero-date">Martedì 14 Gennaio</div><div class="hero-title">Parz. nuvoloso</div><div class="hero-subtitle">Min 3° / Max 10°</div></div>
+            </div>
+            
+            <div class="flag-wrapper">
+                <div class="section-label">Stato balneazione</div>
+                <div class="flag-banner yellow">
+                    <div class="flag-icon yellow">🏳️</div>
+                    <div class="flag-content">
+                        <div class="flag-title">Bandiera Gialla</div>
+                        <div class="flag-desc">Bagno con cautela. Vento in aumento, chiudi ombrelloni.</div>
+                    </div>
+                    <div class="flag-meta"><div class="flag-rain">☔ 10%</div></div>
+                </div>
+                <div class="rain-alert">
+                    <span class="rain-alert-icon">🌧️</span>
+                    Possibile pioggia 18–21
+                </div>
+            </div>
+
+            <div class="section-label">Orari</div>
+            <div class="hourly-scroll">
+                <div class="hourly-item"><div class="hourly-time">06:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">3°</div></div>
+                <div class="hourly-item"><div class="hourly-time">09:00</div><div class="hourly-icon">🌤️</div><div class="hourly-temp">5°</div></div>
+                <div class="hourly-item"><div class="hourly-time">12:00</div><div class="hourly-icon">🌤️</div><div class="hourly-temp">9°</div></div>
+                <div class="hourly-item"><div class="hourly-time">15:00</div><div class="hourly-icon">⛅</div><div class="hourly-temp">10°</div></div>
+                <div class="hourly-item"><div class="hourly-time">18:00</div><div class="hourly-icon">☁️</div><div class="hourly-temp">7°</div><div class="hourly-rain">10%</div></div>
+                <div class="hourly-item"><div class="hourly-time">21:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">4°</div></div>
+                <div class="hourly-item"><div class="hourly-time">00:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">4°</div></div>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-day-mer">
+            <div class="hero-card" style="background: linear-gradient(135deg, #64748b, #475569);">
+                <div class="hero-left">
+                    <span class="hero-icon">🌧️</span>
+                    <div class="hero-temps">
+                        <div class="hero-value">9°</div>
+                        <div class="hero-feels">Percepita 5°</div>
+                    </div>
+                </div>
+                <div class="hero-right"><div class="hero-date">Mercoledì 15 Gennaio</div><div class="hero-title">Pioggia</div><div class="hero-subtitle">Min 5° / Max 9°</div></div>
+            </div>
+            
+            <div class="flag-wrapper">
+                <div class="section-label">Stato balneazione</div>
+                <div class="flag-banner red">
+                    <div class="flag-icon red">🏳️</div>
+                    <div class="flag-content">
+                        <div class="flag-title">Bandiera Rossa</div>
+                        <div class="flag-desc">Bagno vietato. Mare mosso, vento forte previsto.</div>
+                    </div>
+                    <div class="flag-meta"><div class="flag-rain">☔ 90%</div></div>
+                </div>
+                <div class="rain-alert">
+                    <span class="rain-alert-icon">🌧️</span>
+                    Pioggia prevista 09–18 (5-10mm)
+                </div>
+            </div>
+
+            <div class="section-label">Orari</div>
+            <div class="hourly-scroll">
+                <div class="hourly-item"><div class="hourly-time">06:00</div><div class="hourly-icon">☁️</div><div class="hourly-temp">5°</div></div>
+                <div class="hourly-item"><div class="hourly-time">09:00</div><div class="hourly-icon">🌧️</div><div class="hourly-temp">6°</div><div class="hourly-rain">70%</div></div>
+                <div class="hourly-item"><div class="hourly-time">12:00</div><div class="hourly-icon">🌧️</div><div class="hourly-temp">8°</div><div class="hourly-rain">90%</div></div>
+                <div class="hourly-item"><div class="hourly-time">15:00</div><div class="hourly-icon">🌧️</div><div class="hourly-temp">9°</div><div class="hourly-rain">80%</div></div>
+                <div class="hourly-item"><div class="hourly-time">18:00</div><div class="hourly-icon">☁️</div><div class="hourly-temp">7°</div><div class="hourly-rain">30%</div></div>
+                <div class="hourly-item"><div class="hourly-time">21:00</div><div class="hourly-icon">☁️</div><div class="hourly-temp">6°</div></div>
+                <div class="hourly-item"><div class="hourly-time">00:00</div><div class="hourly-icon">☁️</div><div class="hourly-temp">5°</div></div>
+            </div>
+            
+            <div class="smart-tip warning"><div class="smart-tip-content no-margin"><div class="smart-tip-title">☂️ Giornata da interni</div><div class="smart-tip-text">Ideale per musei, shopping a Jesolo o Venezia indoor.</div></div></div>
+        </div>
+
+        <div class="screen" id="screen-day-gio">
+            <div class="hero-card">
+                <div class="hero-left"><span class="hero-icon">☀️</span><div class="hero-temps"><div class="hero-value">12°</div><div class="hero-feels">Percepita 10°</div></div></div>
+                <div class="hero-right"><div class="hero-date">Giovedì 16 Gennaio</div><div class="hero-title">Sereno</div><div class="hero-subtitle">Min 4° / Max 12°</div></div>
+            </div>
+            <div class="flag-wrapper">
+                <div class="section-label">Stato balneazione</div>
+                <div class="flag-banner green"><div class="flag-icon green">🏳️</div><div class="flag-content"><div class="flag-title">Bandiera Verde</div><div class="flag-desc">Bagno sicuro. Condizioni ideali.</div></div><div class="flag-meta"><div class="flag-rain">☔ 0%</div></div></div>
+            </div>
+            <div class="section-label">Orari</div>
+            <div class="hourly-scroll">
+                <div class="hourly-item"><div class="hourly-time">06:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">4°</div></div>
+                <div class="hourly-item"><div class="hourly-time">09:00</div><div class="hourly-icon">☀️</div><div class="hourly-temp">7°</div></div>
+                <div class="hourly-item"><div class="hourly-time">12:00</div><div class="hourly-icon">☀️</div><div class="hourly-temp">11°</div></div>
+                <div class="hourly-item"><div class="hourly-time">15:00</div><div class="hourly-icon">☀️</div><div class="hourly-temp">12°</div></div>
+                <div class="hourly-item"><div class="hourly-time">18:00</div><div class="hourly-icon">🌅</div><div class="hourly-temp">9°</div></div>
+                <div class="hourly-item"><div class="hourly-time">21:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">5°</div></div>
+                <div class="hourly-item"><div class="hourly-time">00:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">4°</div></div>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-day-ven">
+            <div class="hero-card">
+                <div class="hero-left"><span class="hero-icon">☀️</span><div class="hero-temps"><div class="hero-value">13°</div><div class="hero-feels">Percepita 11°</div></div></div>
+                <div class="hero-right"><div class="hero-date">Venerdì 17 Gennaio</div><div class="hero-title">Sereno</div><div class="hero-subtitle">Min 5° / Max 13°</div></div>
+            </div>
+            <div class="flag-wrapper">
+                <div class="section-label">Stato balneazione</div>
+                <div class="flag-banner green"><div class="flag-icon green">🏳️</div><div class="flag-content"><div class="flag-title">Bandiera Verde</div><div class="flag-desc">Bagno sicuro. Giornata perfetta.</div></div><div class="flag-meta"><div class="flag-rain">☔ 0%</div></div></div>
+            </div>
+            <div class="section-label">Orari</div>
+            <div class="hourly-scroll">
+                <div class="hourly-item"><div class="hourly-time">06:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">5°</div></div>
+                <div class="hourly-item"><div class="hourly-time">09:00</div><div class="hourly-icon">☀️</div><div class="hourly-temp">8°</div></div>
+                <div class="hourly-item"><div class="hourly-time">12:00</div><div class="hourly-icon">☀️</div><div class="hourly-temp">12°</div></div>
+                <div class="hourly-item"><div class="hourly-time">15:00</div><div class="hourly-icon">☀️</div><div class="hourly-temp">13°</div></div>
+                <div class="hourly-item"><div class="hourly-time">18:00</div><div class="hourly-icon">🌅</div><div class="hourly-temp">10°</div></div>
+                <div class="hourly-item"><div class="hourly-time">21:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">7°</div></div>
+                <div class="hourly-item"><div class="hourly-time">00:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">5°</div></div>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-day-sab">
+            <div class="hero-card" style="background: linear-gradient(135deg, #94a3b8, #64748b);">
+                <div class="hero-left"><span class="hero-icon">⛅</span><div class="hero-temps"><div class="hero-value">11°</div><div class="hero-feels">Percepita 8°</div></div></div>
+                <div class="hero-right"><div class="hero-date">Sabato 18 Gennaio</div><div class="hero-title">Nubi sparse</div><div class="hero-subtitle">Min 4° / Max 11°</div></div>
+            </div>
+            <div class="flag-wrapper">
+                <div class="section-label">Stato balneazione</div>
+                <div class="flag-banner yellow"><div class="flag-icon yellow">🏳️</div><div class="flag-content"><div class="flag-title">Bandiera Gialla</div><div class="flag-desc">Bagno con cautela. Vento variabile.</div></div><div class="flag-meta"><div class="flag-rain">☔ 5%</div></div></div>
+            </div>
+            <div class="section-label">Orari</div>
+            <div class="hourly-scroll">
+                <div class="hourly-item"><div class="hourly-time">06:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">4°</div></div>
+                <div class="hourly-item"><div class="hourly-time">09:00</div><div class="hourly-icon">⛅</div><div class="hourly-temp">6°</div></div>
+                <div class="hourly-item"><div class="hourly-time">12:00</div><div class="hourly-icon">⛅</div><div class="hourly-temp">10°</div></div>
+                <div class="hourly-item"><div class="hourly-time">15:00</div><div class="hourly-icon">🌤️</div><div class="hourly-temp">11°</div></div>
+                <div class="hourly-item"><div class="hourly-time">18:00</div><div class="hourly-icon">☁️</div><div class="hourly-temp">8°</div></div>
+                <div class="hourly-item"><div class="hourly-time">21:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">5°</div></div>
+                <div class="hourly-item"><div class="hourly-time">00:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">5°</div></div>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-day-dom">
+            <div class="hero-card">
+                <div class="hero-left"><span class="hero-icon">☀️</span><div class="hero-temps"><div class="hero-value">14°</div><div class="hero-feels">Percepita 12°</div></div></div>
+                <div class="hero-right"><div class="hero-date">Domenica 19 Gennaio</div><div class="hero-title">Sereno</div><div class="hero-subtitle">Min 6° / Max 14°</div></div>
+            </div>
+            <div class="flag-wrapper">
+                <div class="section-label">Stato balneazione</div>
+                <div class="flag-banner green"><div class="flag-icon green">🏳️</div><div class="flag-content"><div class="flag-title">Bandiera Verde</div><div class="flag-desc">Bagno sicuro. Giornata splendida.</div></div><div class="flag-meta"><div class="flag-rain">☔ 0%</div></div></div>
+            </div>
+            <div class="section-label">Orari</div>
+            <div class="hourly-scroll">
+                <div class="hourly-item"><div class="hourly-time">06:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">6°</div></div>
+                <div class="hourly-item"><div class="hourly-time">09:00</div><div class="hourly-icon">☀️</div><div class="hourly-temp">9°</div></div>
+                <div class="hourly-item"><div class="hourly-time">12:00</div><div class="hourly-icon">☀️</div><div class="hourly-temp">13°</div></div>
+                <div class="hourly-item"><div class="hourly-time">15:00</div><div class="hourly-icon">☀️</div><div class="hourly-temp">14°</div></div>
+                <div class="hourly-item"><div class="hourly-time">18:00</div><div class="hourly-icon">🌅</div><div class="hourly-temp">11°</div></div>
+                <div class="hourly-item"><div class="hourly-time">21:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">8°</div></div>
+                <div class="hourly-item"><div class="hourly-time">00:00</div><div class="hourly-icon">🌙</div><div class="hourly-temp">6°</div></div>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-tip">
+            <!-- Panoramica dinamica -->
+            <div class="info-card overview green" id="tipOverview">
+                <div class="info-card-icon icon-bg-green" id="tipOverviewIcon">🏳️</div>
+                <div class="info-card-content">
+                    <div class="info-card-title" id="tipOverviewTitle">Lunedì: Bandiera Verde</div>
+                    <div class="info-card-line" id="tipOverviewLine1">Sole, mare calmo, vento leggero</div>
+                    <div class="info-card-line" id="tipOverviewLine2">Condizioni ideali per ogni attività</div>
+                </div>
+            </div>
+
+            <div class="section-label">Attività consigliate</div>
+            <div id="tipActivities">
+                <div class="nav-card" onclick="go('fortini')"><div class="nav-icon icon-bg-green">🚴</div><div class="nav-content"><div class="nav-title">Bici sui Fortini</div><div class="nav-subtitle">Vento leggero, perfetto per pedalare</div></div><span class="nav-arrow">→</span></div>
+                <div class="nav-card" onclick="go('spiaggia')"><div class="nav-icon icon-bg-teal">🚶</div><div class="nav-content"><div class="nav-title">Passeggiata in spiaggia</div><div class="nav-subtitle">Mare calmo, aria fresca</div></div><span class="nav-arrow">→</span></div>
+                <div class="nav-card" onclick="go('venezia')"><div class="nav-icon icon-bg-blue">⛴️</div><div class="nav-content"><div class="nav-title">Gita a Venezia</div><div class="nav-subtitle">Marea ok, nessun allagamento previsto</div></div><span class="nav-arrow">→</span></div>
+                <div class="nav-card" onclick="go('ristoranti')"><div class="nav-icon icon-bg-orange">🍽️</div><div class="nav-content"><div class="nav-title">Pranzo vista mare</div><div class="nav-subtitle">Temperatura mite per mangiare fuori</div></div><span class="nav-arrow">→</span></div>
+            </div>
+            
+            <div class="section-label">Porta con te</div>
+            <div class="quick-grid" id="tipGear">
+                <div class="quick-card"><div class="quick-icon">🧥</div><div><span class="quick-title">Giacca</span><br><span class="quick-sub">Per il vento</span></div></div>
+                <div class="quick-card"><div class="quick-icon">🕶️</div><div><span class="quick-title">Occhiali</span><br><span class="quick-sub">Sole forte</span></div></div>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-fortini">
+            <div class="intro-text">20 km lungo la laguna · 2-3 ore · Pianeggiante e facile</div>
+
+            <div class="section-label">Info percorso</div>
+            <div class="info-list">
+                <div class="info-list-item"><span class="info-list-icon">📏</span><div><div class="info-list-label">Lunghezza</div><div class="info-list-value">20 km (andata e ritorno)</div></div></div>
+                <div class="info-list-item"><span class="info-list-icon">⏱️</span><div><div class="info-list-label">Durata</div><div class="info-list-value">2-3 ore con soste</div></div></div>
+                <div class="info-list-item"><span class="info-list-icon">📈</span><div><div class="info-list-label">Difficoltà</div><div class="info-list-value">Facile - pianeggiante</div></div></div>
+                <div class="info-list-item"><span class="info-list-icon">🚲</span><div><div class="info-list-label">Noleggio</div><div class="info-list-value">Disponibile a Punta Sabbioni</div></div></div>
+            </div>
+            
+            <div class="section-label">Punti interesse</div>
+            <div class="nav-card clickable"><div class="nav-icon icon-bg-orange">🏰</div><div class="nav-content"><div class="nav-title">Forte Treporti</div><div class="nav-subtitle">Fortino austro-ungarico restaurato</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card clickable"><div class="nav-icon icon-bg-blue">🌊</div><div class="nav-content"><div class="nav-title">Diga di Punta Sabbioni</div><div class="nav-subtitle">Vista sulla bocca di porto</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card clickable"><div class="nav-icon icon-bg-green">🌿</div><div class="nav-content"><div class="nav-title">Oasi naturalistica</div><div class="nav-subtitle">Area protetta con birdwatching</div></div><span class="nav-arrow">→</span></div>
+        </div>
+
+        <div class="screen" id="screen-spiaggia">
+            <div class="intro-text">Bandiera Blu · Mare calmo oggi · 4 zone balneari attrezzate</div>
+
+            <div class="section-label">Spiagge principali</div>
+            <div class="nav-card clickable"><div class="nav-icon icon-bg-teal">🏖️</div><div class="nav-content"><div class="nav-title">Spiaggia di Cavallino</div><div class="nav-subtitle">Attrezzata, ideale famiglie</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card clickable"><div class="nav-icon icon-bg-green">🌲</div><div class="nav-content"><div class="nav-title">Spiaggia Ca' Savio</div><div class="nav-subtitle">Pineta, area naturale</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card clickable"><div class="nav-icon icon-bg-blue">⛵</div><div class="nav-content"><div class="nav-title">Punta Sabbioni</div><div class="nav-subtitle">Vista laguna, traghetti Venezia</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card clickable"><div class="nav-icon icon-bg-orange">🐕</div><div class="nav-content"><div class="nav-title">Spiaggia Treporti</div><div class="nav-subtitle">Dog beach disponibile</div></div><span class="nav-arrow">→</span></div>
+        </div>
+
+        <div class="screen" id="screen-venezia">
+            <div class="intro-text">Da Punta Sabbioni in 30 min · Marea OK oggi · No allagamenti</div>
+
+            <div class="section-label">Partenze da Punta Sabbioni</div>
+            <div class="info-list">
+                <div class="info-list-item"><span class="info-list-icon">🚢</span><div><div class="info-list-label">Linea 14 - San Marco</div><div class="info-list-value">Ogni 30 min • 30 min viaggio</div></div></div>
+                <div class="info-list-item"><span class="info-list-icon">🚢</span><div><div class="info-list-label">Linea 12 - Burano/Murano</div><div class="info-list-value">Ogni 30 min • 40 min viaggio</div></div></div>
+                <div class="info-list-item"><span class="info-list-icon">💰</span><div><div class="info-list-label">Biglietto singolo</div><div class="info-list-value">€9.50 (valido 75 min)</div></div></div>
+                <div class="info-list-item"><span class="info-list-icon">🎫</span><div><div class="info-list-label">Giornaliero</div><div class="info-list-value">€25 (viaggi illimitati)</div></div></div>
+            </div>
+            
+            <div class="smart-tip"><div class="smart-tip-content no-margin"><div class="smart-tip-title">✅ Oggi marea OK</div><div class="smart-tip-text">Massima +78cm alle 12:58. Nessun allagamento previsto a San Marco.</div></div></div>
+        </div>
+
+        <div class="screen" id="screen-ristoranti">
+            <div class="intro-text">Vista mare · Temperatura mite per sedersi fuori</div>
+
+            <div class="section-label">Consigliati oggi</div>
+            <div class="nav-card"><div class="nav-icon icon-bg-orange">🦞</div><div class="nav-content"><div class="nav-title">Trattoria Al Pescatore</div><div class="nav-subtitle">Pesce fresco • €€€ • Cavallino</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card"><div class="nav-icon icon-bg-teal">🍝</div><div class="nav-content"><div class="nav-title">Ristorante Da Mario</div><div class="nav-subtitle">Cucina veneta • €€ • Ca' Savio</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card"><div class="nav-icon icon-bg-green">🍕</div><div class="nav-content"><div class="nav-title">Pizzeria Luna Rossa</div><div class="nav-subtitle">Pizza e grigliata • € • Treporti</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card"><div class="nav-icon icon-bg-blue">🥗</div><div class="nav-content"><div class="nav-title">Chiosco Sabbia d'Oro</div><div class="nav-subtitle">Pranzo veloce in spiaggia • €</div></div><span class="nav-arrow">→</span></div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-btn"><span class="nav-btn-icon">🏠</span><span class="nav-btn-label">Home</span></button>
+        <button class="nav-btn active"><span class="nav-btn-icon">☀️</span><span class="nav-btn-label">Meteo</span></button>
+        <button class="nav-btn"><span class="nav-btn-icon">🚌</span><span class="nav-btn-label">Trasporti</span></button>
+        <button class="nav-btn"><span class="nav-btn-icon">🧭</span><span class="nav-btn-label">Esplora</span></button>
+        <button class="nav-btn"><span class="nav-btn-icon">🆘</span><span class="nav-btn-label">SOS</span></button>
+    </nav>
+</div>
+
+<script>
+const screens = {
+    'main': { title: '☀️ Meteo', subtitle: 'Cavallino-Treporti', parent: null },
+    'day-lun': { title: '☀️ Lunedì 13', subtitle: 'Previsioni dettagliate', parent: 'main' },
+    'day-mar': { title: '🌤️ Martedì 14', subtitle: 'Previsioni dettagliate', parent: 'main' },
+    'day-mer': { title: '🌧️ Mercoledì 15', subtitle: 'Previsioni dettagliate', parent: 'main' },
+    'day-gio': { title: '☀️ Giovedì 16', subtitle: 'Previsioni dettagliate', parent: 'main' },
+    'day-ven': { title: '☀️ Venerdì 17', subtitle: 'Previsioni dettagliate', parent: 'main' },
+    'day-sab': { title: '⛅ Sabato 18', subtitle: 'Previsioni dettagliate', parent: 'main' },
+    'day-dom': { title: '☀️ Domenica 19', subtitle: 'Previsioni dettagliate', parent: 'main' },
+    'tip': { title: '💡 Cosa fare oggi?', subtitle: 'Consigli in base al meteo', parent: 'main' },
+    'fortini': { title: '🚴 Bici sui Fortini', subtitle: 'Percorso storico', parent: 'tip' },
+    'spiaggia': { title: '🏖️ Spiagge', subtitle: '15 km di litorale', parent: 'tip' },
+    'venezia': { title: '⛴️ Gita a Venezia', subtitle: 'Info traghetti', parent: 'tip' },
+    'ristoranti': { title: '🍽️ Ristoranti', subtitle: 'Dove mangiare', parent: 'tip' }
+};
+
+function go(id) {
+    const screen = document.getElementById('screen-' + id);
+    if (!screen) { id = 'main'; }
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + id)?.classList.add('active');
+    const data = screens[id] || screens['main'];
+    document.getElementById('headerTitle').textContent = data.title;
+    document.getElementById('headerSubtitle').textContent = data.subtitle;
+    document.getElementById('backBtn').classList.toggle('hidden', id === 'main');
+}
+
+function goBack() {
+    const currentScreen = document.querySelector('.screen.active');
+    if (!currentScreen) return;
+    const currentId = currentScreen.id.replace('screen-', '');
+    const parent = screens[currentId]?.parent || 'main';
+    go(parent);
+}
+
+// Dati forecast per aggiornamento inline
+const forecastData = {
+    'lun': { icon: '☀️', temp: '8°', feels: '5°', date: 'Lunedì 13 Gennaio', title: 'Sereno', min: '4°', max: '12°', flag: 'green', flagTitle: 'Bandiera Verde', flagDesc: 'Balneazione generalmente consentita.', tipColor: 'green', tipIcon: '🚴', tipAction: 'Ideale per escursioni', tipDesc: 'Bici sui fortini consigliata.' },
+    'mar': { icon: '🌤️', temp: '6°', feels: '3°', date: 'Martedì 14 Gennaio', title: 'Parz. nuvoloso', min: '3°', max: '10°', flag: 'yellow', flagTitle: 'Bandiera Gialla', flagDesc: 'Balneazione con cautela.', tipColor: 'yellow', tipIcon: '🏛️', tipAction: 'Meglio attività al coperto', tipDesc: 'Musei o shopping a Jesolo.' },
+    'mer': { icon: '🌧️', temp: '7°', feels: '4°', date: 'Mercoledì 15 Gennaio', title: 'Pioggia', min: '5°', max: '9°', flag: 'red', flagTitle: 'Bandiera Rossa', flagDesc: 'Balneazione vietata.', tipColor: 'red', tipIcon: '🛋️', tipAction: 'Giornata da relax indoor', tipDesc: 'Terme o centro benessere.' },
+    'gio': { icon: '☀️', temp: '7°', feels: '4°', date: 'Giovedì 16 Gennaio', title: 'Sereno', min: '4°', max: '12°', flag: 'green', flagTitle: 'Bandiera Verde', flagDesc: 'Balneazione generalmente consentita.', tipColor: 'green', tipIcon: '⛴️', tipAction: 'Ottimo per Venezia', tipDesc: 'Gita in laguna consigliata.' },
+    'ven': { icon: '☀️', temp: '8°', feels: '5°', date: 'Venerdì 17 Gennaio', title: 'Sereno', min: '5°', max: '13°', flag: 'green', flagTitle: 'Bandiera Verde', flagDesc: 'Balneazione generalmente consentita.', tipColor: 'green', tipIcon: '🏖️', tipAction: 'Top per la spiaggia', tipDesc: 'Passeggiata lunga consigliata.' },
+    'sab': { icon: '⛅', temp: '7°', feels: '4°', date: 'Sabato 18 Gennaio', title: 'Nuvoloso', min: '4°', max: '11°', flag: 'yellow', flagTitle: 'Bandiera Gialla', flagDesc: 'Balneazione con cautela.', tipColor: 'yellow', tipIcon: '⏰', tipAction: 'Mattina outdoor, pomeriggio indoor', tipDesc: 'Sfrutta le prime ore.' },
+    'dom': { icon: '☀️', temp: '9°', feels: '6°', date: 'Domenica 19 Gennaio', title: 'Sereno', min: '6°', max: '14°', flag: 'green', flagTitle: 'Bandiera Verde', flagDesc: 'Balneazione generalmente consentita.', tipColor: 'green', tipIcon: '🍽️', tipAction: 'Domenica perfetta', tipDesc: 'Pranzo vista mare ideale.' }
+};
+
+// Contenuti schermata tip per tipo meteo
+const tipScreenData = {
+    'green': {
+        overviewTitle: 'Bandiera Verde',
+        overviewLine1: 'Balneazione generalmente consentita.',
+        overviewLine2: 'Verifica sempre la bandiera in spiaggia.',
+        activities: `
+            <div class="nav-card" onclick="go('fortini')"><div class="nav-icon icon-bg-green">🚴</div><div class="nav-content"><div class="nav-title">Bici sui Fortini</div><div class="nav-subtitle">Percorso panoramico in laguna</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card" onclick="go('spiaggia')"><div class="nav-icon icon-bg-teal">🚶</div><div class="nav-content"><div class="nav-title">Passeggiata in spiaggia</div><div class="nav-subtitle">14 km di litorale</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card" onclick="go('venezia')"><div class="nav-icon icon-bg-blue">⛴️</div><div class="nav-content"><div class="nav-title">Gita a Venezia</div><div class="nav-subtitle">30 min da Punta Sabbioni</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card" onclick="go('ristoranti')"><div class="nav-icon icon-bg-orange">🍽️</div><div class="nav-content"><div class="nav-title">Pranzo vista mare</div><div class="nav-subtitle">Ristoranti sul lungomare</div></div><span class="nav-arrow">→</span></div>
+        `,
+        gear: `
+            <div class="quick-card"><div class="quick-icon">🧥</div><div><span class="quick-title">Giacca</span><br><span class="quick-sub">Per la sera</span></div></div>
+            <div class="quick-card"><div class="quick-icon">🕶️</div><div><span class="quick-title">Occhiali</span><br><span class="quick-sub">Da sole</span></div></div>
+        `
+    },
+    'yellow': {
+        overviewTitle: 'Bandiera Gialla',
+        overviewLine1: 'Balneazione con cautela.',
+        overviewLine2: 'Verifica sempre la bandiera in spiaggia.',
+        activities: `
+            <div class="nav-card" onclick="go('venezia')"><div class="nav-icon icon-bg-blue">⛴️</div><div class="nav-content"><div class="nav-title">Gita a Venezia</div><div class="nav-subtitle">30 min da Punta Sabbioni</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card"><div class="nav-icon icon-bg-orange">🛍️</div><div class="nav-content"><div class="nav-title">Shopping a Jesolo</div><div class="nav-subtitle">Centro commerciale al coperto</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card"><div class="nav-icon icon-bg-teal">🏛️</div><div class="nav-content"><div class="nav-title">Musei e mostre</div><div class="nav-subtitle">Attività culturali</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card" onclick="go('ristoranti')"><div class="nav-icon icon-bg-green">🍽️</div><div class="nav-content"><div class="nav-title">Ristoranti</div><div class="nav-subtitle">Cucina locale</div></div><span class="nav-arrow">→</span></div>
+        `,
+        gear: `
+            <div class="quick-card"><div class="quick-icon">🧥</div><div><span class="quick-title">Giacca</span><br><span class="quick-sub">Pesante</span></div></div>
+            <div class="quick-card"><div class="quick-icon">☂️</div><div><span class="quick-title">Ombrello</span><br><span class="quick-sub">Per sicurezza</span></div></div>
+        `
+    },
+    'red': {
+        overviewTitle: 'Bandiera Rossa',
+        overviewLine1: 'Balneazione vietata.',
+        overviewLine2: 'Verifica sempre la bandiera in spiaggia.',
+        activities: `
+            <div class="nav-card"><div class="nav-icon icon-bg-blue">🧖</div><div class="nav-content"><div class="nav-title">Terme e SPA</div><div class="nav-subtitle">Relax al coperto</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card"><div class="nav-icon icon-bg-orange">🎬</div><div class="nav-content"><div class="nav-title">Cinema</div><div class="nav-subtitle">Multisala a Jesolo</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card"><div class="nav-icon icon-bg-teal">🛍️</div><div class="nav-content"><div class="nav-title">Shopping center</div><div class="nav-subtitle">Gallerie coperte</div></div><span class="nav-arrow">→</span></div>
+            <div class="nav-card" onclick="go('ristoranti')"><div class="nav-icon icon-bg-green">🍝</div><div class="nav-content"><div class="nav-title">Pranzo tipico</div><div class="nav-subtitle">Cucina veneziana</div></div><span class="nav-arrow">→</span></div>
+        `,
+        gear: `
+            <div class="quick-card"><div class="quick-icon">☂️</div><div><span class="quick-title">Ombrello</span><br><span class="quick-sub">Necessario</span></div></div>
+            <div class="quick-card"><div class="quick-icon">🥾</div><div><span class="quick-title">Scarpe</span><br><span class="quick-sub">Impermeabili</span></div></div>
+        `
+    }
+};
+
+// Giorno corrente selezionato
+let currentDay = 'lun';
+
+function selectDay(day) {
+    const data = forecastData[day];
+    if (!data) return;
+    
+    currentDay = day;
+
+    // Aggiorna hero
+    document.getElementById('heroIcon').textContent = data.icon;
+    document.getElementById('heroTemp').textContent = data.temp;
+    document.getElementById('heroFeels').textContent = 'Percepita ' + data.feels;
+    document.getElementById('heroDate').textContent = data.date;
+    document.getElementById('heroTitle').textContent = data.title;
+    document.getElementById('heroMinMax').textContent = 'Min ' + data.min + ' / Max ' + data.max;
+
+    // Aggiorna flag
+    const flagBanner = document.getElementById('flagBanner');
+    const flagIcon = document.getElementById('flagIcon');
+    flagBanner.className = 'flag-banner ' + data.flag;
+    flagIcon.className = 'flag-icon ' + data.flag;
+    document.getElementById('flagTitle').textContent = data.flagTitle;
+    document.getElementById('flagDesc').textContent = data.flagDesc;
+
+    // Aggiorna tip card (colore + icona + testi)
+    const tipCard = document.getElementById('tipCard');
+    tipCard.className = 'tip-card ' + data.tipColor;
+    document.getElementById('tipIcon').textContent = data.tipIcon;
+    document.getElementById('tipAction').textContent = data.tipAction;
+    document.getElementById('tipDesc').textContent = data.tipDesc;
+
+    // Aggiorna schermata tip
+    updateTipScreen(data.flag);
+
+    // Aggiorna selezione forecast
+    document.querySelectorAll('.forecast-item').forEach(item => {
+        item.classList.toggle('today', item.dataset.day === day);
+    });
+}
+
+// Toggle tendine dettagli
+function toggleDetail(id) {
+    const panel = document.getElementById('detail-' + id);
+    if (!panel) return;
+    
+    // Chiudi tutte le altre
+    document.querySelectorAll('.detail-panel').forEach(p => {
+        if (p.id !== 'detail-' + id) p.classList.remove('open');
+    });
+    
+    // Toggle questa
+    panel.classList.toggle('open');
+}
+
+function updateTipScreen(flag) {
+    const tipData = tipScreenData[flag];
+    if (!tipData) return;
+    
+    const data = forecastData[currentDay];
+    
+    // Aggiorna overview
+    const overview = document.getElementById('tipOverview');
+    overview.className = 'info-card overview ' + flag;
+    document.getElementById('tipOverviewIcon').className = 'info-card-icon icon-bg-' + flag;
+    document.getElementById('tipOverviewTitle').textContent = data.date.split(' ')[0] + ': ' + tipData.overviewTitle;
+    document.getElementById('tipOverviewLine1').textContent = tipData.overviewLine1;
+    document.getElementById('tipOverviewLine2').textContent = tipData.overviewLine2;
+    
+    // Aggiorna attività
+    document.getElementById('tipActivities').innerHTML = tipData.activities;
+    
+    // Aggiorna gear
+    document.getElementById('tipGear').innerHTML = tipData.gear;
+}
+</script>
+</body>
+</html>

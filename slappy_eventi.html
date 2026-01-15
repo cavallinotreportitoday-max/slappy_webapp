@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SLAPPY — Eventi</title>
+    <style>
+        :root {
+            /* Typography - SLAPPY STANDARD */
+            --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-title: 14px;
+            --font-body: 12px;
+            --font-meta: 11px;
+            --weight-title: 700;
+            --weight-body: 500;
+            --weight-meta: 400;
+
+            /* Spacing */
+            --padding-page: 16px;
+            --padding-card: 14px;
+            --gap-sections: 16px;
+            --gap-cards: 10px;
+            --gap-inner: 12px;
+
+            /* Radius */
+            --radius-card: 12px;
+            --radius-button: 12px;
+            --radius-icon: 10px;
+
+            /* Colors */
+            --teal: #0d9488;
+            --teal-dark: #0f766e;
+            --teal-50: #f0fdfa;
+            --teal-100: #ccfbf1;
+            --green: #22c55e;
+            --green-50: #f0fdf4;
+            --green-100: #dcfce7;
+            --orange: #f59e0b;
+            --orange-50: #fffbeb;
+            --orange-100: #fef3c7;
+            --orange-border: #fcd34d;
+            --red: #dc2626;
+            --red-50: #fef2f2;
+            --red-100: #fee2e2;
+            --blue: #3b82f6;
+            --blue-50: #eff6ff;
+            --blue-100: #dbeafe;
+            --purple: #8b5cf6;
+            --purple-50: #f5f3ff;
+            --purple-100: #ede9fe;
+            --pink: #ec4899;
+            --pink-50: #fdf2f8;
+            --pink-100: #fce7f3;
+            --amber: #d97706;
+            --amber-50: #fffbeb;
+            --amber-100: #fef3c7;
+            --gray-900: #111827;
+            --gray-700: #374151;
+            --gray-600: #4b5563;
+            --gray-500: #6b7280;
+            --gray-400: #9ca3af;
+            --gray-300: #d1d5db;
+            --gray-200: #e5e7eb;
+            --gray-100: #f3f4f6;
+            --gray-50: #f9fafb;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body { 
+            font-family: var(--font-system); 
+            font-size: var(--font-body);
+            background: var(--gray-100); 
+            color: var(--gray-900);
+            line-height: 1.4;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app { 
+            width: 100%; 
+            max-width: 480px; 
+            margin: 0 auto; 
+            background: var(--white); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column;
+        }
+        @media (min-width: 481px) { 
+            body { display: flex; justify-content: center; } 
+            .app { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); } 
+        }
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+        .header {
+            background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+            color: var(--white);
+            padding: 14px var(--padding-page);
+            display: flex;
+            align-items: center;
+            gap: var(--gap-inner);
+        }
+        .header-back {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            color: var(--white);
+            font-size: 18px;
+            text-decoration: none;
+        }
+        .header-back:hover { background: rgba(255,255,255,0.25); }
+        .header-back.hidden { visibility: hidden; }
+        .header-content { flex: 1; }
+        .header-title { font-size: 17px; font-weight: var(--weight-title); }
+        .header-subtitle { font-size: var(--font-body); opacity: 0.9; margin-top: 2px; }
+
+        /* =====================================================
+           HERO DINAMICO - Sincronizzato con filtri
+           ===================================================== */
+        .hero {
+            background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+            color: var(--white);
+            padding: 20px var(--padding-page);
+            text-align: center;
+        }
+        .hero-period {
+            font-size: 18px;
+            font-weight: var(--weight-title);
+            margin-bottom: 8px;
+        }
+        .hero-summary {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            font-size: var(--font-body);
+            opacity: 0.95;
+        }
+        .hero-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* =====================================================
+           FILTRI con feedback
+           ===================================================== */
+        .filters-section {
+            background: var(--white);
+            padding: var(--padding-card) var(--padding-page);
+            border-bottom: 1px solid var(--gray-100);
+        }
+        .filters-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .filter-chip {
+            flex: 1;
+            padding: 10px 8px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-button);
+            font-size: var(--font-body);
+            font-weight: 600;
+            color: var(--gray-600);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s;
+        }
+        .filter-chip:hover { border-color: var(--teal); }
+        .filter-chip.active {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: var(--white);
+        }
+        .filter-chip-count {
+            display: block;
+            font-size: 10px;
+            font-weight: var(--weight-meta);
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+        
+        /* Feedback testuale sotto i chip */
+        .filter-feedback {
+            font-size: var(--font-meta);
+            color: var(--gray-500);
+            text-align: center;
+            padding-top: 4px;
+        }
+        .filter-feedback strong {
+            color: var(--teal);
+            font-weight: 600;
+        }
+
+        /* =====================================================
+           MAIN CONTENT
+           ===================================================== */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--padding-page);
+            padding-bottom: 100px;
+            background: var(--gray-50);
+        }
+
+        /* =====================================================
+           SEZIONI TEMPORALI - Raggruppamento per momento
+           ===================================================== */
+        .moment-section {
+            margin-bottom: var(--gap-sections);
+        }
+        .moment-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0 10px;
+        }
+        .moment-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gray-700);
+        }
+        .moment-date {
+            font-size: var(--font-meta);
+            color: var(--gray-400);
+        }
+        .moment-count {
+            margin-left: auto;
+            font-size: 10px;
+            color: var(--gray-400);
+            background: var(--gray-100);
+            padding: 2px 8px;
+            border-radius: 100px;
+        }
+
+        /* =====================================================
+           EVENT CARD - Con 1 segnale contestuale
+           ===================================================== */
+        .event-card {
+            background: var(--white);
+            border-radius: var(--radius-card);
+            padding: var(--padding-card);
+            margin-bottom: var(--gap-cards);
+            display: flex;
+            gap: var(--gap-inner);
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.15s;
+        }
+        .event-card:hover {
+            border-color: var(--teal);
+            box-shadow: 0 2px 8px rgba(13, 148, 136, 0.1);
+        }
+        .event-card:active {
+            transform: scale(0.99);
+        }
+
+        /* Time box */
+        .event-time {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 52px;
+            padding: 8px;
+            border-radius: var(--radius-icon);
+            background: var(--gray-100);
+        }
+        .event-time-hour {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gray-700);
+            line-height: 1;
+        }
+        .event-time-period {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* Varianti colore */
+        .event-time.music { background: var(--pink-50); }
+        .event-time.music .event-time-hour { color: var(--pink); }
+        .event-time.theater { background: var(--blue-50); }
+        .event-time.theater .event-time-hour { color: var(--blue); }
+        .event-time.family { background: var(--amber-100); }
+        .event-time.family .event-time-hour { color: var(--amber); }
+        .event-time.free { background: var(--green-100); }
+        .event-time.free .event-time-hour { color: var(--green); }
+        .event-time.outdoor { background: var(--teal-100); }
+        .event-time.outdoor .event-time-hour { color: var(--teal); }
+
+        /* Body */
+        .event-body {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .event-title {
+            font-size: var(--font-title);
+            font-weight: var(--weight-title);
+            color: var(--gray-900);
+            line-height: 1.3;
+        }
+        .event-where {
+            font-size: var(--font-body);
+            color: var(--gray-500);
+            margin-top: 3px;
+        }
+        
+        /* 1 SOLO segnale contestuale per card */
+        .event-signal {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 8px;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 100px;
+            width: fit-content;
+        }
+        .event-signal.free { background: var(--green-100); color: #065f46; }
+        .event-signal.family { background: var(--amber-100); color: #92400e; }
+        .event-signal.weather-ok { background: var(--teal-100); color: var(--teal-dark); }
+        .event-signal.weather-warn { background: var(--orange-100); color: var(--amber); }
+        .event-signal.music { background: var(--pink-100); color: #9d174d; }
+        .event-signal.theater { background: var(--blue-100); color: #1e40af; }
+
+        .event-arrow {
+            align-self: center;
+            color: var(--gray-300);
+            font-size: 18px;
+        }
+
+        /* =====================================================
+           DIVIDER
+           ===================================================== */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 0 8px;
+            font-size: 11px;
+            color: var(--gray-400);
+        }
+        .section-divider::before,
+        .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gray-200);
+        }
+        .section-divider-text {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* =====================================================
+           FOOTER ORIZZONTE
+           ===================================================== */
+        .footer-horizon {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-card);
+            padding: var(--padding-card);
+            text-align: center;
+            margin-top: var(--gap-sections);
+        }
+        .footer-horizon-text {
+            font-size: var(--font-body);
+            color: var(--gray-600);
+            margin-bottom: 10px;
+        }
+        .footer-horizon-text strong {
+            color: var(--teal);
+            font-weight: 700;
+        }
+        .footer-horizon-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-button);
+            font-size: var(--font-body);
+            font-weight: 600;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .footer-horizon-btn:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+        }
+
+        /* =====================================================
+           EMPTY STATE
+           ===================================================== */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray-500);
+        }
+        .empty-icon { font-size: 40px; margin-bottom: 10px; opacity: 0.5; }
+        .empty-text { font-size: var(--font-title); font-weight: 600; }
+        .empty-sub { font-size: var(--font-body); color: var(--gray-400); margin-top: 4px; }
+        .empty-action {
+            margin-top: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            background: var(--teal);
+            color: var(--white);
+            border-radius: var(--radius-button);
+            font-size: var(--font-body);
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* =====================================================
+           SPONSOR STRIP
+           ===================================================== */
+        .sponsor-strip {
+            background: linear-gradient(135deg, var(--amber-50), var(--orange-50));
+            border-top: 1px solid var(--orange-border);
+            padding: 12px var(--padding-page);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .sponsor-label {
+            font-size: 10px;
+            font-weight: var(--weight-meta);
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sponsor-text {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--amber);
+            letter-spacing: 0.3px;
+        }
+
+        /* =====================================================
+           DETAIL SCREEN
+           ===================================================== */
+        .screens { flex: 1; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+        .screen { 
+            position: absolute; 
+            inset: 0; 
+            overflow-y: auto; 
+            background: var(--gray-50); 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .screen.active { opacity: 1; visibility: visible; }
+
+        .detail-card {
+            background: var(--white);
+            border-radius: var(--radius-card);
+            margin: var(--padding-page);
+            overflow: hidden;
+        }
+        .detail-header {
+            background: linear-gradient(135deg, var(--teal-100), var(--teal-50));
+            padding: 24px 20px;
+            text-align: center;
+        }
+        .detail-when {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--teal);
+            color: white;
+            padding: 12px 20px;
+            border-radius: var(--radius-card);
+            margin-bottom: 12px;
+        }
+        .detail-when-day {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .detail-when-full {
+            font-size: var(--font-body);
+            font-weight: var(--weight-body);
+            margin-top: 4px;
+        }
+        .detail-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+        .detail-subtitle {
+            font-size: var(--font-body);
+            color: var(--gray-600);
+            margin-top: 4px;
+        }
+        .detail-body { padding: var(--padding-page); }
+        .detail-row {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-icon { font-size: 20px; }
+        .detail-info { flex: 1; }
+        .detail-label { 
+            font-size: 10px; 
+            color: var(--gray-400); 
+            text-transform: uppercase; 
+            font-weight: 600; 
+            letter-spacing: 0.3px;
+        }
+        .detail-value { 
+            font-size: 15px; 
+            font-weight: var(--weight-body); 
+            color: var(--gray-900); 
+            margin-top: 2px; 
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <div class="screens">
+        <!-- =====================================================
+             MAIN SCREEN
+             ===================================================== -->
+        <div class="screen active" id="screen-main">
+            <!-- HEADER -->
+            <header class="header">
+                <a href="slappy_home.html" class="header-back">←</a>
+                <div class="header-content">
+                    <div class="header-title">Eventi</div>
+                    <div class="header-subtitle">Cosa succede a Cavallino-Treporti</div>
+                </div>
+            </header>
+
+            <!-- HERO DINAMICO - Sincronizzato con filtri -->
+            <div class="hero" id="hero">
+                <div class="hero-period" id="heroPeriod">Questo weekend (17–18 gen)</div>
+                <div class="hero-summary" id="heroSummary">
+                    <span class="hero-stat">🎵 1 musica</span>
+                    <span class="hero-stat">👨‍👩‍👧 2 famiglie</span>
+                    <span class="hero-stat">🆓 3 gratis</span>
+                </div>
+            </div>
+
+            <!-- FILTRI con feedback -->
+            <div class="filters-section">
+                <div class="filters-row">
+                    <button class="filter-chip" data-filter="oggi" onclick="setFilter('oggi')">
+                        Oggi
+                        <span class="filter-chip-count">2</span>
+                    </button>
+                    <button class="filter-chip active" data-filter="weekend" onclick="setFilter('weekend')">
+                        Weekend
+                        <span class="filter-chip-count">3</span>
+                    </button>
+                    <button class="filter-chip" data-filter="gratis" onclick="setFilter('gratis')">
+                        Gratis
+                        <span class="filter-chip-count">5</span>
+                    </button>
+                    <button class="filter-chip" data-filter="famiglie" onclick="setFilter('famiglie')">
+                        Famiglie
+                        <span class="filter-chip-count">3</span>
+                    </button>
+                </div>
+                <div class="filter-feedback" id="filterFeedback">
+                    Stai vedendo: <strong>Weekend · 3 eventi</strong>
+                </div>
+            </div>
+
+            <!-- MAIN CONTENT -->
+            <div class="main-content" id="eventsList">
+                
+                <!-- SABATO SERA -->
+                <div class="moment-section" data-moment="sabato-sera" data-tags="weekend">
+                    <div class="moment-header">
+                        <span class="moment-label">Sabato sera</span>
+                        <span class="moment-date">17 Gen</span>
+                        <span class="moment-count">1</span>
+                    </div>
+
+                    <div class="event-card" onclick="go('jazz')" data-tags="weekend music">
+                        <div class="event-time music">
+                            <span class="event-time-hour">21:00</span>
+                            <span class="event-time-period">Sera</span>
+                        </div>
+                        <div class="event-body">
+                            <div class="event-title">Concerto Jazz al Porto</div>
+                            <div class="event-where">📍 Marina Cavallino</div>
+                            <span class="event-signal music">🎵 Musica live</span>
+                        </div>
+                        <span class="event-arrow">›</span>
+                    </div>
+                </div>
+
+                <!-- DOMENICA MATTINA -->
+                <div class="moment-section" data-moment="domenica-mattina" data-tags="weekend gratis famiglie">
+                    <div class="moment-header">
+                        <span class="moment-label">Domenica mattina</span>
+                        <span class="moment-date">18 Gen</span>
+                        <span class="moment-count">2</span>
+                    </div>
+
+                    <div class="event-card" onclick="go('passeggiata')" data-tags="weekend gratis famiglie outdoor">
+                        <div class="event-time outdoor">
+                            <span class="event-time-hour">10:00</span>
+                            <span class="event-time-period">Matt.</span>
+                        </div>
+                        <div class="event-body">
+                            <div class="event-title">Passeggiata Naturalistica</div>
+                            <div class="event-where">📍 Oasi di Ca' Savio</div>
+                            <span class="event-signal weather-ok">☀️ Meteo ok</span>
+                        </div>
+                        <span class="event-arrow">›</span>
+                    </div>
+
+                    <div class="event-card" onclick="go('mercatino')" data-tags="weekend gratis">
+                        <div class="event-time free">
+                            <span class="event-time-hour">8:00</span>
+                            <span class="event-time-period">Matt.</span>
+                        </div>
+                        <div class="event-body">
+                            <div class="event-title">Mercatino dell'Antiquariato</div>
+                            <div class="event-where">📍 Centro Cavallino</div>
+                            <span class="event-signal free">🆓 Ingresso libero</span>
+                        </div>
+                        <span class="event-arrow">›</span>
+                    </div>
+                </div>
+
+                <!-- OGGI -->
+                <div class="moment-section" data-moment="oggi" data-tags="oggi" style="display: none;">
+                    <div class="moment-header">
+                        <span class="moment-label">Oggi</span>
+                        <span class="moment-date">Giovedì 15 Gen</span>
+                        <span class="moment-count">2</span>
+                    </div>
+
+                    <div class="event-card" onclick="go('festival-arti')" data-tags="oggi theater">
+                        <div class="event-time theater">
+                            <span class="event-time-hour">19:00</span>
+                            <span class="event-time-period">Sera</span>
+                        </div>
+                        <div class="event-body">
+                            <div class="event-title">Festival Piazza delle Arti</div>
+                            <div class="event-where">📍 Sala Teatro Ca' Savio</div>
+                            <span class="event-signal theater">🎬 Teatro</span>
+                        </div>
+                        <span class="event-arrow">›</span>
+                    </div>
+
+                    <div class="event-card" onclick="go('mercato')" data-tags="oggi gratis">
+                        <div class="event-time free">
+                            <span class="event-time-hour">8:00</span>
+                            <span class="event-time-period">Matt.</span>
+                        </div>
+                        <div class="event-body">
+                            <div class="event-title">Mercato Settimanale</div>
+                            <div class="event-where">📍 Piazza Treporti</div>
+                            <span class="event-signal free">🆓 Ingresso libero</span>
+                        </div>
+                        <span class="event-arrow">›</span>
+                    </div>
+                </div>
+
+                <!-- DOMANI -->
+                <div class="moment-section" data-moment="domani" data-tags="gratis famiglie" style="display: none;">
+                    <div class="moment-header">
+                        <span class="moment-label">Domani pomeriggio</span>
+                        <span class="moment-date">Venerdì 16 Gen</span>
+                        <span class="moment-count">1</span>
+                    </div>
+
+                    <div class="event-card" data-tags="gratis famiglie">
+                        <div class="event-time family">
+                            <span class="event-time-hour">17:00</span>
+                            <span class="event-time-period">Pom.</span>
+                        </div>
+                        <div class="event-body">
+                            <div class="event-title">Laboratorio Creativo Bambini</div>
+                            <div class="event-where">📍 Biblioteca Comunale</div>
+                            <span class="event-signal family">👨‍👩‍👧 Per famiglie</span>
+                        </div>
+                        <span class="event-arrow">›</span>
+                    </div>
+                </div>
+
+                <!-- DIVIDER -->
+                <div class="section-divider">
+                    <span class="section-divider-text">Prossimi in Gennaio</span>
+                </div>
+
+                <!-- PROSSIME SETTIMANE -->
+                <div class="moment-section" data-moment="prossimi" data-tags="theater">
+                    <div class="event-card" onclick="go('girotondo')" data-tags="theater">
+                        <div class="event-time theater">
+                            <span class="event-time-hour">21:00</span>
+                            <span class="event-time-period">23 Gen</span>
+                        </div>
+                        <div class="event-body">
+                            <div class="event-title">Girotondo - Teatro Danza</div>
+                            <div class="event-where">📍 Sala Teatro Ca' Savio</div>
+                            <span class="event-signal theater">🎬 Teatro</span>
+                        </div>
+                        <span class="event-arrow">›</span>
+                    </div>
+
+                    <div class="event-card" onclick="go('campiello')" data-tags="theater">
+                        <div class="event-time theater">
+                            <span class="event-time-hour">21:00</span>
+                            <span class="event-time-period">30 Gen</span>
+                        </div>
+                        <div class="event-body">
+                            <div class="event-title">Il Campiello (Goldoni)</div>
+                            <div class="event-where">📍 Sala Teatro Ca' Savio</div>
+                            <span class="event-signal theater">🎬 Teatro</span>
+                        </div>
+                        <span class="event-arrow">›</span>
+                    </div>
+                </div>
+
+                <!-- FOOTER ORIZZONTE -->
+                <div class="footer-horizon">
+                    <div class="footer-horizon-text">
+                        Altri <strong>12 eventi</strong> nei prossimi 30 giorni
+                    </div>
+                    <button class="footer-horizon-btn" onclick="toggleCalendar()">
+                        📅 Calendario completo
+                    </button>
+                </div>
+
+                <!-- EMPTY STATE (nascosto di default) -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">📅</div>
+                    <div class="empty-text">Nessun evento trovato</div>
+                    <div class="empty-sub">Prova a cambiare filtro</div>
+                    <button class="empty-action" onclick="setFilter('weekend')">
+                        Vedi weekend →
+                    </button>
+                </div>
+            </div>
+
+            <!-- SPONSOR STRIP -->
+            <div class="sponsor-strip">
+                <span class="sponsor-label">Con il supporto di</span>
+                <span class="sponsor-text">EQUILIUM GIN</span>
+            </div>
+        </div>
+
+        <!-- =====================================================
+             DETAIL SCREENS
+             ===================================================== -->
+        <div class="screen" id="screen-jazz">
+            <header class="header">
+                <button class="header-back" onclick="goBack()">←</button>
+                <div class="header-content">
+                    <div class="header-title">Dettaglio evento</div>
+                </div>
+            </header>
+            <div class="main-content">
+                <div class="detail-card">
+                    <div class="detail-header" style="background: linear-gradient(135deg, var(--pink-100), var(--pink-50));">
+                        <div class="detail-when" style="background: var(--pink);">
+                            <span class="detail-when-day">17</span>
+                            <span class="detail-when-full">Gennaio · Sabato</span>
+                        </div>
+                        <div class="detail-title">Concerto Jazz al Porto</div>
+                        <div class="detail-subtitle">Musica live</div>
+                    </div>
+                    <div class="detail-body">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <div class="detail-info">
+                                <div class="detail-label">Dove</div>
+                                <div class="detail-value">Marina Cavallino</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <div class="detail-info">
+                                <div class="detail-label">Quando</div>
+                                <div class="detail-value">Ore 21:00</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🎵</span>
+                            <div class="detail-info">
+                                <div class="detail-label">Genere</div>
+                                <div class="detail-value">Jazz & Blues</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sponsor-strip">
+                <span class="sponsor-label">Con il supporto di</span>
+                <span class="sponsor-text">EQUILIUM GIN</span>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-passeggiata">
+            <header class="header">
+                <button class="header-back" onclick="goBack()">←</button>
+                <div class="header-content">
+                    <div class="header-title">Dettaglio evento</div>
+                </div>
+            </header>
+            <div class="main-content">
+                <div class="detail-card">
+                    <div class="detail-header" style="background: linear-gradient(135deg, var(--teal-100), var(--green-100));">
+                        <div class="detail-when" style="background: var(--teal);">
+                            <span class="detail-when-day">18</span>
+                            <span class="detail-when-full">Gennaio · Domenica</span>
+                        </div>
+                        <div class="detail-title">Passeggiata Naturalistica</div>
+                        <div class="detail-subtitle">Escursione guidata</div>
+                    </div>
+                    <div class="detail-body">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <div class="detail-info">
+                                <div class="detail-label">Dove</div>
+                                <div class="detail-value">Oasi di Ca' Savio</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <div class="detail-info">
+                                <div class="detail-label">Quando</div>
+                                <div class="detail-value">Ore 10:00</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">☀️</span>
+                            <div class="detail-info">
+                                <div class="detail-label">Meteo previsto</div>
+                                <div class="detail-value">Sole, 12°C · Ideale per outdoor</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">👨‍👩‍👧</span>
+                            <div class="detail-info">
+                                <div class="detail-label">Per chi</div>
+                                <div class="detail-value">Famiglie, bambini benvenuti</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🆓</span>
+                            <div class="detail-info">
+                                <div class="detail-label">Costo</div>
+                                <div class="detail-value">Gratuito</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sponsor-strip">
+                <span class="sponsor-label">Con il supporto di</span>
+                <span class="sponsor-text">EQUILIUM GIN</span>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-mercatino">
+            <header class="header">
+                <button class="header-back" onclick="goBack()">←</button>
+                <div class="header-content">
+                    <div class="header-title">Dettaglio evento</div>
+                </div>
+            </header>
+            <div class="main-content">
+                <div class="detail-card">
+                    <div class="detail-header" style="background: linear-gradient(135deg, var(--green-100), var(--teal-100));">
+                        <div class="detail-when" style="background: var(--green);">
+                            <span class="detail-when-day">18</span>
+                            <span class="detail-when-full">Gennaio · Domenica</span>
+                        </div>
+                        <div class="detail-title">Mercatino dell'Antiquariato</div>
+                        <div class="detail-subtitle">Mercato</div>
+                    </div>
+                    <div class="detail-body">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <div class="detail-info">
+                                <div class="detail-label">Dove</div>
+                                <div class="detail-value">Centro Cavallino</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <div class="detail-info">
+                                <div class="detail-label">Quando</div>
+                                <div class="detail-value">8:00 - 13:00</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🆓</span>
+                            <div class="detail-info">
+                                <div class="detail-label">Costo</div>
+                                <div class="detail-value">Ingresso libero</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sponsor-strip">
+                <span class="sponsor-label">Con il supporto di</span>
+                <span class="sponsor-text">EQUILIUM GIN</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // =====================================================
+    // DATI EVENTI (in produzione: da API)
+    // =====================================================
+    const eventsData = {
+        oggi: {
+            count: 2,
+            music: 0,
+            family: 0,
+            free: 1,
+            period: 'Oggi (Giovedì 15 gen)'
+        },
+        weekend: {
+            count: 3,
+            music: 1,
+            family: 2,
+            free: 3,
+            period: 'Questo weekend (17–18 gen)'
+        },
+        gratis: {
+            count: 5,
+            music: 0,
+            family: 2,
+            free: 5,
+            period: 'Eventi gratuiti'
+        },
+        famiglie: {
+            count: 3,
+            music: 0,
+            family: 3,
+            free: 2,
+            period: 'Per famiglie'
+        }
+    };
+
+    let currentFilter = 'weekend';
+    const history = ['main'];
+
+    // =====================================================
+    // FILTRO: Aggiorna Hero + Feedback + Lista
+    // =====================================================
+    function setFilter(filter) {
+        currentFilter = filter;
+        const data = eventsData[filter];
+
+        // 1. Aggiorna chip attivo
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.classList.toggle('active', chip.dataset.filter === filter);
+        });
+
+        // 2. Aggiorna Hero (sincronizzato!)
+        document.getElementById('heroPeriod').textContent = data.period;
+        
+        let summaryHTML = '';
+        if (data.music > 0) summaryHTML += `<span class="hero-stat">🎵 ${data.music} musica</span>`;
+        if (data.family > 0) summaryHTML += `<span class="hero-stat">👨‍👩‍👧 ${data.family} famiglie</span>`;
+        if (data.free > 0) summaryHTML += `<span class="hero-stat">🆓 ${data.free} gratis</span>`;
+        if (summaryHTML === '') summaryHTML = `<span class="hero-stat">${data.count} eventi</span>`;
+        document.getElementById('heroSummary').innerHTML = summaryHTML;
+
+        // 3. Aggiorna feedback sotto chip
+        const filterNames = {
+            oggi: 'Oggi',
+            weekend: 'Weekend',
+            gratis: 'Gratis',
+            famiglie: 'Famiglie'
+        };
+        document.getElementById('filterFeedback').innerHTML = 
+            `Stai vedendo: <strong>${filterNames[filter]} · ${data.count} eventi</strong>`;
+
+        // 4. Filtra sezioni visibili
+        filterEvents(filter);
+    }
+
+    function filterEvents(filter) {
+        const sections = document.querySelectorAll('.moment-section');
+        let visibleCount = 0;
+
+        sections.forEach(section => {
+            const tags = section.dataset.tags || '';
+            const shouldShow = tags.includes(filter) || filter === 'all';
+            
+            // Per "weekend" mostra anche le sezioni del weekend
+            const isWeekend = filter === 'weekend' && tags.includes('weekend');
+            const isOggi = filter === 'oggi' && tags.includes('oggi');
+            const isGratis = filter === 'gratis' && tags.includes('gratis');
+            const isFamiglie = filter === 'famiglie' && tags.includes('famiglie');
+
+            if (isWeekend || isOggi || isGratis || isFamiglie) {
+                section.style.display = 'block';
+                visibleCount++;
+            } else if (section.dataset.moment === 'prossimi') {
+                // Sezione "prossimi" sempre visibile
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
+        });
+
+        // Mostra empty state se nessun evento
+        document.getElementById('emptyState').style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    // =====================================================
+    // NAVIGAZIONE
+    // =====================================================
+    function go(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        const screen = document.getElementById('screen-' + id);
+        if (screen) {
+            screen.classList.add('active');
+            screen.scrollTop = 0;
+        }
+        if (id !== history[history.length - 1]) history.push(id);
+    }
+
+    function goBack() {
+        if (history.length > 1) {
+            history.pop();
+            const prev = history[history.length - 1];
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen-' + prev).classList.add('active');
+        }
+    }
+
+    function toggleCalendar() {
+        // Placeholder per calendario completo
+        alert('Calendario completo: in arrivo!');
+    }
+
+    // =====================================================
+    // INIT
+    // =====================================================
+    document.addEventListener('DOMContentLoaded', () => {
+        setFilter('weekend');
+    });
+</script>
+</body>
+</html>
