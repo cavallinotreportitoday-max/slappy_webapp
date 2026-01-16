@@ -73,6 +73,9 @@
             --gray-100: #f3f4f6;
             --gray-50: #f9fafb;
             --white: #ffffff;
+
+            /* Gradient */
+            --gradient-eventi: linear-gradient(135deg, #a78bfa, #8b5cf6);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -106,7 +109,7 @@
            HEADER
            ===================================================== */
         .header {
-            background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+            background: var(--gradient-eventi);
             color: var(--white);
             padding: 14px var(--padding-page);
             display: flex;
@@ -565,7 +568,7 @@
             <header class="header">
                 <a href="slappy_home.html" class="header-back">←</a>
                 <div class="header-content">
-                    <div class="header-title">Eventi</div>
+                    <div class="header-title">🎭 Eventi</div>
                     <div class="header-subtitle">Cosa succede a Cavallino-Treporti</div>
                 </div>
             </header>

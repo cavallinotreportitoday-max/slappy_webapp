@@ -84,6 +84,9 @@
             --gray-100: #f3f4f6;
             --gray-50: #f9fafb;
             --white: #ffffff;
+
+            /* Gradient */
+            --gradient-meteo: linear-gradient(135deg, #fbbf24, #f59e0b);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -112,14 +115,14 @@
         }
         @media (min-width: 481px) { body { display: flex; justify-content: center; } .app { box-shadow: 0 0 20px rgba(0,0,0,0.1); } }
 
-        .header { 
-            background: linear-gradient(135deg, var(--teal), var(--teal-dark)); 
-            color: var(--white); 
+        .header {
+            background: var(--gradient-meteo);
+            color: var(--white);
             padding: 14px var(--padding-page);
             height: var(--header-height);
             min-height: var(--header-height);
-            display: flex; 
-            align-items: center; 
+            display: flex;
+            align-items: center;
             gap: var(--gap-inner);
             flex-shrink: 0;
         }

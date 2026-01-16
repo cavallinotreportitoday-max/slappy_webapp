@@ -81,6 +81,9 @@
             --gray-50: #f9fafb;
             --white: #ffffff;
             --shadow-md: 0 2px 8px rgba(0,0,0,0.06);
+
+            /* Gradient */
+            --gradient-sos: linear-gradient(135deg, #f87171, #dc2626);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -113,13 +116,13 @@
         }
 
         /* ===== HEADER MINIMO ===== */
-        .header { 
-            background: var(--red); 
-            color: var(--white); 
+        .header {
+            background: var(--gradient-sos);
+            color: var(--white);
             padding: 12px var(--padding-page);
             height: 48px;
-            display: flex; 
-            align-items: center; 
+            display: flex;
+            align-items: center;
             gap: 12px;
             flex-shrink: 0;
         }

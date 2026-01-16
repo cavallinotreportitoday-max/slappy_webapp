@@ -70,6 +70,9 @@
             --gray-100: #f3f4f6;
             --gray-50: #f9fafb;
             --white: #ffffff;
+
+            /* Gradient */
+            --gradient-home: linear-gradient(135deg, #14b8a6, #0d9488);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -103,7 +106,7 @@
            1. TOP BAR - Compatta
            ===================================================== */
         .header {
-            background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+            background: var(--gradient-home);
             color: var(--white);
             padding: 14px var(--padding-page) 12px;
         }
