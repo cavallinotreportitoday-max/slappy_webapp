@@ -269,7 +269,7 @@
 <body>
 <div class="app">
     <header class="header">
-        <a href="slappy_home.html" class="header-back">←</a>
+        <a id="backBtn" class="header-back" onclick="goBack()">←</a>
         <div class="header-content">
             <div class="header-title" id="headerTitle">🎯 Attività</div>
             <div class="header-subtitle" id="headerSubtitle">Sport, natura ed esperienze</div>
@@ -2019,7 +2019,7 @@
     </nav>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
     const history = ['main'];
     const screens = {
         'main': { title: '🎯 Attività', subtitle: 'Sport, natura ed esperienze' },
@@ -2048,6 +2048,32 @@
     function go(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         const screen = document.getElementById('screen-' + id);
-        if (screen) { screen.classList.add('active'); screen.scrollTop = 0; }
+        if (screen) {
+            screen.classList.add('active');
+            screen.scrollTop = 0;
+        }
         if (id !== history[history.length - 1]) history.push(id);
-        document.getElementById('headerTitle').textContent = screens[id]?.tit
+        const info = screens[id];
+        if (info) {
+            document.getElementById('headerTitle').textContent = info.title;
+            document.getElementById('headerSubtitle').textContent = info.subtitle;
+        }
+        document.getElementById('backBtn').classList.toggle('hidden', history.length <= 1);
+    }
+
+    function guideChoice(type) {
+        go('filtro-' + type);
+    }
+
+    function goBack() {
+        if (history.length > 1) {
+            history.pop();
+            go(history[history.length - 1]);
+        }
+    }
+
+    // Init
+    go('main');
+</script>
+</body>
+</html>
