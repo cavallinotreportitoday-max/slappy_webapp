@@ -27,6 +27,12 @@
             --radius-button: 12px;
             --radius-icon: 10px;
 
+            /* Buttons */
+            --button-height: 48px;
+            --button-padding-x: 16px;
+            --button-font-size: 14px;
+            --button-font-weight: 600;
+
             /* Icons */
             --icon-size: 40px;
 
@@ -59,7 +65,7 @@
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-system); background: var(--gray-100); min-height: 100vh; }
+        body { font-family: var(--font-system); font-size: var(--font-body); font-weight: var(--weight-body); background: var(--gray-100); min-height: 100vh; }
         .app { width: 100%; max-width: 480px; margin: 0 auto; background: var(--white); min-height: 100vh; display: flex; flex-direction: column; }
         @media (min-width: 481px) { body { display: flex; justify-content: center; } .app { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); } }
         
