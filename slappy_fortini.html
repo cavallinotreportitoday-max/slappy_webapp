@@ -755,10 +755,8 @@
     let history = ['main'];
 
     function go(id) {
-        console.log('go() chiamato con:', id);
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         const screen = document.getElementById('screen-' + id);
-        console.log('screen trovato:', screen);
         if (screen) { screen.classList.add('active'); screen.scrollTop = 0; }
         if (id !== history[history.length - 1]) history.push(id);
         document.getElementById('headerTitle').textContent = screens[id]?.title || '🏛️ Fortificazioni';
@@ -767,7 +765,6 @@
 
         // Inizializza tabs se è una lista
         if (id.startsWith('lista-')) {
-            console.log('È una lista, chiamo renderCategory');
             const cat = id.replace('lista-', '');
             renderCategory(cat);
         }
@@ -836,13 +833,9 @@
 
     // RENDER CATEGORIA con TABS
     function renderCategory(cat) {
-        console.log('renderCategory chiamato con:', cat);
         const data = categoryData[cat];
-        console.log('data:', data);
         const idx = categoryIndex[cat];
-        console.log('idx:', idx);
         const item = data[idx];
-        console.log('item:', item);
 
         // Render tabs
         const tabsHtml = data.map((d, i) => 
