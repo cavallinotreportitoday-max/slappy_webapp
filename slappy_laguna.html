@@ -2373,14 +2373,15 @@ function go(screenId) {
 }
 
 function goBack() {
-    if (navHistory.length === 0) return;
     const current = document.querySelector('.screen.active');
-    if (current) current.classList.remove('active');
-    const prev = navHistory.pop();
-    document.getElementById('screen-' + prev).classList.add('active');
-    document.getElementById('headerTitle').textContent = titles[prev] || 'Laguna';
-    if (navHistory.length === 0) {
-        document.getElementById('backBtn').classList.add('hidden');
+    const currentId = current ? current.id.replace('screen-', '') : 'main';
+    if (currentId === 'main') {
+        window.location.href = 'slappy_home.html';
+    } else {
+        navHistory.length = 0;
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById('screen-main').classList.add('active');
+        document.getElementById('headerTitle').textContent = 'Laguna';
     }
 }
 

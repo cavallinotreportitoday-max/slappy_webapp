@@ -941,8 +941,11 @@ function goBack() {
     const currentScreen = document.querySelector('.screen.active');
     if (!currentScreen) return;
     const currentId = currentScreen.id.replace('screen-', '');
-    const parent = screens[currentId]?.parent || 'main';
-    go(parent);
+    if (currentId === 'main') {
+        window.location.href = 'slappy_home.html';
+    } else {
+        go('main');
+    }
 }
 
 // Dati forecast per aggiornamento inline

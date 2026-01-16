@@ -3999,15 +3999,14 @@
     }
 
     function goBack() {
-        // Torna sempre alla home Trasporti
-        history.length = 1;
-        history[0] = 'main';
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById('screen-main')?.classList.add('active');
-        const info = screens['main'];
-        document.getElementById('headerTitle').textContent = info.title;
-        document.getElementById('headerSubtitle').textContent = info.subtitle;
-        document.getElementById('backBtn').classList.add('hidden');
+        const currentScreen = history[history.length - 1];
+        if (currentScreen === 'main') {
+            window.location.href = 'slappy_home.html';
+        } else {
+            history.length = 1;
+            history[0] = 'main';
+            go('main');
+        }
     }
 
     function switchTab(tab, el) {

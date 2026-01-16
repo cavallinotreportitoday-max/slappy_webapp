@@ -771,20 +771,13 @@
     }
 
     function goBack() {
-        if (history.length > 1) {
-            history.pop(); // rimuovi la pagina corrente
-            const prevPage = history[history.length - 1];
-            // Naviga senza aggiungere alla history
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            const screen = document.getElementById('screen-' + prevPage);
-            if (screen) { screen.classList.add('active'); screen.scrollTop = 0; }
-            document.getElementById('headerTitle').textContent = screens[prevPage]?.title || '🏛️ Fortificazioni';
-            document.getElementById('headerSubtitle').textContent = screens[prevPage]?.subtitle || '';
-            document.getElementById('backBtn').classList.toggle('hidden', prevPage === 'main');
-            
-            if (prevPage.startsWith('lista-')) {
-                renderCategory(prevPage.replace('lista-', ''));
-            }
+        const currentScreen = history[history.length - 1];
+        if (currentScreen === 'main') {
+            window.location.href = 'slappy_home.html';
+        } else {
+            history.length = 1;
+            history[0] = 'main';
+            go('main');
         }
     }
 

@@ -1067,11 +1067,14 @@
     }
 
     function goBack() {
-        if (history.length > 1) {
-            history.pop();
-            const prev = history[history.length - 1];
+        const currentScreen = history[history.length - 1];
+        if (currentScreen === 'main') {
+            window.location.href = 'slappy_home.html';
+        } else {
+            history.length = 1;
+            history[0] = 'main';
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('screen-' + prev).classList.add('active');
+            document.getElementById('screen-main').classList.add('active');
         }
     }
 
