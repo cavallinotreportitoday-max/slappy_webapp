@@ -65,7 +65,7 @@
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-system); font-size: var(--font-body); font-weight: var(--weight-body); background: var(--gray-100); min-height: 100vh; }
+        body { font-family: var(--font-system); font-size: var(--font-body); font-weight: var(--weight-body); background: var(--gray-100); min-height: 100vh; -webkit-font-smoothing: antialiased; }
         .app { width: 100%; max-width: 480px; margin: 0 auto; background: var(--white); min-height: 100vh; display: flex; flex-direction: column; }
         @media (min-width: 481px) { body { display: flex; justify-content: center; } .app { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); } }
         
@@ -172,7 +172,7 @@
         .percorso-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; position: relative; cursor: pointer; }
         .percorso-item:not(:last-child) { border-bottom: 1px solid var(--gray-100); }
         .percorso-item:not(:last-child)::after { content: ''; position: absolute; left: 30px; bottom: -8px; width: 2px; height: 16px; background: var(--teal); z-index: 1; }
-        .percorso-marker { width: 28px; height: 28px; background: linear-gradient(135deg, var(--teal), #10b981); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 700; font-size: 13px; flex-shrink: 0; }
+        .percorso-marker { width: 28px; height: 28px; background: linear-gradient(135deg, var(--teal), #10b981); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 600; font-size: 13px; flex-shrink: 0; }
         .percorso-content { flex: 1; }
         .percorso-title { font-size: var(--font-body); font-weight: 600; color: var(--gray-900); }
         .percorso-meta { font-size: var(--font-meta); color: var(--gray-500); margin-top: 1px; }
