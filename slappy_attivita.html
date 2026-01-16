@@ -2058,7 +2058,7 @@
             document.getElementById('headerTitle').textContent = info.title;
             document.getElementById('headerSubtitle').textContent = info.subtitle;
         }
-        document.getElementById('backBtn').classList.toggle('hidden', history.length <= 1);
+        // Bottone back sempre visibile
     }
 
     function guideChoice(type) {
@@ -2066,9 +2066,15 @@
     }
 
     function goBack() {
-        if (history.length > 1) {
-            history.pop();
-            go(history[history.length - 1]);
+        const currentScreen = history[history.length - 1];
+        if (currentScreen === 'main') {
+            // Se sono nella home attività, vai alla home principale
+            window.location.href = 'slappy_home.html';
+        } else {
+            // Se sono dentro una sotto-sezione, torna alla home attività
+            history.length = 1;
+            history[0] = 'main';
+            go('main');
         }
     }
 
