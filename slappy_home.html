@@ -161,22 +161,21 @@
             letter-spacing: 1.5px;
             opacity: 0.9;
         }
-        .header-weather {
+        .header-settings {
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
             background: rgba(255,255,255,0.2);
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
         }
-        .weather-dot {
-            width: 8px;
-            height: 8px;
-            background: #4ade80;
-            border-radius: 50%;
-            box-shadow: 0 0 6px rgba(74, 222, 128, 0.6);
+        .header-settings:active {
+            background: rgba(255,255,255,0.3);
         }
 
         /* SUBPAGE HEADER */
@@ -290,6 +289,26 @@
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            display: block;
+            text-decoration: none;
+        }
+        .info-card:active {
+            transform: scale(0.98);
+        }
+        .info-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .info-card-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: var(--text-light);
+            font-weight: 300;
         }
         .info-row {
             display: flex;
@@ -336,12 +355,19 @@
             margin-top: 4px;
         }
 
-        /* COMPACT GRID */
+        /* COMPACT GRID - Riga scrollabile */
         .compact-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            display: flex;
+            flex-direction: row;
             gap: 10px;
             margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .compact-grid::-webkit-scrollbar {
+            display: none;
         }
         .compact-card {
             border-radius: var(--radius-card);
@@ -351,6 +377,8 @@
             transition: all 0.2s;
             position: relative;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            flex-shrink: 0;
+            min-width: 90px;
         }
         .compact-card:active {
             transform: scale(0.96);
@@ -573,10 +601,7 @@
                     <div class="header-logo">🌿</div>
                     <div class="header-text">Cavallino-Treporti</div>
                 </div>
-                <div class="header-weather">
-                    <span class="weather-dot"></span>
-                    ☀️ 12°
-                </div>
+                <a href="slappy_impostazioni.html" class="header-settings">⚙️</a>
             </header>
 
             <!-- HERO -->
@@ -595,7 +620,7 @@
                     <div class="section-title">Informazioni</div>
                 </section>
 
-                <div class="info-card">
+                <a href="slappy_meteo.html" class="info-card">
                     <div class="info-row">
                         <div class="info-item">
                             <div class="info-item-icon-wrapper" style="gap: 12px;">
@@ -623,7 +648,8 @@
                             <div class="info-item-label">Porta l'ombrello</div>
                         </div>
                     </div>
-                </div>
+                    <span class="info-card-arrow">›</span>
+                </a>
 
                 <!-- ESPLORA GRID -->
                 <section class="section">
@@ -631,11 +657,6 @@
                         <div class="section-title">Esplora</div>
                     </div>
                     <div class="compact-grid">
-                        <div class="compact-card fortini" onclick="showPage('fortini')">
-                            <span class="compact-count">4</span>
-                            <span class="compact-icon">🏛️</span>
-                            <div class="compact-title">Fortini</div>
-                        </div>
                         <div class="compact-card attivita" onclick="showPage('attivita')">
                             <span class="compact-count">18</span>
                             <span class="compact-icon">🏄</span>
@@ -646,18 +667,15 @@
                             <span class="compact-icon">🎭</span>
                             <div class="compact-title">Eventi</div>
                         </div>
-                        <div class="compact-card prossimamente" onclick="showPage('prossimamente')">
-                            <span class="compact-icon">⏳</span>
-                            <div class="compact-title">Prossimamente</div>
+                        <div class="compact-card fortini" onclick="showPage('fortini')">
+                            <span class="compact-count">4</span>
+                            <span class="compact-icon">🏛️</span>
+                            <div class="compact-title">Fortini</div>
                         </div>
                         <div class="compact-card spiagge" onclick="showPage('spiagge')">
                             <span class="compact-count">8</span>
                             <span class="compact-icon">🏖️</span>
                             <div class="compact-title">Spiagge</div>
-                        </div>
-                        <div class="compact-card mappe" onclick="showPage('mappe')">
-                            <span class="compact-icon">🗺️</span>
-                            <div class="compact-title">Mappe</div>
                         </div>
                     </div>
                 </section>
