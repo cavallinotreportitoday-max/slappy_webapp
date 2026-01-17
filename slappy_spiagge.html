@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SLAPPY — Spiagge v7</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0d9488; --primary-light: #14b8a6; --primary-dark: #0f766e;
+            --primary-50: #f0fdfa; --primary-100: #ccfbf1;
+            --secondary: #d97706; --secondary-100: #fef3c7;
+            --cyan: #06b6d4; --cyan-100: #cffafe;
+            --green: #10b981; --green-100: #d1fae5;
+            --orange: #f59e0b; --orange-100: #fef3c7;
+            --purple: #8b5cf6; --purple-100: #ede9fe;
+            --blue: #3b82f6; --blue-100: #dbeafe;
+            --gray-900: #111827; --gray-700: #374151; --gray-600: #4b5563;
+            --gray-500: #6b7280; --gray-400: #9ca3af; --gray-300: #d1d5db;
+            --gray-200: #e5e7eb; --gray-100: #f3f4f6; --gray-50: #f9fafb; --white: #fff;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07);
+            --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px;
+            --font-display: 'DM Sans', system-ui, sans-serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+            --section-gap: 20px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background: var(--gray-100); min-height: 100vh; }
+        .app { width: 100%; max-width: 480px; margin: 0 auto; background: var(--white); min-height: 100vh; display: flex; flex-direction: column; }
+        @media (min-width: 481px) { body { display: flex; justify-content: center; } .app { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); } }
+        
+        .header { background: radial-gradient(ellipse at center, #b3e5fc 0%, #9bcce3 100%); color: var(--gray-900); padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+        .header-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.1); border-radius: 50%; cursor: pointer; border: none; color: var(--gray-700); font-size: 18px; }
+        .header-back.hidden { visibility: hidden; }
+        .header-content { flex: 1; }
+        .header-title { font-family: var(--font-display); font-size: 17px; font-weight: 600; }
+        .header-subtitle { font-size: 12px; opacity: 0.9; margin-top: 2px; }
+        
+        .screens { flex: 1; overflow: hidden; position: relative; }
+        .screen { position: absolute; inset: 0; overflow-y: auto; padding: 16px; padding-bottom: 80px; background: var(--gray-50); opacity: 0; visibility: hidden; transition: opacity 0.2s; }
+        .screen.active { opacity: 1; visibility: visible; }
+
+        /* HERO */
+        .hero-banner { background: linear-gradient(135deg, var(--cyan), #0891b2); border-radius: var(--radius-lg); padding: 18px; color: var(--white); margin-bottom: var(--section-gap); text-align: center; }
+        .hero-emoji { font-size: 42px; margin-bottom: 6px; }
+        .hero-title { font-family: var(--font-display); font-size: 20px; font-weight: 700; }
+        .hero-subtitle { font-size: 12px; opacity: 0.9; margin-top: 4px; }
+        .hero-stats { display: flex; justify-content: center; gap: 24px; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.2); }
+        .hero-stat-value { font-family: var(--font-display); font-size: 18px; font-weight: 700; }
+        .hero-stat-label { font-size: 10px; opacity: 0.8; }
+
+        /* ============ 4 CARD DECISIONALI - COLORATE (Livello 1) ============ */
+        .decision-section { margin-bottom: var(--section-gap); }
+        .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .decision-card { 
+            border-radius: var(--radius-md); 
+            padding: 16px 12px; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: all 0.15s;
+            border: none;
+            color: var(--white);
+        }
+        .decision-card:active { transform: scale(0.97); opacity: 0.9; }
+        /* Stessa luminosità, colori diversi */
+                .decision-card.free { border: 2px solid #bbf7d0; background: linear-gradient(180deg, var(--white) 0%, #d1fae5 100%); color: var(--gray-900); }
+                .decision-card.equipped { border: 2px solid #ddd6fe; background: linear-gradient(180deg, var(--white) 0%, #ede9fe 100%); color: var(--gray-900); }
+                .decision-card.pet { border: 2px solid #fed7aa; background: linear-gradient(180deg, var(--white) 0%, #ffedd5 100%); color: var(--gray-900); }
+                .decision-card.family { border: 2px solid #a5f3fc; background: linear-gradient(180deg, var(--white) 0%, #cffafe 100%); color: var(--gray-900); }
+        .decision-icon { font-size: 28px; margin-bottom: 6px; }
+        .decision-label { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--gray-800); }
+        .decision-hint { font-size: 10px; color: var(--gray-500); margin-top: 3px; }
+
+        /* SECTION LABEL */
+        .section-label { font-size: 11px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .section-label::after { content: ''; flex: 1; height: 1px; background: var(--gray-200); }
+
+        /* ============ ZONE CARDS - NEUTRE (Livello 2) ============ */
+        .zones-section { margin-bottom: var(--section-gap); }
+        .zone-card { 
+            background: var(--white); 
+            border: 1px solid var(--gray-200); 
+            border-radius: var(--radius-md); 
+            padding: 14px; 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 12px; 
+            cursor: pointer; 
+            margin-bottom: 8px; 
+            transition: all 0.15s; 
+        }
+        .zone-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); }
+        .zone-icon { 
+            width: 44px; height: 44px; 
+            border-radius: var(--radius-sm); 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 22px; 
+            background: var(--gray-100); /* NEUTRO */
+            flex-shrink: 0; 
+        }
+        .zone-content { flex: 1; min-width: 0; }
+        .zone-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--gray-900); }
+        .zone-subtitle { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+        
+        /* TAG "→ Per chi è" - COLORATO (Livello 1, pattern fisso teal) */
+        .zone-for { 
+            font-size: 11px; 
+            font-weight: 600; 
+            color: var(--primary-dark); 
+            margin-top: 6px; 
+            padding: 5px 10px;
+            background: var(--primary-100);
+            border-radius: 4px;
+            display: inline-block;
+        }
+        
+        /* BADGE - NEUTRI/SPENTI (Livello 2, metadati) */
+        .zone-meta { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+        .zone-tag { 
+            font-size: 9px; 
+            font-weight: 500; 
+            padding: 2px 6px; 
+            border-radius: 100px; 
+            background: var(--gray-100); 
+            color: var(--gray-500); /* più spento */
+        }
+        .zone-arrow { color: var(--gray-300); font-size: 18px; margin-top: 10px; }
+
+        /* FILTRI - SECONDARI */
+        .filter-section { margin-bottom: 12px; }
+        .filter-label { font-size: 9px; font-weight: 500; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 6px; }
+        .filter-tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+        .filter-tabs::-webkit-scrollbar { display: none; }
+        .filter-tab { flex-shrink: 0; padding: 4px 8px; background: var(--white); border: 1px solid var(--gray-200); border-radius: 100px; font-size: 10px; font-weight: 500; color: var(--gray-400); cursor: pointer; transition: all 0.15s; }
+        .filter-tab.active { background: var(--gray-100); color: var(--gray-600); }
+        .legend { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 0; border-top: 1px solid var(--gray-100); margin-top: 8px; }
+        .legend-dot { font-size: 9px; color: var(--gray-400); }
+
+        /* SWIPE TABS */
+        .swipe-tabs { display: flex; gap: 8px; padding: 16px; padding-bottom: 12px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        .swipe-tabs::-webkit-scrollbar { display: none; }
+        .swipe-tab { flex-shrink: 0; display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--white); border: 2px solid var(--gray-200); border-radius: 100px; font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .swipe-tab.active { border-color: var(--primary); color: var(--primary-dark); }
+        .swipe-tab-icon { font-size: 16px; }
+        .swipe-container { position: relative; overflow: hidden; touch-action: pan-y pinch-zoom; }
+        .swipe-content { display: flex; transition: transform 0.3s ease-out; }
+        .swipe-panel { flex: 0 0 100%; min-width: 100%; padding: 0 16px 16px; }
+
+        /* ZONE HERO mini */
+        .zone-hero { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
+        .zone-hero-icon { font-size: 28px; }
+        .zone-hero-content { flex: 1; }
+        .zone-hero-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--gray-900); }
+        .zone-hero-sub { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+        /* Tag "Per chi è" anche qui - COLORATO */
+        .zone-hero-for { font-size: 11px; color: var(--primary-dark); font-weight: 600; margin-top: 4px; padding: 4px 8px; background: var(--primary-100); border-radius: 4px; display: inline-block; }
+
+        /* ACCESS LIST - NEUTRO */
+        .access-list { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-md); overflow: hidden; }
+        .access-item { display: flex; align-items: center; gap: 12px; padding: 14px; border-bottom: 1px solid var(--gray-100); cursor: pointer; transition: all 0.15s; }
+        .access-item:last-child { border-bottom: none; }
+        .access-item:hover { background: var(--gray-50); }
+        .access-item.recommended { background: linear-gradient(90deg, var(--primary-50) 0%, var(--white) 100%); border-left: 3px solid var(--primary); padding-left: 11px; }
+        .access-number { width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--gray-100); color: var(--gray-600); font-family: var(--font-display); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .access-content { flex: 1; min-width: 0; }
+        .access-title { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--gray-900); }
+        .access-subtitle { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+        .access-badges { display: flex; gap: 4px; flex-shrink: 0; }
+        .access-badge { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; background: var(--gray-100); }
+        .recommended-badge { font-size: 9px; font-weight: 600; color: var(--primary-dark); background: var(--primary-100); padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
+
+        /* TIP BOX */
+        .tip-box { display: flex; gap: 10px; padding: 12px; border-radius: var(--radius-md); font-size: 12px; margin-top: 14px; background: var(--gray-50); border: 1px solid var(--gray-200); }
+        .tip-box.warning { background: var(--orange-100); border-color: #fcd34d; }
+        .tip-box.info { background: var(--blue-100); border-color: #93c5fd; }
+        .tip-icon { font-size: 16px; }
+        .tip-text { color: var(--gray-600); }
+        .tip-text strong { color: var(--gray-700); }
+
+        .dog-rules { background: var(--orange-100); border: 1px solid #fcd34d; border-radius: var(--radius-md); padding: 12px; margin: 14px 0; }
+        .dog-rules-title { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: #92400e; margin-bottom: 6px; }
+        .dog-rules-list { font-size: 12px; color: #78350f; line-height: 1.5; padding-left: 16px; }
+        .dog-rules.warning { background: var(--red-100); border-color: #fca5a5; }
+        .dog-rules.warning .dog-rules-title { color: #991b1b; }
+        .dog-rules.warning .dog-rules-list { color: #7f1d1d; }
+
+        /* DETAIL */
+        .detail-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 16px; }
+        .detail-header { background: var(--gray-100); padding: 20px; text-align: center; }
+        .detail-header.free-bg { background: linear-gradient(135deg, var(--green-100), #d1fae5); }
+        .detail-header.equipped-bg { background: linear-gradient(135deg, var(--purple-100), #ede9fe); }
+        .detail-header.dog-bg { background: linear-gradient(135deg, var(--orange-100), #fef3c7); }
+        .detail-number { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; background: var(--primary); color: var(--white); font-family: var(--font-display); font-size: 22px; font-weight: 700; border-radius: var(--radius-md); margin-bottom: 12px; }
+        .detail-number.free { background: var(--green); }
+        .detail-number.equipped { background: var(--purple); }
+        .detail-number.dog { background: var(--secondary); }
+        .detail-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--gray-900); }
+        .detail-zone { font-size: 12px; color: var(--gray-500); margin-top: 4px; }
+        .detail-badges { display: flex; justify-content: center; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+        .detail-badge { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 100px; background: var(--white); color: var(--gray-600); }
+        .detail-body { padding: 16px; }
+        .detail-group { margin-bottom: 14px; }
+        .detail-group-title { font-size: 9px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid var(--gray-100); }
+        .detail-row { display: flex; gap: 10px; padding: 8px 0; }
+        .detail-row-icon { font-size: 16px; width: 22px; text-align: center; }
+        .detail-row-content { flex: 1; }
+        .detail-row-value { font-size: 13px; color: var(--gray-700); }
+        .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 10px 0; }
+        .service-item { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 4px; background: var(--gray-50); border-radius: var(--radius-sm); text-align: center; }
+        .service-item.available { background: var(--green-100); }
+        .service-item.unavailable { opacity: 0.3; }
+        .service-icon { font-size: 16px; }
+        .service-label { font-size: 8px; color: var(--gray-500); }
+
+        .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+        .action-btn { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 12px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
+        .action-btn.primary { background: var(--primary); color: var(--white); }
+        .action-btn.secondary { background: var(--white); color: var(--primary); border: 2px solid var(--primary); }
+        .action-btn.full { grid-column: span 2; }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--white); border-top: 1px solid var(--gray-200); display: flex; justify-content: space-around; padding: 8px 0 12px; }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; cursor: pointer; padding: 4px 12px; color: var(--gray-400); }
+        .nav-btn.active { color: var(--primary); }
+        .nav-btn-icon { font-size: 22px; }
+        .nav-btn-label { font-size: 10px; font-weight: 500; }
+    </style>
+</head>
+<body>
+<div class="app">
+    <header class="header">
+        <button class="header-back hidden" id="backBtn" onclick="goBack()">←</button>
+        <div class="header-content">
+            <div class="header-title" id="headerTitle">🏖️ Spiagge</div>
+            <div class="header-subtitle" id="headerSubtitle">15 km di litorale • Bandiera Blu</div>
+        </div>
+    </header>
+    <div class="screens">
+        <!-- MAIN -->
+        <div class="screen active" id="screen-main">
+            <div class="hero-banner">
+                <div class="hero-emoji">🏖️</div>
+                <div class="hero-title">Spiagge di Cavallino-Treporti</div>
+                <div class="hero-subtitle">Sabbia dorata • Fondali bassi • Bandiera Blu</div>
+                <div class="hero-stats">
+                    <div class="hero-stat"><div class="hero-stat-value">15</div><div class="hero-stat-label">km di costa</div></div>
+                    <div class="hero-stat"><div class="hero-stat-value">38</div><div class="hero-stat-label">accessi</div></div>
+                    <div class="hero-stat"><div class="hero-stat-value">7</div><div class="hero-stat-label">zone</div></div>
+                </div>
+            </div>
+            
+            <!-- 4 CARD DECISIONALI - COLORATE -->
+            <div class="decision-section">
+                <div class="decision-grid">
+                    <div class="decision-card free" onclick="go('filtro-libere')">
+                        <div class="decision-icon">🆓</div>
+                        <div class="decision-label">Spiagge libere</div>
+                        <div class="decision-hint">Accesso gratuito</div>
+                    </div>
+                    <div class="decision-card equipped" onclick="go('filtro-stabilimenti')">
+                        <div class="decision-icon">⛱️</div>
+                        <div class="decision-label">Stabilimenti</div>
+                        <div class="decision-hint">Servizi completi</div>
+                    </div>
+                    <div class="decision-card pet" onclick="go('filtro-pet')">
+                        <div class="decision-icon">🐕</div>
+                        <div class="decision-label">Con il cane</div>
+                        <div class="decision-hint">3 aree dedicate</div>
+                    </div>
+                    <div class="decision-card family" onclick="go('filtro-famiglie')">
+                        <div class="decision-icon">👨‍👩‍👧</div>
+                        <div class="decision-label">Famiglie</div>
+                        <div class="decision-hint">Bambini e servizi</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ZONE - NEUTRE con tag "Per chi è" COLORATO -->
+            <div class="zones-section">
+                <div class="section-label">📍 Scegli la zona</div>
+                <div class="zone-card" onclick="goZone(0)">
+                    <div class="zone-icon">⛴️</div>
+                    <div class="zone-content">
+                        <div class="zone-title">Punta Sabbioni</div>
+                        <div class="zone-subtitle">Imbarcadero Venezia • 2km continui</div>
+                        <div class="zone-for">→ Natura + Venezia a 30min</div>
+                        <div class="zone-meta"><span class="zone-tag">🆓 Libera</span><span class="zone-tag">🐕 Cani OK</span></div>
+                    </div>
+                    <span class="zone-arrow">›</span>
+                </div>
+                <div class="zone-card" onclick="goZone(1)">
+                    <div class="zone-icon">🏖️</div>
+                    <div class="zone-content">
+                        <div class="zone-title">Ca' Savio</div>
+                        <div class="zone-subtitle">Spiagge ampie • Marina di Venezia</div>
+                        <div class="zone-for">→ Servizi + parcheggio facile</div>
+                        <div class="zone-meta"><span class="zone-tag">🔄 Mista</span><span class="zone-tag">👶 Famiglie</span></div>
+                    </div>
+                    <span class="zone-arrow">›</span>
+                </div>
+                <div class="zone-card" onclick="goZone(2)">
+                    <div class="zone-icon">🌲</div>
+                    <div class="zone-content">
+                        <div class="zone-title">Ca' Vio</div>
+                        <div class="zone-subtitle">Ambiente naturale • Dune protette</div>
+                        <div class="zone-for">→ Tranquillità e natura</div>
+                        <div class="zone-meta"><span class="zone-tag">🆓 Libera</span></div>
+                    </div>
+                    <span class="zone-arrow">›</span>
+                </div>
+                <div class="zone-card" onclick="goZone(3)">
+                    <div class="zone-icon">👨‍👩‍👧</div>
+                    <div class="zone-content">
+                        <div class="zone-title">Ca' Pasquali</div>
+                        <div class="zone-subtitle">Ideale famiglie • Accessibile</div>
+                        <div class="zone-for">→ Bambini piccoli</div>
+                        <div class="zone-meta"><span class="zone-tag">🔄 Mista</span><span class="zone-tag">♿</span></div>
+                    </div>
+                    <span class="zone-arrow">›</span>
+                </div>
+                <div class="zone-card" onclick="goZone(4)">
+                    <div class="zone-icon">🐾</div>
+                    <div class="zone-content">
+                        <div class="zone-title">Ca' Ballarin</div>
+                        <div class="zone-subtitle">Pet's Beach • Prenotazione</div>
+                        <div class="zone-for">→ Cane in acqua</div>
+                        <div class="zone-meta"><span class="zone-tag">🐕 Dog Beach</span></div>
+                    </div>
+                    <span class="zone-arrow">›</span>
+                </div>
+                <div class="zone-card" onclick="goZone(5)">
+                    <div class="zone-icon">✨</div>
+                    <div class="zone-content">
+                        <div class="zone-title">Ca' di Valle</div>
+                        <div class="zone-subtitle">Riqualificata 2024</div>
+                        <div class="zone-for">→ Novità e servizi moderni</div>
+                        <div class="zone-meta"><span class="zone-tag">🆓 Libera</span></div>
+                    </div>
+                    <span class="zone-arrow">›</span>
+                </div>
+                <div class="zone-card" onclick="goZone(6)">
+                    <div class="zone-icon">🏰</div>
+                    <div class="zone-content">
+                        <div class="zone-title">Cavallino</div>
+                        <div class="zone-subtitle">Centro • Stabilimenti</div>
+                        <div class="zone-for">→ Stabilimenti attrezzati</div>
+                        <div class="zone-meta"><span class="zone-tag">⛱️ Stabilimenti</span></div>
+                    </div>
+                    <span class="zone-arrow">›</span>
+                </div>
+            </div>
+            
+            <!-- FILTRI SECONDARI -->
+            <div class="filter-section">
+                <div class="filter-label">Filtra per tipo</div>
+                <div class="filter-tabs">
+                    <button class="filter-tab active">Tutte</button>
+                    <button class="filter-tab" onclick="go('filtro-libere')">Libere</button>
+                    <button class="filter-tab" onclick="go('filtro-stabilimenti')">Stabilimenti</button>
+                    <button class="filter-tab" onclick="go('filtro-pet')">Pet</button>
+                </div>
+                <div class="legend"><span class="legend-dot">🆓 Libera</span><span class="legend-dot">⛱️ Stabilimento</span><span class="legend-dot">🔄 Mista</span><span class="legend-dot">🐕 Cani</span></div>
+            </div>
+            <div class="tip-box"><span class="tip-icon">🚭</span><div class="tip-text"><strong>Smoke-free:</strong> Vietato fumare su tutto il litorale.</div></div>
+        </div>
+        <!-- ZONE CON SWIPE -->
+        <div class="screen" id="screen-zone">
+            <div class="swipe-tabs" id="zoneTabs">
+                <button class="swipe-tab active" onclick="switchZone(0)"><span class="swipe-tab-icon">⛴️</span> Punta Sabbioni</button>
+                <button class="swipe-tab" onclick="switchZone(1)"><span class="swipe-tab-icon">🏖️</span> Ca' Savio</button>
+                <button class="swipe-tab" onclick="switchZone(2)"><span class="swipe-tab-icon">🌲</span> Ca' Vio</button>
+                <button class="swipe-tab" onclick="switchZone(3)"><span class="swipe-tab-icon">👨‍👩‍👧</span> Ca' Pasquali</button>
+                <button class="swipe-tab" onclick="switchZone(4)"><span class="swipe-tab-icon">🐾</span> Ca' Ballarin</button>
+                <button class="swipe-tab" onclick="switchZone(5)"><span class="swipe-tab-icon">✨</span> Ca' di Valle</button>
+                <button class="swipe-tab" onclick="switchZone(6)"><span class="swipe-tab-icon">🏰</span> Cavallino</button>
+            </div>
+            <div class="swipe-container" id="swipeContainer">
+                <div class="swipe-content" id="swipeContent">
+                    <!-- PANEL 0: Punta Sabbioni -->
+                    <div class="swipe-panel">
+                        <div class="zone-hero"><div class="zone-hero-icon">⛴️</div><div class="zone-hero-content"><div class="zone-hero-title">Punta Sabbioni</div><div class="zone-hero-sub">2 km di spiaggia libera</div><div class="zone-hero-for">→ Natura + Venezia a 30min</div></div></div>
+                        <div class="section-label">Accessi</div>
+                        <div class="access-list">
+                            <div class="access-item recommended" onclick="go('accesso-5')"><div class="access-number">5</div><div class="access-content"><div class="access-title">Via Montello - Beachpoint<span class="recommended-badge">⭐</span></div><div class="access-subtitle">Solo bici/piedi • Chiosco</div></div><div class="access-badges"><span class="access-badge">🆓</span><span class="access-badge">👶</span></div></div>
+                            <div class="access-item" onclick="go('accesso-1')"><div class="access-number">1</div><div class="access-content"><div class="access-title">Lungomare Dante Alighieri</div><div class="access-subtitle">🐕 Cani • Balneazione</div></div><div class="access-badges"><span class="access-badge">🐕</span></div></div>
+                            <div class="access-item" onclick="go('accesso-2')"><div class="access-number">2</div><div class="access-content"><div class="access-title">Via Pordelio</div><div class="access-subtitle">Faro storico</div></div><div class="access-badges"><span class="access-badge">🆓</span></div></div>
+                        </div>
+                        <div class="tip-box"><span class="tip-icon">⛴️</span><div class="tip-text">Venezia: ACTV 12, 14, 15.</div></div>
+                    </div>
+                    <!-- PANEL 1: Ca' Savio -->
+                    <div class="swipe-panel">
+                        <div class="zone-hero"><div class="zone-hero-icon">🏖️</div><div class="zone-hero-content"><div class="zone-hero-title">Ca' Savio</div><div class="zone-hero-sub">Servizi completi</div><div class="zone-hero-for">→ Parcheggio + spiaggia ampia</div></div></div>
+                        <div class="section-label">Accessi</div>
+                        <div class="access-list">
+                            <div class="access-item recommended" onclick="go('accesso-casavio')"><div class="access-number">🔄</div><div class="access-content"><div class="access-title">Via di Ca' Savio<span class="recommended-badge">⭐</span></div><div class="access-subtitle">Parcheggio • Accessibile</div></div><div class="access-badges"><span class="access-badge">🔄</span><span class="access-badge">♿</span></div></div>
+                            <div class="access-item" onclick="go('accesso-jonio')"><div class="access-number">🔄</div><div class="access-content"><div class="access-title">Via Jonio - Soleado</div><div class="access-subtitle">Ristorante • Area giochi</div></div><div class="access-badges"><span class="access-badge">🔄</span><span class="access-badge">👶</span></div></div>
+                        </div>
+                        <div class="tip-box warning"><span class="tip-icon">🐕</span><div class="tip-text">Cani non ammessi a Ca' Savio.</div></div>
+                    </div>
+                    <!-- PANEL 2: Ca' Vio -->
+                    <div class="swipe-panel">
+                        <div class="zone-hero"><div class="zone-hero-icon">🌲</div><div class="zone-hero-content"><div class="zone-hero-title">Ca' Vio</div><div class="zone-hero-sub">Natura</div><div class="zone-hero-for">→ Tranquillità, dune protette</div></div></div>
+                        <div class="section-label">Accessi</div>
+                        <div class="access-list">
+                            <div class="access-item recommended" onclick="go('accesso-15')"><div class="access-number">15</div><div class="access-content"><div class="access-title">Via Batterie - Mareluna<span class="recommended-badge">⭐</span></div><div class="access-subtitle">Meglio in bici</div></div><div class="access-badges"><span class="access-badge">🆓</span></div></div>
+                            <div class="access-item" onclick="go('accesso-14')"><div class="access-number">14</div><div class="access-content"><div class="access-title">Ca' Vio Nord</div><div class="access-subtitle">Tra i campeggi</div></div><div class="access-badges"><span class="access-badge">🆓</span></div></div>
+                        </div>
+                        <div class="tip-box"><span class="tip-icon">🚲</span><div class="tip-text">Consiglio: in bici.</div></div>
+                    </div>
+                    <!-- PANEL 3: Ca' Pasquali -->
+                    <div class="swipe-panel">
+                        <div class="zone-hero"><div class="zone-hero-icon">👨‍👩‍👧</div><div class="zone-hero-content"><div class="zone-hero-title">Ca' Pasquali</div><div class="zone-hero-sub">Famiglie</div><div class="zone-hero-for">→ Bambini piccoli</div></div></div>
+                        <div class="section-label">Accessi</div>
+                        <div class="access-list">
+                            <div class="access-item recommended" onclick="go('accesso-11')"><div class="access-number">11</div><div class="access-content"><div class="access-title">Via Retrone - Fabiola<span class="recommended-badge">⭐</span></div><div class="access-subtitle">Fasciatoio • Grigliate</div></div><div class="access-badges"><span class="access-badge">🔄</span><span class="access-badge">👶</span></div></div>
+                            <div class="access-item" onclick="go('accesso-13')"><div class="access-number">13</div><div class="access-content"><div class="access-title">Via Pisani - Sunshine</div><div class="access-subtitle">Percorso disabili</div></div><div class="access-badges"><span class="access-badge">🆓</span><span class="access-badge">♿</span></div></div>
+                        </div>
+                    </div>
+                    <!-- PANEL 4: Ca' Ballarin -->
+                    <div class="swipe-panel">
+                        <div class="zone-hero"><div class="zone-hero-icon">🐾</div><div class="zone-hero-content"><div class="zone-hero-title">Ca' Ballarin</div><div class="zone-hero-sub">Dog-friendly</div><div class="zone-hero-for">→ Cane in acqua</div></div></div>
+                        <div class="section-label">Accessi</div>
+                        <div class="access-list">
+                            <div class="access-item recommended" onclick="go('accesso-22')"><div class="access-number">22</div><div class="access-content"><div class="access-title">Pet's Beach<span class="recommended-badge">⭐</span></div><div class="access-subtitle">Prenotazione • Balneazione</div></div><div class="access-badges"><span class="access-badge">🐕</span><span class="access-badge">⛱️</span></div></div>
+                            <div class="access-item" onclick="go('accesso-21')"><div class="access-number">21</div><div class="access-content"><div class="access-title">Via Radaelli - Sperone</div><div class="access-subtitle">Libera • Bar</div></div><div class="access-badges"><span class="access-badge">🆓</span></div></div>
+                        </div>
+                        <div class="dog-rules"><div class="dog-rules-title">🐕 Pet's Beach</div><ul class="dog-rules-list"><li>Prenotazione obbligatoria</li><li>Max 25 cani • Tel: 347 2820314</li></ul></div>
+                    </div>
+                    <!-- PANEL 5: Ca' di Valle -->
+                    <div class="swipe-panel">
+                        <div class="zone-hero"><div class="zone-hero-icon">✨</div><div class="zone-hero-content"><div class="zone-hero-title">Ca' di Valle</div><div class="zone-hero-sub">Riqualificata 2024</div><div class="zone-hero-for">→ Novità</div></div></div>
+                        <div class="section-label">Accessi</div>
+                        <div class="access-list">
+                            <div class="access-item recommended"><div class="access-number">—</div><div class="access-content"><div class="access-title">Accessi Ca' di Valle<span class="recommended-badge">⭐ Nuovo</span></div><div class="access-subtitle">Libera • Servizi moderni</div></div><div class="access-badges"><span class="access-badge">🆓</span></div></div>
+                        </div>
+                    </div>
+                    <!-- PANEL 6: Cavallino -->
+                    <div class="swipe-panel">
+                        <div class="zone-hero"><div class="zone-hero-icon">🏰</div><div class="zone-hero-content"><div class="zone-hero-title">Cavallino</div><div class="zone-hero-sub">Centro</div><div class="zone-hero-for">→ Stabilimenti attrezzati</div></div></div>
+                        <div class="section-label">Stabilimenti</div>
+                        <div class="access-list">
+                            <div class="access-item recommended" onclick="go('stab-jambo27')"><div class="access-number">⛱️</div><div class="access-content"><div class="access-title">Jambo Beach 27<span class="recommended-badge">⭐</span></div><div class="access-subtitle">Area kids • Eventi</div></div><div class="access-badges"><span class="access-badge">⛱️</span><span class="access-badge">👶</span></div></div>
+                            <div class="access-item" onclick="go('stab-jambo32')"><div class="access-number">⛱️</div><div class="access-content"><div class="access-title">Jambo Beach 32</div><div class="access-subtitle">Ristorante</div></div><div class="access-badges"><span class="access-badge">⛱️</span></div></div>
+                            <div class="access-item" onclick="go('stab-soundbeach')"><div class="access-number">⛱️</div><div class="access-content"><div class="access-title">Sound Beach</div><div class="access-subtitle">Musica • Aperitivi</div></div><div class="access-badges"><span class="access-badge">⛱️</span></div></div>
+                        </div>
+                        <div class="section-label">Accessi liberi</div>
+                        <div class="access-list">
+                            <div class="access-item" onclick="go('accesso-31')"><div class="access-number">31</div><div class="access-content"><div class="access-title">Piazzale Europa</div><div class="access-subtitle">🐕 Cani (solo terra)</div></div><div class="access-badges"><span class="access-badge">🐕</span><span class="access-badge">🆓</span></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FILTRI -->
+        <div class="screen" id="screen-filtro-libere">
+            <div class="hero-banner" style="background: linear-gradient(135deg, #10b981, #059669);"><div class="hero-emoji">🆓</div><div class="hero-title">Spiagge Libere</div><div class="hero-subtitle">Accesso gratuito</div></div>
+            <div class="tip-box info"><span class="tip-icon">💡</span><div class="tip-text">Tutto il litorale è pubblico.</div></div>
+            <div class="section-label">Consigliati</div>
+            <div class="access-list">
+                <div class="access-item recommended" onclick="go('accesso-5')"><div class="access-number">5</div><div class="access-content"><div class="access-title">Via Montello - Beachpoint<span class="recommended-badge">⭐</span></div><div class="access-subtitle">Punta Sabbioni</div></div><div class="access-badges"><span class="access-badge">🆓</span><span class="access-badge">👶</span></div></div>
+                <div class="access-item" onclick="go('accesso-2')"><div class="access-number">2</div><div class="access-content"><div class="access-title">Via Pordelio</div><div class="access-subtitle">Punta Sabbioni</div></div><div class="access-badges"><span class="access-badge">🆓</span></div></div>
+                <div class="access-item" onclick="go('accesso-14')"><div class="access-number">14</div><div class="access-content"><div class="access-title">Ca' Vio Nord</div><div class="access-subtitle">Ca' Vio</div></div><div class="access-badges"><span class="access-badge">🆓</span></div></div>
+            </div>
+        </div>
+        <div class="screen" id="screen-filtro-stabilimenti">
+            <div class="hero-banner" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"><div class="hero-emoji">⛱️</div><div class="hero-title">Stabilimenti</div><div class="hero-subtitle">Servizi completi</div></div>
+            <div class="section-label">Principali</div>
+            <div class="access-list">
+                <div class="access-item recommended" onclick="go('stab-jambo27')"><div class="access-number">⛱️</div><div class="access-content"><div class="access-title">Jambo Beach 27<span class="recommended-badge">⭐</span></div><div class="access-subtitle">Cavallino</div></div><div class="access-badges"><span class="access-badge">⛱️</span><span class="access-badge">👶</span></div></div>
+                <div class="access-item" onclick="go('stab-jambo32')"><div class="access-number">⛱️</div><div class="access-content"><div class="access-title">Jambo Beach 32</div><div class="access-subtitle">Cavallino</div></div><div class="access-badges"><span class="access-badge">⛱️</span></div></div>
+                <div class="access-item" onclick="go('stab-soundbeach')"><div class="access-number">⛱️</div><div class="access-content"><div class="access-title">Sound Beach</div><div class="access-subtitle">Cavallino</div></div><div class="access-badges"><span class="access-badge">⛱️</span></div></div>
+            </div>
+        </div>
+        <div class="screen" id="screen-filtro-pet">
+            <div class="hero-banner" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><div class="hero-emoji">🐕</div><div class="hero-title">Pet-Friendly</div><div class="hero-subtitle">3 aree</div></div>
+            <div class="section-label">Accessi cani</div>
+            <div class="access-list">
+                <div class="access-item recommended" onclick="go('accesso-22')"><div class="access-number">22</div><div class="access-content"><div class="access-title">Pet's Beach<span class="recommended-badge">⭐</span></div><div class="access-subtitle">Ca' Ballarin</div></div><div class="access-badges"><span class="access-badge">🐕</span><span class="access-badge">⛱️</span></div></div>
+                <div class="access-item" onclick="go('accesso-1')"><div class="access-number">1</div><div class="access-content"><div class="access-title">Lungomare Dante Alighieri</div><div class="access-subtitle">Punta Sabbioni</div></div><div class="access-badges"><span class="access-badge">🐕</span><span class="access-badge">🆓</span></div></div>
+                <div class="access-item" onclick="go('accesso-31')"><div class="access-number">31</div><div class="access-content"><div class="access-title">Piazzale Europa</div><div class="access-subtitle">Cavallino • Solo terra</div></div><div class="access-badges"><span class="access-badge">🐕</span></div></div>
+            </div>
+            <div class="dog-rules warning"><div class="dog-rules-title">⚠️ Ca' Savio: cani non ammessi</div></div>
+        </div>
+        <div class="screen" id="screen-filtro-famiglie">
+            <div class="hero-banner" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"><div class="hero-emoji">👨‍👩‍👧</div><div class="hero-title">Per Famiglie</div><div class="hero-subtitle">Bambini</div></div>
+            <div class="tip-box info"><span class="tip-icon">👶</span><div class="tip-text">Fondali bassi ovunque.</div></div>
+            <div class="section-label">Ideali</div>
+            <div class="access-list">
+                <div class="access-item recommended" onclick="go('accesso-11')"><div class="access-number">11</div><div class="access-content"><div class="access-title">Via Retrone - Fabiola<span class="recommended-badge">⭐</span></div><div class="access-subtitle">Ca' Pasquali</div></div><div class="access-badges"><span class="access-badge">👶</span><span class="access-badge">🔄</span></div></div>
+                <div class="access-item" onclick="go('accesso-5')"><div class="access-number">5</div><div class="access-content"><div class="access-title">Via Montello - Beachpoint</div><div class="access-subtitle">Punta Sabbioni</div></div><div class="access-badges"><span class="access-badge">👶</span><span class="access-badge">🆓</span></div></div>
+                <div class="access-item" onclick="go('stab-jambo27')"><div class="access-number">⛱️</div><div class="access-content"><div class="access-title">Jambo Beach 27</div><div class="access-subtitle">Cavallino</div></div><div class="access-badges"><span class="access-badge">👶</span><span class="access-badge">⛱️</span></div></div>
+            </div>
+        </div>
+        <!-- DETTAGLI -->
+        <div class="screen" id="screen-accesso-1"><div class="detail-card"><div class="detail-header dog-bg"><div class="detail-number dog">1</div><div class="detail-title">Lungomare Dante Alighieri</div><div class="detail-zone">Punta Sabbioni</div><div class="detail-badges"><span class="detail-badge">🐕 Cani</span><span class="detail-badge">🔄</span></div></div><div class="detail-body"><div class="detail-group"><div class="detail-group-title">Info</div><div class="detail-row"><div class="detail-row-icon">🐕</div><div class="detail-row-content"><div class="detail-row-value">✅ Balneazione cani • 80m</div></div></div><div class="detail-row"><div class="detail-row-icon">🅿️</div><div class="detail-row-content"><div class="detail-row-value">Gratuito</div></div></div></div><div class="detail-group"><div class="detail-group-title">Servizi</div><div class="services-grid"><div class="service-item available"><span class="service-icon">🚿</span><span class="service-label">Docce</span></div><div class="service-item available"><span class="service-icon">🚽</span><span class="service-label">WC</span></div><div class="service-item available"><span class="service-icon">🍽️</span><span class="service-label">Bar</span></div><div class="service-item unavailable"><span class="service-icon">⛱️</span><span class="service-label">Lettini</span></div></div></div></div></div><div class="action-row"><button class="action-btn primary full" onclick="window.open('https://maps.google.com/?q=Lungomare+Dante+Alighieri+Punta+Sabbioni')">📍 Naviga</button></div></div>
+        <div class="screen" id="screen-accesso-2"><div class="detail-card"><div class="detail-header free-bg"><div class="detail-number free">2</div><div class="detail-title">Via Pordelio</div><div class="detail-zone">Punta Sabbioni</div></div><div class="detail-body"><div class="detail-row"><div class="detail-row-icon">📍</div><div class="detail-row-content"><div class="detail-row-value">Vicino faro storico</div></div></div></div></div><div class="action-row"><button class="action-btn primary full" onclick="window.open('https://maps.google.com/?q=Via+Pordelio+Punta+Sabbioni')">📍 Naviga</button></div></div>
+        <div class="screen" id="screen-accesso-5"><div class="detail-card"><div class="detail-header free-bg"><div class="detail-number free">5</div><div class="detail-title">Via Montello - Beachpoint</div><div class="detail-zone">Punta Sabbioni</div><div class="detail-badges"><span class="detail-badge">🆓</span><span class="detail-badge">👶</span></div></div><div class="detail-body"><div class="detail-group"><div class="detail-group-title">Info</div><div class="detail-row"><div class="detail-row-icon">🚗</div><div class="detail-row-content"><div class="detail-row-value">Solo bici/piedi</div></div></div></div><div class="detail-group"><div class="detail-group-title">Servizi</div><div class="services-grid"><div class="service-item available"><span class="service-icon">🚿</span><span class="service-label">Docce</span></div><div class="service-item available"><span class="service-icon">🚽</span><span class="service-label">WC</span></div><div class="service-item available"><span class="service-icon">🍽️</span><span class="service-label">Chiosco</span></div><div class="service-item available"><span class="service-icon">👶</span><span class="service-label">Giochi</span></div></div></div><div class="detail-group"><div class="detail-group-title">Nota</div><div class="detail-row"><div class="detail-row-icon">⭐</div><div class="detail-row-content"><div class="detail-row-value">Uno dei più belli.</div></div></div></div></div></div><div class="action-row"><button class="action-btn primary full" onclick="window.open('https://maps.google.com/?q=Beachpoint+alle+Dune+Punta+Sabbioni')">📍 Naviga</button></div></div>
+        <div class="screen" id="screen-accesso-11"><div class="detail-card"><div class="detail-header"><div class="detail-number">11</div><div class="detail-title">Via Retrone - Fabiola</div><div class="detail-zone">Ca' Pasquali</div><div class="detail-badges"><span class="detail-badge">🔄</span><span class="detail-badge">👶</span></div></div><div class="detail-body"><div class="detail-group"><div class="detail-group-title">Info</div><div class="detail-row"><div class="detail-row-icon">👶</div><div class="detail-row-content"><div class="detail-row-value">✅ Fasciatoio</div></div></div></div><div class="detail-group"><div class="detail-group-title">Servizi</div><div class="services-grid"><div class="service-item available"><span class="service-icon">🚿</span><span class="service-label">Docce</span></div><div class="service-item available"><span class="service-icon">👶</span><span class="service-label">Fasciatoio</span></div><div class="service-item available"><span class="service-icon">🍖</span><span class="service-label">Grigliate</span></div><div class="service-item available"><span class="service-icon">⛱️</span><span class="service-label">Lettini</span></div></div></div></div></div><div class="action-row"><button class="action-btn primary full" onclick="window.open('https://maps.google.com/?q=Chiosco+Fabiola+Ca+Pasquali')">📍 Naviga</button></div></div>
+        <div class="screen" id="screen-accesso-13"><div class="detail-card"><div class="detail-header free-bg"><div class="detail-number free">13</div><div class="detail-title">Via Pisani - Sunshine</div><div class="detail-zone">Ca' Pasquali</div><div class="detail-badges"><span class="detail-badge">♿</span></div></div><div class="detail-body"><div class="detail-row"><div class="detail-row-icon">♿</div><div class="detail-row-content"><div class="detail-row-value">Percorso disabili</div></div></div></div></div><div class="action-row"><button class="action-btn primary full" onclick="window.open('https://maps.google.com/?q=Via+Pisani+Ca+Pasquali')">📍 Naviga</button></div></div>
+        <div class="screen" id="screen-accesso-14"><div class="detail-card"><div class="detail-header free-bg"><div class="detail-number free">14</div><div class="detail-title">Ca' Vio Nord</div><div class="detail-zone">Ca' Vio</div></div><div class="detail-body"><div class="detail-row"><div class="detail-row-icon">🌲</div><div class="detail-row-content"><div class="detail-row-value">Tra i campeggi, tranquilla</div></div></div></div></div><div class="action-row"><button class="action-btn primary full" onclick="window.open('https://maps.google.com/?q=Ca+Vio+Nord')">📍 Naviga</button></div></div>
+        <div class="screen" id="screen-accesso-15"><div class="detail-card"><div class="detail-header free-bg"><div class="detail-number free">15</div><div class="detail-title">Via Batterie - Mareluna</div><div class="detail-zone">Ca' Vio</div></div><div class="detail-body"><div class="detail-row"><div class="detail-row-icon">🚲</div><div class="detail-row-content"><div class="detail-row-value">Meglio in bici. Selvaggio.</div></div></div></div></div><div class="action-row"><button class="action-btn primary full" onclick="window.open('https://maps.google.com/?q=Via+delle+Batterie+Mareluna')">📍 Naviga</button></div></div>
+        <div class="screen" id="screen-accesso-21"><div class="detail-card"><div class="detail-header free-bg"><div class="detail-number free">21</div><div class="detail-title">Via Radaelli - Sperone</div><div class="detail-zone">Ca' Ballarin</div></div><div class="detail-body"><div class="detail-row"><div class="detail-row-icon">🍽️</div><div class="detail-row-content"><div class="detail-row-value">Bar Ristorante</div></div></div></div></div><div class="action-row"><button class="action-btn primary full" onclick="window.open('https://maps.google.com/?q=Allo+Sperone+Ca+Ballarin')">📍 Naviga</button></div></div>
+        <div class="screen" id="screen-accesso-22"><div class="detail-card"><div class="detail-header dog-bg"><div class="detail-number dog">22</div><div class="detail-title">Pet's Beach</div><div class="detail-zone">Ca' Ballarin</div><div class="detail-badges"><span class="detail-badge">🐕</span><span class="detail-badge">⛱️</span></div></div><div class="detail-body"><div class="detail-group"><div class="detail-group-title">Info</div><div class="detail-row"><div class="detail-row-icon">🐕</div><div class="detail-row-content"><div class="detail-row-value">✅ Balneazione cani</div></div></div><div class="detail-row"><div class="detail-row-icon">📅</div><div class="detail-row-content"><div class="detail-row-value">Prenotazione obbligatoria</div></div></div><div class="detail-row"><div class="detail-row-icon">📞</div><div class="detail-row-content"><div class="detail-row-value">347 2820314</div></div></div></div></div></div><div class="action-row"><button class="action-btn primary" onclick="window.open('https://maps.google.com/?q=Pets+Beach+Ca+Ballarin')">📍 Naviga</button><button class="action-btn secondary" onclick="window.open('tel:3472820314')">📞 Chiama</button></div></div>
+        <div class="screen" id="screen-accesso-31"><div class="detail-card"><div class="detail-header dog-bg"><div class="detail-number dog">31</div><div class="detail-title">Piazzale Europa</div><div class="detail-zone">Cavallino</div><div class="detail-badges"><span class="detail-badge">🐕</span></div></div><div class="detail-body"><div class="detail-row"><div class="detail-row-icon">⚠️</div><div class="detail-row-content"><div class="detail-row-value">Cani solo terra</div></div></div></div></div><div class="action-row"><button class="action-btn primary full" onclick="window.open('https://maps.google.com/?q=Piazzale+Europa+Cavallino')">📍 Naviga</button></div></div>
+        <div class="screen" id="screen-accesso-jonio"><div class="detail-card"><div class="detail-header"><div class="detail-number">🔄</div><div class="detail-title">Via Jonio - Soleado</div><div class="detail-zone">Ca' Savio</div><div class="detail-badges"><span class="detail-badge">🔄</span><span class="detail-badge">👶</span></div></div><div class="detail-body"><div class="detail-row"><div class="detail-row-icon">🍽️</div><div class="detail-row-content"><div class="detail-row-value">Ristorante • Area giochi</div></div></div></div></div><div class="action-row"><button class="action-btn primary full" onclick="window.open('https://maps.google.com/?q=Via+Jonio+Ca+Savio')">📍 Naviga</button></div></div>
+        <div class="screen" id="screen-accesso-casavio"><div class="detail-card"><div class="detail-header"><div class="detail-number">🔄</div><div class="detail-title">Via di Ca' Savio</div><div class="detail-zone">Ca' Savio</div><div class="detail-badges"><span class="detail-badge">🔄</span><span class="detail-badge">♿</span></div></div><div class="detail-body"><div class="detail-row"><div class="detail-row-icon">🅿️</div><div class="detail-row-content"><div class="detail-row-value">Parcheggio ampio • Accessibile</div></div></div></div></div><div class="action-row"><button class="action-btn primary full" onclick="window.open('https://maps.google.com/?q=Via+di+Ca+Savio')">📍 Naviga</button></div></div>
+        <div class="screen" id="screen-stab-jambo27"><div class="detail-card"><div class="detail-header equipped-bg"><div class="detail-number equipped">⛱️</div><div class="detail-title">Jambo Beach 27</div><div class="detail-zone">Cavallino</div><div class="detail-badges"><span class="detail-badge">⛱️</span><span class="detail-badge">👶</span></div></div><div class="detail-body"><div class="detail-row"><div class="detail-row-icon">⭐</div><div class="detail-row-content"><div class="detail-row-value">Area kids • Eventi serali</div></div></div></div></div><div class="action-row"><button class="action-btn primary full" onclick="window.open('https://maps.google.com/?q=Jambo+Beach+27+Cavallino')">📍 Naviga</button></div></div>
+        <div class="screen" id="screen-stab-jambo32"><div class="detail-card"><div class="detail-header equipped-bg"><div class="detail-number equipped">⛱️</div><div class="detail-title">Jambo Beach 32</div><div class="detail-zone">Cavallino</div></div><div class="detail-body"><div class="detail-row"><div class="detail-row-icon">📍</div><div class="detail-row-content"><div class="detail-row-value">Ampio con ristorante</div></div></div></div></div><div class="action-row"><button class="action-btn primary full" onclick="window.open('https://maps.google.com/?q=Jambo+Beach+32+Cavallino')">📍 Naviga</button></div></div>
+        <div class="screen" id="screen-stab-soundbeach"><div class="detail-card"><div class="detail-header equipped-bg"><div class="detail-number equipped">⛱️</div><div class="detail-title">Sound Beach</div><div class="detail-zone">Cavallino</div></div><div class="detail-body"><div class="detail-row"><div class="detail-row-icon">🎵</div><div class="detail-row-content"><div class="detail-row-value">Musica • Aperitivi</div></div></div></div></div><div class="action-row"><button class="action-btn primary full" onclick="window.open('https://maps.google.com/?q=Sound+Beach+Cavallino')">📍 Naviga</button></div></div>
+    </div>
+    <nav class="bottom-nav">
+        <button class="nav-btn"><span class="nav-btn-icon">🏠</span><span class="nav-btn-label">Home</span></button>
+        <button class="nav-btn"><span class="nav-btn-icon">☀️</span><span class="nav-btn-label">Meteo</span></button>
+        <button class="nav-btn"><span class="nav-btn-icon">🚌</span><span class="nav-btn-label">Trasporti</span></button>
+        <button class="nav-btn active"><span class="nav-btn-icon">🏖️</span><span class="nav-btn-label">Spiagge</span></button>
+        <button class="nav-btn"><span class="nav-btn-icon">🆘</span><span class="nav-btn-label">SOS</span></button>
+    </nav>
+</div>
+<script>
+const history = ['main'];
+let currentZone = 0;
+const zoneNames = ['Punta Sabbioni', "Ca' Savio", "Ca' Vio", "Ca' Pasquali", "Ca' Ballarin", "Ca' di Valle", 'Cavallino'];
+const zoneIcons = ['⛴️', '🏖️', '🌲', '👨‍👩‍👧', '🐾', '✨', '🏰'];
+
+let startX = 0, currentX = 0, isDragging = false;
+const swipeContainer = document.getElementById('swipeContainer');
+const swipeContent = document.getElementById('swipeContent');
+
+swipeContainer?.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; isDragging = true; swipeContent.style.transition = 'none'; });
+swipeContainer?.addEventListener('touchmove', (e) => { if (!isDragging) return; currentX = e.touches[0].clientX; const diff = currentX - startX; const offset = -currentZone * 100 + (diff / swipeContainer.offsetWidth) * 100; swipeContent.style.transform = `translateX(${offset}%)`; });
+swipeContainer?.addEventListener('touchend', () => { if (!isDragging) return; isDragging = false; swipeContent.style.transition = 'transform 0.3s ease-out'; const diff = currentX - startX; const threshold = swipeContainer.offsetWidth * 0.2; if (diff > threshold && currentZone > 0) { switchZone(currentZone - 1); } else if (diff < -threshold && currentZone < 6) { switchZone(currentZone + 1); } else { swipeContent.style.transform = `translateX(-${currentZone * 100}%)`; } startX = 0; currentX = 0; });
+
+function switchZone(index) {
+    currentZone = index;
+    swipeContent.style.transform = `translateX(-${index * 100}%)`;
+    document.querySelectorAll('.swipe-tab').forEach((tab, i) => tab.classList.toggle('active', i === index));
+    const tabs = document.getElementById('zoneTabs');
+    tabs?.children[index]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    document.getElementById('headerTitle').textContent = zoneIcons[index] + ' ' + zoneNames[index];
+    document.getElementById('headerSubtitle').textContent = 'Scorri per cambiare zona';
+}
+
+function goZone(index) { currentZone = index; go('zone'); setTimeout(() => switchZone(index), 50); }
+
+function go(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const screen = document.getElementById('screen-' + id);
+    if (screen) { screen.classList.add('active'); screen.scrollTop = 0; }
+    if (id !== history[history.length - 1]) history.push(id);
+    if (id === 'main') { document.getElementById('headerTitle').textContent = '🏖️ Spiagge'; document.getElementById('headerSubtitle').textContent = '15 km • Bandiera Blu'; }
+    else if (id === 'zone') { document.getElementById('headerTitle').textContent = zoneIcons[currentZone] + ' ' + zoneNames[currentZone]; document.getElementById('headerSubtitle').textContent = 'Scorri per cambiare zona'; }
+    document.getElementById('backBtn').classList.toggle('hidden', id === 'main');
+}
+
+function goBack() { if (history.length > 1) { history.pop(); const prev = history[history.length - 1]; if (prev === 'zone') go('zone'); else go(prev); } }
+</script>
+</body>
+</html>
