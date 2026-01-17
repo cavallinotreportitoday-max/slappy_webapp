@@ -1,1 +1,913 @@
-slappy_home.html
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SLAPPY — Home Navigabile</title>
+    <style>
+        :root {
+            --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --radius-card: 16px;
+            --radius-small: 12px;
+
+            /* Palette */
+            --bg: #f5f5f5;
+            --white: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-medium: #555555;
+            --text-light: #888888;
+
+            /* Header */
+            --header-green: #2a9d8f;
+
+            /* Colori bordi e pastello */
+            --green-light: #c8e6c9;
+            --green-border: #c8e6c9;
+            --teal-light: #b2dfdb;
+            --teal-border: #b2dfdb;
+            --yellow-light: #fff59d;
+            --yellow-border: #fff9c4;
+            --purple-light: #e1bee7;
+            --purple-border: #e1bee7;
+            --blue-light: #b3e5fc;
+            --blue-border: #bbdefb;
+            --orange-light: #ffcc80;
+            --orange-border: #ffe0b2;
+            --gray-light: #e0e0e0;
+            --gray-border: #eeeeee;
+            --red-light: #ffcdd2;
+            --red-border: #ffcdd2;
+            --brown-light: #d7ccc8;
+            --brown-border: #d7ccc8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            font-family: var(--font-system);
+            background: var(--bg);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .app {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            margin: 0 auto;
+            background: var(--bg);
+            overflow-y: auto;
+            position: relative;
+        }
+        @media (min-width: 481px) {
+            body { display: flex; justify-content: center; background: #e8e8e8; }
+            .app { box-shadow: 0 0 60px rgba(0,0,0,0.1); }
+        }
+
+        /* PAGES */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-bottom: 30px;
+        }
+        .page.active {
+            display: block;
+        }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: radial-gradient(ellipse at center, #3ab4a4 0%, #2a9d8f 100%);
+            color: white;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-logo {
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        .header-text {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            opacity: 0.9;
+        }
+        .header-weather {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .weather-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            box-shadow: 0 0 6px rgba(74, 222, 128, 0.6);
+        }
+
+        /* SUBPAGE HEADER */
+        .subpage-header {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-border);
+            gap: 12px;
+        }
+        .back-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--bg);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+        }
+        .subpage-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* HERO */
+        .hero-compact {
+            padding: 24px 20px 20px;
+            text-align: center;
+        }
+        .hero-compact h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+        .hero-compact h1 span {
+            color: var(--header-green);
+        }
+        .hero-compact p {
+            font-size: 13px;
+            color: var(--text-medium);
+            margin-bottom: 16px;
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--header-green);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(42, 157, 143, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 12px rgba(42, 157, 143, 0.3);
+            }
+            50% {
+                box-shadow: 0 4px 20px rgba(42, 157, 143, 0.6);
+            }
+            100% {
+                box-shadow: 0 4px 12px rgba(42, 157, 143, 0.3);
+            }
+        }
+
+        /* MAIN */
+        .main {
+            padding: 0 16px;
+        }
+
+        /* SECTION */
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 0 4px;
+        }
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .section-link {
+            font-size: 12px;
+            color: var(--header-green);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* INFO CARD */
+        .info-card {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--teal-light) 100%);
+            border: 1px solid var(--teal-border);
+            border-radius: var(--radius-card);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+        .info-item {
+            text-align: center;
+            flex: 1;
+        }
+        .info-item-icon-wrapper {
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+        }
+        .info-item-icon {
+            font-size: 20px;
+        }
+        .info-item-dot {
+            width: 14px;
+            height: 14px;
+            background: #4ade80;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+        }
+        .info-item-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .info-item-label {
+            font-size: 9px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+        .info-divider {
+            width: 1px;
+            height: 50px;
+            background: rgba(0,0,0,0.08);
+            margin-top: 4px;
+        }
+
+        /* COMPACT GRID */
+        .compact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .compact-card {
+            border-radius: var(--radius-card);
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .compact-card:active {
+            transform: scale(0.96);
+        }
+
+        /* Card con gradiente radiale e bordo intero */
+        .compact-card.fortini {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--brown-light) 100%);
+            border: 1px solid var(--brown-border);
+        }
+        .compact-card.attivita {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--teal-light) 100%);
+            border: 1px solid var(--teal-border);
+        }
+        .compact-card.eventi {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--purple-light) 100%);
+            border: 1px solid var(--purple-border);
+        }
+        .compact-card.laguna {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--teal-light) 100%);
+            border: 1px solid var(--teal-border);
+        }
+        .compact-card.prossimamente {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--gray-light) 100%);
+            border: 1px solid var(--gray-border);
+        }
+        .compact-card.spiagge {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--blue-light) 100%);
+            border: 1px solid var(--blue-border);
+        }
+        .compact-card.mappe {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--orange-light) 100%);
+            border: 1px solid var(--orange-border);
+        }
+
+        .compact-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .compact-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .compact-count {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.06);
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-medium);
+        }
+
+        /* FEATURED CARD */
+        .featured-card {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--green-light) 100%);
+            border: 1px solid var(--green-border);
+            border-radius: var(--radius-card);
+            padding: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            align-items: center;
+        }
+        .featured-card:active {
+            transform: scale(0.98);
+        }
+        .featured-icon {
+            width: 52px;
+            height: 52px;
+            background: rgba(76, 175, 80, 0.12);
+            border-radius: var(--radius-small);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            flex-shrink: 0;
+        }
+        .featured-content {
+            flex: 1;
+        }
+        .featured-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-dark);
+        }
+        .featured-desc {
+            font-size: 12px;
+            color: var(--text-medium);
+            margin-bottom: 10px;
+        }
+        .featured-stats {
+            display: flex;
+            gap: 16px;
+        }
+        .featured-stat {
+            font-size: 11px;
+            color: var(--text-medium);
+        }
+        .featured-stat strong {
+            font-size: 15px;
+            display: block;
+            color: var(--text-dark);
+        }
+        .featured-arrow {
+            font-size: 20px;
+            color: var(--text-light);
+        }
+
+        /* UTILITIES BAR */
+        .utilities-bar {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .util-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border-radius: 12px;
+            padding: 14px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .util-btn:active {
+            transform: scale(0.97);
+        }
+        .util-btn.meteo {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--yellow-light) 100%);
+            border: 1px solid var(--yellow-border);
+            color: #f9a825;
+        }
+        .util-btn.trasporti {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #90caf9 100%);
+            border: 1px solid #64b5f6;
+            color: #1565c0;
+        }
+        .util-btn.sos {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--red-light) 100%);
+            border: 1px solid var(--red-border);
+            color: #e53935;
+        }
+        .util-btn.profilo {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--gray-light) 100%);
+            border: 1px solid var(--gray-border);
+            color: #757575;
+        }
+        .util-btn span {
+            font-size: 16px;
+        }
+
+        /* SUBPAGE CONTENT */
+        .subpage-content {
+            padding: 20px 16px;
+        }
+        .subpage-hero {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .subpage-hero-icon {
+            font-size: 60px;
+            margin-bottom: 12px;
+        }
+        .subpage-hero-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .subpage-hero-desc {
+            font-size: 14px;
+            color: var(--text-medium);
+        }
+
+        /* CONTENT CARDS */
+        .content-card {
+            background: var(--white);
+            border-radius: var(--radius-card);
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .content-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        .content-card-icon.green { background: var(--green-light); }
+        .content-card-icon.blue { background: var(--blue-light); }
+        .content-card-icon.orange { background: var(--orange-light); }
+        .content-card-icon.purple { background: var(--purple-light); }
+        .content-card-icon.teal { background: var(--teal-light); }
+        .content-card-icon.yellow { background: var(--yellow-light); }
+
+        .content-card-body {
+            flex: 1;
+        }
+        .content-card-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .content-card-desc {
+            font-size: 12px;
+            color: var(--text-medium);
+        }
+
+        /* CONSIGLI WEATHER BASED */
+        .weather-advice {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--yellow-light) 100%);
+            border: 1px solid var(--yellow-border);
+            border-radius: var(--radius-card);
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .weather-advice-icon {
+            font-size: 32px;
+        }
+        .weather-advice-text {
+            flex: 1;
+        }
+        .weather-advice-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .weather-advice-desc {
+            font-size: 12px;
+            color: var(--text-medium);
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+
+        <!-- ==================== -->
+        <!-- PAGE: HOME -->
+        <!-- ==================== -->
+        <div class="page active" id="page-home">
+            <!-- HEADER -->
+            <header class="header">
+                <div class="header-left">
+                    <div class="header-logo">🌿</div>
+                    <div class="header-text">Cavallino-Treporti</div>
+                </div>
+                <div class="header-weather">
+                    <span class="weather-dot"></span>
+                    ☀️ 12°
+                </div>
+            </header>
+
+            <!-- HERO -->
+            <section class="hero-compact">
+                <h1>Scopri il <span>Territorio</span></h1>
+                <p>Natura, storia e avventure tra laguna e mare</p>
+                <button class="hero-cta" onclick="showPage('consigli')">
+                    ✨ I Consigli di Oggi ›
+                </button>
+            </section>
+
+            <!-- MAIN -->
+            <main class="main">
+                <!-- INFORMAZIONI -->
+                <section class="section">
+                    <div class="section-title">Informazioni</div>
+                </section>
+
+                <div class="info-card">
+                    <div class="info-row">
+                        <div class="info-item">
+                            <div class="info-item-icon-wrapper" style="gap: 12px;">
+                                <div class="info-item-dot"></div>
+                                <span style="font-size: 18px;">☀️</span>
+                                <span style="font-size: 14px; font-weight: 600; color: var(--text-dark);">12°</span>
+                            </div>
+                            <div class="info-item-value">Bandiera Verde</div>
+                            <div class="info-item-label">Balneazione sicura</div>
+                        </div>
+                        <div class="info-divider"></div>
+                        <div class="info-item">
+                            <div class="info-item-icon-wrapper">
+                                <span class="info-item-icon">🌊</span>
+                            </div>
+                            <div class="info-item-value">Mare Calmo</div>
+                            <div class="info-item-label">Onde basse</div>
+                        </div>
+                        <div class="info-divider"></div>
+                        <div class="info-item">
+                            <div class="info-item-icon-wrapper">
+                                <span class="info-item-icon">🌧️</span>
+                            </div>
+                            <div class="info-item-value">Pioggia 16:00</div>
+                            <div class="info-item-label">Porta l'ombrello</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ESPLORA GRID -->
+                <section class="section">
+                    <div class="section-header">
+                        <div class="section-title">Esplora</div>
+                    </div>
+                    <div class="compact-grid">
+                        <div class="compact-card fortini" onclick="showPage('fortini')">
+                            <span class="compact-count">4</span>
+                            <span class="compact-icon">🏛️</span>
+                            <div class="compact-title">Fortini</div>
+                        </div>
+                        <div class="compact-card attivita" onclick="showPage('attivita')">
+                            <span class="compact-count">18</span>
+                            <span class="compact-icon">🏄</span>
+                            <div class="compact-title">Attività</div>
+                        </div>
+                        <div class="compact-card eventi" onclick="showPage('eventi')">
+                            <span class="compact-count">3</span>
+                            <span class="compact-icon">🎭</span>
+                            <div class="compact-title">Eventi</div>
+                        </div>
+                        <div class="compact-card prossimamente" onclick="showPage('prossimamente')">
+                            <span class="compact-icon">⏳</span>
+                            <div class="compact-title">Prossimamente</div>
+                        </div>
+                        <div class="compact-card spiagge" onclick="showPage('spiagge')">
+                            <span class="compact-count">8</span>
+                            <span class="compact-icon">🏖️</span>
+                            <div class="compact-title">Spiagge</div>
+                        </div>
+                        <div class="compact-card mappe" onclick="showPage('mappe')">
+                            <span class="compact-icon">🗺️</span>
+                            <div class="compact-title">Mappe</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- IN EVIDENZA -->
+                <section class="section">
+                    <div class="section-header">
+                        <div class="section-title">In Evidenza</div>
+                    </div>
+                    <div class="featured-card" onclick="showPage('laguna')">
+                        <div class="featured-icon">🌿</div>
+                        <div class="featured-content">
+                            <div class="featured-title">Laguna & Natura</div>
+                            <div class="featured-desc">Flora, fauna e paesaggi unici da esplorare</div>
+                            <div class="featured-stats">
+                                <div class="featured-stat"><strong>50+</strong>specie</div>
+                                <div class="featured-stat"><strong>12</strong>percorsi</div>
+                            </div>
+                        </div>
+                        <div class="featured-arrow">›</div>
+                    </div>
+                </section>
+
+                <!-- UTILITIES -->
+                <div class="utilities-bar">
+                    <div class="util-btn meteo" onclick="showPage('meteo')">
+                        <span>⛅</span> Meteo
+                    </div>
+                    <div class="util-btn trasporti" onclick="showPage('trasporti')">
+                        <span>🚌</span> Trasporti
+                    </div>
+                    <div class="util-btn sos" onclick="showPage('sos')">
+                        <span>🆘</span> SOS
+                    </div>
+                    <div class="util-btn profilo" onclick="showPage('profilo')">
+                        <span>👤</span> Profilo
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- ==================== -->
+        <!-- PAGE: CONSIGLI DI OGGI -->
+        <!-- ==================== -->
+        <div class="page" id="page-consigli">
+            <header class="subpage-header">
+                <button class="back-btn" onclick="showPage('home')">←</button>
+                <div class="subpage-title">Consigli di Oggi</div>
+            </header>
+
+            <div class="subpage-content">
+                <!-- Weather-based advice -->
+                <div class="weather-advice">
+                    <div class="weather-advice-icon">☀️</div>
+                    <div class="weather-advice-text">
+                        <div class="weather-advice-title">Giornata soleggiata</div>
+                        <div class="weather-advice-desc">12° · Pioggia prevista alle 16:00</div>
+                    </div>
+                </div>
+
+                <section class="section">
+                    <div class="section-title">Consigliati per te</div>
+                </section>
+
+                <!-- Consigli basati sul meteo: sole + pioggia pomeriggio -->
+                <div class="content-card">
+                    <div class="content-card-icon teal">🚴</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Bici sui Fortini</div>
+                        <div class="content-card-desc">Mattina ideale · Vento leggero</div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-icon blue">🏖️</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Spiaggia Ca' Savio</div>
+                        <div class="content-card-desc">Mare calmo · Bandiera verde</div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-icon orange">🍝</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Pranzo al Porto</div>
+                        <div class="content-card-desc">Prima della pioggia · Pesce fresco</div>
+                    </div>
+                </div>
+
+                <section class="section" style="margin-top: 24px;">
+                    <div class="section-title">Per il pomeriggio (pioggia)</div>
+                </section>
+
+                <div class="content-card">
+                    <div class="content-card-icon purple">🏛️</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Visita Forte Treporti</div>
+                        <div class="content-card-desc">Al coperto · Storia locale</div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-icon yellow">☕</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Aperitivo in centro</div>
+                        <div class="content-card-desc">Relax · Aspettando il sereno</div>
+                    </div>
+                </div>
+
+                <section class="section" style="margin-top: 24px;">
+                    <div class="section-title">Stasera</div>
+                </section>
+
+                <div class="content-card">
+                    <div class="content-card-icon purple">🎵</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Jazz al Porto</div>
+                        <div class="content-card-desc">21:00 · Gratis · Dopo la pioggia</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== -->
+        <!-- PAGE: PROSSIMAMENTE -->
+        <!-- ==================== -->
+        <div class="page" id="page-prossimamente">
+            <header class="subpage-header">
+                <button class="back-btn" onclick="showPage('home')">←</button>
+                <div class="subpage-title">Prossimamente</div>
+            </header>
+
+            <div class="subpage-content">
+                <div class="subpage-hero">
+                    <div class="subpage-hero-icon">🚀</div>
+                    <div class="subpage-hero-title">In Arrivo</div>
+                    <div class="subpage-hero-desc">Nuove funzionalità su cui stiamo lavorando per te</div>
+                </div>
+
+                <section class="section">
+                    <div class="section-title">Estate 2026</div>
+                </section>
+
+                <div class="content-card">
+                    <div class="content-card-icon purple">🤖</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Chat Intelligente</div>
+                        <div class="content-card-desc">Chiedi qualsiasi cosa sul territorio · AI-powered</div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-icon blue">🎢</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Jesolo & Dintorni</div>
+                        <div class="content-card-desc">Parchi acquatici · Sea Life · Aqualandia</div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-icon teal">🚤</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Escursioni in Barca</div>
+                        <div class="content-card-desc">Venezia · Burano · Murano · Torcello</div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-icon orange">🍷</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Wine Tour</div>
+                        <div class="content-card-desc">Cantine del Veneto · Prosecco Road</div>
+                    </div>
+                </div>
+
+                <section class="section" style="margin-top: 24px;">
+                    <div class="section-title">In Sviluppo</div>
+                </section>
+
+                <div class="content-card">
+                    <div class="content-card-icon green">🗣️</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Multilingua Avanzato</div>
+                        <div class="content-card-desc">Tedesco · Inglese · Francese · Olandese</div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-icon yellow">⭐</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Preferiti & Itinerari</div>
+                        <div class="content-card-desc">Salva i tuoi luoghi · Crea percorsi personalizzati</div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-icon purple">🔔</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Notifiche Smart</div>
+                        <div class="content-card-desc">Eventi nelle vicinanze · Allerte meteo</div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-icon blue">🅿️</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Parcheggi Live</div>
+                        <div class="content-card-desc">Disponibilità in tempo reale · Prezzi</div>
+                    </div>
+                </div>
+
+                <section class="section" style="margin-top: 24px;">
+                    <div class="section-title">Hai suggerimenti?</div>
+                </section>
+
+                <div class="content-card">
+                    <div class="content-card-icon teal">💬</div>
+                    <div class="content-card-body">
+                        <div class="content-card-title">Scrivici!</div>
+                        <div class="content-card-desc">Le tue idee ci aiutano a migliorare</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Pagine esterne (file separati)
+        const externalPages = {
+            'fortini': 'slappy_fortini.html',
+            'attivita': 'slappy_attivita.html',
+            'eventi': 'slappy_eventi.html',
+            'laguna': 'slappy_laguna.html',
+            'meteo': 'slappy_meteo.html',
+            'trasporti': 'slappy_trasporti.html',
+            'sos': 'slappy_sos.html',
+            'profilo': 'slappy_profilo.html',
+            'spiagge': 'slappy_spiagge.html',
+            'mappe': 'slappy_mappe.html'
+        };
+
+        function showPage(pageId) {
+            // Se è una pagina esterna, naviga al file
+            if (externalPages[pageId]) {
+                window.location.href = externalPages[pageId];
+                return;
+            }
+
+            // Altrimenti gestisci pagine interne
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            const targetPage = document.getElementById('page-' + pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+        }
+    </script>
+</body>
+</html>
