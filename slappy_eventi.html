@@ -575,24 +575,23 @@
         }
         .tab-btn {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
-            gap: 4px;
-            padding: 10px 16px;
-            border-radius: 16px;
-            border: none;
+            gap: 5px;
+            padding: 10px 8px;
+            border-radius: 10px;
             cursor: pointer;
             text-decoration: none;
-            transition: transform 0.15s, opacity 0.15s;
-            min-width: 70px;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
-        .tab-btn:active { transform: scale(0.95); opacity: 0.8; }
-        .tab-btn-icon { font-size: 22px; }
-        .tab-btn-label { font-size: 11px; font-weight: 600; color: var(--gray-900); }
-        .tab-btn.meteo { background: radial-gradient(ellipse at center, #fff59d 0%, #e6dc8a 100%); }
-        .tab-btn.trasporti { background: radial-gradient(ellipse at center, #90caf9 0%, #78b2e0 100%); }
-        .tab-btn.sos { background: radial-gradient(ellipse at center, #ffcdd2 0%, #e6b5ba 100%); }
-        .tab-btn.profilo { background: radial-gradient(ellipse at center, #e0e0e0 0%, #c7c7c7 100%); }
+        .tab-btn:active { transform: scale(0.96); }
+        .tab-btn-icon { font-size: 17px; }
+        .tab-btn-label { font-size: 11px; font-weight: 700; color: var(--gray-900); }
+        .tab-btn.meteo { background: radial-gradient(ellipse at center, #ffffff 0%, #fff59d 100%); border: 1px solid #fff9c4; }
+        .tab-btn.trasporti { background: radial-gradient(ellipse at center, #ffffff 0%, #90caf9 100%); border: 1px solid #bbdefb; }
+        .tab-btn.sos { background: radial-gradient(ellipse at center, #ffffff 0%, #ffcdd2 100%); border: 1px solid #ffcdd2; }
+        .tab-btn.profilo { background: radial-gradient(ellipse at center, #ffffff 0%, #e0e0e0 100%); border: 1px solid #eeeeee; }
     </style>
 </head>
 <body>
