@@ -238,7 +238,7 @@
         .tab-btn.meteo { background: radial-gradient(ellipse at center, #ffffff 0%, #fff59d 100%); border: 1px solid #fff9c4; }
         .tab-btn.trasporti { background: radial-gradient(ellipse at center, #ffffff 0%, #90caf9 100%); border: 1px solid #bbdefb; }
         .tab-btn.sos { background: radial-gradient(ellipse at center, #ffffff 0%, #ffcdd2 100%); border: 1px solid #ffcdd2; }
-        .tab-btn.profilo { background: radial-gradient(ellipse at center, #ffffff 0%, #e0e0e0 100%); border: 1px solid #eeeeee; }
+        .tab-btn.home { background: radial-gradient(ellipse at center, #ffffff 0%, #b2dfdb 100%); border: 1px solid #b2dfdb; }
         
         /* Accordion per "Altri" */
         .accordion { margin-top: var(--gap-cards); }
@@ -2347,6 +2347,10 @@
     
     <!-- TAB BAR -->
     <nav class="tab-bar">
+        <a href="index.html" class="tab-btn home">
+            <span class="tab-btn-icon">🏠</span>
+            <span class="tab-btn-label">Home</span>
+        </a>
         <a href="slappy_meteo.html" class="tab-btn meteo">
             <span class="tab-btn-icon">🌤️</span>
             <span class="tab-btn-label">Meteo</span>
@@ -2358,10 +2362,6 @@
         <a href="slappy_sos.html" class="tab-btn sos">
             <span class="tab-btn-icon">🆘</span>
             <span class="tab-btn-label">SOS</span>
-        </a>
-        <a href="slappy_profilo.html" class="tab-btn profilo">
-            <span class="tab-btn-icon">👤</span>
-            <span class="tab-btn-label">Profilo</span>
         </a>
     </nav>
 </div>

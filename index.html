@@ -123,9 +123,9 @@
             background: radial-gradient(ellipse at center, #ffffff 0%, #ffcdd2 100%);
             border: 1px solid #ffcdd2;
         }
-        .tab-btn.profilo {
-            background: radial-gradient(ellipse at center, #ffffff 0%, #e0e0e0 100%);
-            border: 1px solid #eeeeee;
+        .tab-btn.home {
+            background: radial-gradient(ellipse at center, #ffffff 0%, #b2dfdb 100%);
+            border: 1px solid #b2dfdb;
         }
         .page.active {
             display: block;
@@ -468,53 +468,6 @@
             color: var(--text-light);
         }
 
-        /* UTILITIES BAR */
-        .utilities-bar {
-            display: flex;
-            gap: 8px;
-            margin-top: 16px;
-        }
-        .util-btn {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            border-radius: 12px;
-            padding: 14px 10px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-        .util-btn:active {
-            transform: scale(0.97);
-        }
-        .util-btn.meteo {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--yellow-light) 100%);
-            border: 1px solid var(--yellow-border);
-            color: #f9a825;
-        }
-        .util-btn.trasporti {
-            background: radial-gradient(ellipse at center, var(--white) 0%, #90caf9 100%);
-            border: 1px solid #64b5f6;
-            color: #1565c0;
-        }
-        .util-btn.sos {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--red-light) 100%);
-            border: 1px solid var(--red-border);
-            color: #e53935;
-        }
-        .util-btn.profilo {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--gray-light) 100%);
-            border: 1px solid var(--gray-border);
-            color: #757575;
-        }
-        .util-btn span {
-            font-size: 16px;
-        }
-
         /* SUBPAGE CONTENT */
         .subpage-content {
             padding: 20px 16px;
@@ -728,22 +681,7 @@
                     </div>
                 </section>
 
-                <!-- UTILITIES -->
-                <div class="utilities-bar">
-                    <div class="util-btn meteo" onclick="showPage('meteo')">
-                        <span>⛅</span> Meteo
-                    </div>
-                    <div class="util-btn trasporti" onclick="showPage('trasporti')">
-                        <span>🚌</span> Trasporti
-                    </div>
-                    <div class="util-btn sos" onclick="showPage('sos')">
-                        <span>🆘</span> SOS
-                    </div>
-                    <div class="util-btn profilo" onclick="showPage('profilo')">
-                        <span>👤</span> Profilo
-                    </div>
-                </div>
-            </main>
+                            </main>
         </div>
 
         <!-- ==================== -->
@@ -934,6 +872,10 @@
 
     <!-- TAB BAR -->
     <nav class="tab-bar">
+        <a href="index.html" class="tab-btn home">
+            <span class="tab-btn-icon">🏠</span>
+            <span class="tab-btn-label">Home</span>
+        </a>
         <a href="slappy_meteo.html" class="tab-btn meteo">
             <span class="tab-btn-icon">🌤️</span>
             <span class="tab-btn-label">Meteo</span>
@@ -945,10 +887,6 @@
         <a href="slappy_sos.html" class="tab-btn sos">
             <span class="tab-btn-icon">🆘</span>
             <span class="tab-btn-label">SOS</span>
-        </a>
-        <a href="slappy_profilo.html" class="tab-btn profilo">
-            <span class="tab-btn-icon">👤</span>
-            <span class="tab-btn-label">Profilo</span>
         </a>
     </nav>
 
