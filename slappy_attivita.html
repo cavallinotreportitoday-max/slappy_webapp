@@ -78,7 +78,7 @@
         @media (min-width: 481px) { body { display: flex; justify-content: center; } .app { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); } }
 
         /* HEADER */
-        .header { background: radial-gradient(ellipse at center, #26a69a 0%, #b2dfdb 100%); color: var(--white); padding: var(--padding-card) var(--padding-page); display: flex; align-items: center; gap: var(--gap-inner); position: sticky; top: 0; z-index: 100; }
+        .header { background: radial-gradient(ellipse at center, #b2dfdb 0%, #99c7c3 100%); color: var(--white); padding: var(--padding-card) var(--padding-page); display: flex; align-items: center; gap: var(--gap-inner); position: sticky; top: 0; z-index: 100; }
         .header-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); border-radius: 50%; cursor: pointer; border: none; color: var(--white); font-size: 18px; text-decoration: none; }
         .header-back.hidden { visibility: hidden; }
         .header-content { flex: 1; }
@@ -257,13 +257,43 @@
         .contact-text { font-size: var(--font-body); color: var(--gray-700); }
         .contact-text a { color: var(--primary); text-decoration: none; }
 
-        /* BOTTOM NAV */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: var(--border-default); display: flex; justify-content: space-around; padding: 8px 0 12px; z-index: 100; }
-        @media (min-width: 481px) { .bottom-nav { max-width: 480px; left: 50%; transform: translateX(-50%); } }
-        .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; background: none; border: none; color: var(--gray-400); cursor: pointer; padding: 4px 12px; }
-        .nav-btn.active { color: var(--primary); }
-        .nav-btn-icon { font-size: 22px; }
-        .nav-btn-label { font-size: var(--font-meta); font-weight: var(--weight-body); }
+        /* TAB BAR FISSA */
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: var(--white);
+            padding: 12px 16px;
+            padding-bottom: max(12px, env(safe-area-inset-bottom));
+            display: flex;
+            justify-content: space-around;
+            gap: 12px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .tab-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 16px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.15s, opacity 0.15s;
+            min-width: 70px;
+        }
+        .tab-btn:active { transform: scale(0.95); opacity: 0.8; }
+        .tab-btn-icon { font-size: 22px; }
+        .tab-btn-label { font-size: 11px; font-weight: 600; color: var(--gray-900); }
+        .tab-btn.meteo { background: radial-gradient(ellipse at center, #fff59d 0%, #e6dc8a 100%); }
+        .tab-btn.trasporti { background: radial-gradient(ellipse at center, #90caf9 0%, #78b2e0 100%); }
+        .tab-btn.sos { background: radial-gradient(ellipse at center, #ffcdd2 0%, #e6b5ba 100%); }
+        .tab-btn.profilo { background: radial-gradient(ellipse at center, #e0e0e0 0%, #c7c7c7 100%); }
     </style>
 </head>
 <body>
@@ -2011,11 +2041,24 @@
 
     </div>
 
-    <nav class="bottom-nav">
-        <button class="nav-btn" onclick="go('main')"><span class="nav-btn-icon">🏠</span><span class="nav-btn-label">Home</span></button>
-        <button class="nav-btn active"><span class="nav-btn-icon">🎯</span><span class="nav-btn-label">Attività</span></button>
-        <button class="nav-btn"><span class="nav-btn-icon">🍽️</span><span class="nav-btn-label">Mangiare</span></button>
-        <button class="nav-btn"><span class="nav-btn-icon">🚌</span><span class="nav-btn-label">Muoversi</span></button>
+    <!-- TAB BAR -->
+    <nav class="tab-bar">
+        <a href="slappy_meteo.html" class="tab-btn meteo">
+            <span class="tab-btn-icon">🌤️</span>
+            <span class="tab-btn-label">Meteo</span>
+        </a>
+        <a href="slappy_trasporti.html" class="tab-btn trasporti">
+            <span class="tab-btn-icon">🚌</span>
+            <span class="tab-btn-label">Trasporti</span>
+        </a>
+        <a href="slappy_sos.html" class="tab-btn sos">
+            <span class="tab-btn-icon">🆘</span>
+            <span class="tab-btn-label">SOS</span>
+        </a>
+        <a href="slappy_profilo.html" class="tab-btn profilo">
+            <span class="tab-btn-icon">👤</span>
+            <span class="tab-btn-label">Profilo</span>
+        </a>
     </nav>
 </div>
 
