@@ -394,8 +394,9 @@
         .main-cta-grid {
             display: flex;
             flex-direction: column;
-            gap: var(--gap-cards);
+            gap: 14px;
             margin-bottom: var(--gap-sections);
+            margin-top: 12px;
         }
 
         .main-cta {
@@ -407,10 +408,42 @@
             cursor: pointer;
             transition: all 0.15s;
             border: 1px solid transparent;
+            position: relative;
         }
 
         .main-cta:hover {
             border-color: var(--gray-300);
+        }
+
+        /* Card evidenziate con bordo sinistro */
+        .main-cta.highlighted-green {
+            border-left: 4px solid var(--green);
+        }
+        .main-cta.highlighted-orange {
+            border-left: 4px solid var(--orange);
+        }
+
+        /* Badge */
+        .main-cta-badge {
+            position: absolute;
+            top: -8px;
+            right: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .main-cta-badge.green {
+            background: var(--green-100);
+            color: var(--green-dark);
+            border: 1px solid var(--green-border);
+        }
+        .main-cta-badge.orange {
+            background: var(--orange-100);
+            color: var(--orange-dark);
+            border: 1px solid var(--orange-border);
         }
 
         /* Gradienti per ogni card */
@@ -430,6 +463,14 @@
             font-size: 20px;
             flex-shrink: 0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        /* Icone più grandi per card importanti */
+        .main-cta.highlighted-green .main-cta-icon,
+        .main-cta.highlighted-orange .main-cta-icon {
+            width: 48px;
+            height: 48px;
+            font-size: 24px;
         }
 
         .main-cta-text {
@@ -2273,13 +2314,14 @@
             <!-- 4 CTA PRINCIPALI - Verticali -->
             <div class="section-label">Cosa vuoi fare?</div>
             <div class="main-cta-grid">
-                <div class="main-cta journey" onclick="go('journey-dest')">
+                <div class="main-cta journey highlighted-green" onclick="go('journey-dest')">
+                    <span class="main-cta-badge green">⭐ Consigliato</span>
                     <div class="main-cta-icon">🧭</div>
                     <div class="main-cta-text">
                         <div class="main-cta-title">Trova il percorso migliore</div>
                         <div class="main-cta-subtitle">Orari, cambi e costi</div>
                     </div>
-                    <span class="main-cta-arrow">→</span>
+                    <span class="main-cta-arrow">›</span>
                 </div>
 
                 <div class="main-cta zone" onclick="go('interni')">
@@ -2288,7 +2330,7 @@
                         <div class="main-cta-title">Muoviti tra le zone</div>
                         <div class="main-cta-subtitle">10 zone collegate</div>
                     </div>
-                    <span class="main-cta-arrow">→</span>
+                    <span class="main-cta-arrow">›</span>
                 </div>
 
                 <div class="main-cta camping" onclick="go('ritorno-struttura')">
@@ -2297,16 +2339,17 @@
                         <div class="main-cta-title">Torna al camping</div>
                         <div class="main-cta-subtitle">Percorso di ritorno</div>
                     </div>
-                    <span class="main-cta-arrow">→</span>
+                    <span class="main-cta-arrow">›</span>
                 </div>
 
-                <div class="main-cta ultimo" onclick="go('ultimo-mezzo')">
+                <div class="main-cta ultimo highlighted-orange" onclick="go('ultimo-mezzo')">
+                    <span class="main-cta-badge orange">🕐 Utile la sera</span>
                     <div class="main-cta-icon">⏰</div>
                     <div class="main-cta-text">
                         <div class="main-cta-title">Ce la faccio a tornare?</div>
                         <div class="main-cta-subtitle">Ultimo mezzo disponibile</div>
                     </div>
-                    <span class="main-cta-arrow">→</span>
+                    <span class="main-cta-arrow">›</span>
                 </div>
             </div>
 
