@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SLAPPY — Prossimamente</title>
+    <style>
+        :root {
+            --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --radius-card: 16px;
+            --radius-small: 12px;
+            --bg: #f5f5f5;
+            --white: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-medium: #555555;
+            --text-light: #888888;
+            --purple: #9c27b0;
+            --purple-dark: #7b1fa2;
+            --purple-light: #e1bee7;
+            --purple-border: #ce93d8;
+            --gray-border: #e0e0e0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            font-family: var(--font-system);
+            background: var(--bg);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+        }
+        .app {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            margin: 0 auto;
+            background: var(--bg);
+            padding-bottom: 90px;
+        }
+        @media (min-width: 481px) {
+            body { display: flex; justify-content: center; background: #e8e8e8; }
+            .app { box-shadow: 0 0 60px rgba(0,0,0,0.1); }
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #9c27b0 0%, #ba68c8 50%, #ce93d8 100%);
+            color: var(--text-dark);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header-back {
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+        .header-icon {
+            font-size: 24px;
+        }
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #7b1fa2 0%, #9c27b0 100%);
+            padding: 24px 20px;
+            text-align: center;
+            color: white;
+        }
+        .hero-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        .hero-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .hero-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 16px;
+        }
+
+        /* SECTION */
+        .section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            padding-left: 4px;
+        }
+
+        /* FEATURE CARD */
+        .feature-card {
+            background: var(--white);
+            border-radius: var(--radius-card);
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #9c27b0 0%, #ce93d8 100%);
+        }
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--purple-light) 100%);
+            border: 1px solid var(--purple-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        .feature-content {
+            flex: 1;
+        }
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        .feature-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .feature-badge {
+            padding: 3px 8px;
+            background: var(--purple-light);
+            color: var(--purple-dark);
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .feature-desc {
+            font-size: 13px;
+            color: var(--text-medium);
+            line-height: 1.4;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--purple-light) 100%);
+            border: 1px solid var(--purple-border);
+            border-radius: var(--radius-card);
+            padding: 16px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .info-box-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        .info-box-text {
+            font-size: 13px;
+            color: var(--text-medium);
+            line-height: 1.5;
+        }
+        .info-box-text strong {
+            color: var(--purple-dark);
+        }
+
+        /* TAB BAR MINIMAL */
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: #f8f9fa;
+            padding: 8px 16px;
+            padding-bottom: max(12px, env(safe-area-inset-bottom));
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #e0e0e0;
+            z-index: 1000;
+        }
+        .tab-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 16px;
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+            background: none;
+            border: none;
+        }
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 3px;
+            border-radius: 2px;
+            background: transparent;
+            transition: background 0.2s;
+        }
+        .tab-btn:active { opacity: 0.7; }
+        .tab-btn-icon {
+            font-size: 24px;
+            filter: grayscale(100%);
+            opacity: 0.5;
+            transition: all 0.2s;
+        }
+        .tab-btn-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: #888888;
+            transition: color 0.2s;
+        }
+        .tab-btn.active .tab-btn-icon { filter: grayscale(0%); opacity: 1; }
+        .tab-btn.active .tab-btn-label { color: #1a1a1a; font-weight: 600; }
+        .tab-btn.home.active::after { background: #78909c; }
+        .tab-btn.meteo.active::after { background: #fbc02d; }
+        .tab-btn.trasporti.active::after { background: #42a5f5; }
+        .tab-btn.sos.active::after { background: #ef5350; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- HEADER -->
+        <header class="header">
+            <a href="slappy_home.html" class="header-back">←</a>
+            <span class="header-icon">🚀</span>
+            <div class="header-title">Prossimamente</div>
+        </header>
+
+        <!-- HERO -->
+        <div class="hero">
+            <div class="hero-icon">✨</div>
+            <div class="hero-title">Novità in arrivo!</div>
+            <div class="hero-subtitle">Stiamo lavorando a queste funzionalità</div>
+        </div>
+
+        <div class="content">
+            <div class="section-title">In sviluppo</div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-content">
+                    <div class="feature-header">
+                        <div class="feature-title">Chat intelligente</div>
+                        <span class="feature-badge">Coming Soon</span>
+                    </div>
+                    <div class="feature-desc">Chiedi quello che vuoi sul territorio. Risposte istantanee su eventi, luoghi, orari e consigli.</div>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎁</div>
+                <div class="feature-content">
+                    <div class="feature-header">
+                        <div class="feature-title">Mystery Box</div>
+                        <span class="feature-badge">Coming Soon</span>
+                    </div>
+                    <div class="feature-desc">Sorprese esclusive per te. Sconti, esperienze e regali a tema Cavallino-Treporti.</div>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🚢</div>
+                <div class="feature-content">
+                    <div class="feature-header">
+                        <div class="feature-title">Orari battelli Venezia</div>
+                        <span class="feature-badge">Coming Soon</span>
+                    </div>
+                    <div class="feature-desc">Calcola il tuo viaggio in secondi. Partenze, arrivi e coincidenze in tempo reale.</div>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🗺️</div>
+                <div class="feature-content">
+                    <div class="feature-header">
+                        <div class="feature-title">Zone limitrofe</div>
+                        <span class="feature-badge">Coming Soon</span>
+                    </div>
+                    <div class="feature-desc">Eventi e attività nei dintorni. Jesolo, Venezia, Lido e laguna a portata di tap.</div>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🍽️</div>
+                <div class="feature-content">
+                    <div class="feature-header">
+                        <div class="feature-title">Ristoranti e locande</div>
+                        <span class="feature-badge">Coming Soon</span>
+                    </div>
+                    <div class="feature-desc">Dove mangiare bene. Recensioni locali, piatti tipici e prenotazioni facili.</div>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">💡</div>
+                <div class="feature-content">
+                    <div class="feature-header">
+                        <div class="feature-title">Suggerimenti smart</div>
+                        <span class="feature-badge">Coming Soon</span>
+                    </div>
+                    <div class="feature-desc">In base ai tuoi gusti. L'app impara le tue preferenze e ti propone attività su misura.</div>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🏷️</div>
+                <div class="feature-content">
+                    <div class="feature-header">
+                        <div class="feature-title">Sconti esclusivi</div>
+                        <span class="feature-badge">Coming Soon</span>
+                    </div>
+                    <div class="feature-desc">Soggiorni, degustazioni, prodotti tipici. Offerte riservate agli utenti SLAPPY.</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-icon">💬</div>
+                <div class="info-box-text">
+                    Hai suggerimenti? <strong>Scrivici!</strong><br>
+                    Aiutaci a costruire l'app perfetta per il territorio.
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB BAR -->
+        <nav class="tab-bar">
+            <a href="slappy_home.html" class="tab-btn home">
+                <span class="tab-btn-icon">🏠</span>
+                <span class="tab-btn-label">Home</span>
+            </a>
+            <a href="slappy_meteo.html" class="tab-btn meteo">
+                <span class="tab-btn-icon">⛅</span>
+                <span class="tab-btn-label">Meteo</span>
+            </a>
+            <a href="slappy_trasporti.html" class="tab-btn trasporti">
+                <span class="tab-btn-icon">🚌</span>
+                <span class="tab-btn-label">Trasporti</span>
+            </a>
+            <a href="slappy_sos.html" class="tab-btn sos">
+                <span class="tab-btn-icon">🆘</span>
+                <span class="tab-btn-label">SOS</span>
+            </a>
+        </nav>
+    </div>
+</body>
+</html>

@@ -39,6 +39,8 @@
             --red-border: #ffcdd2;
             --brown-light: #b0bec5;
             --brown-border: #78909c;
+            --purple-light: #e1bee7;
+            --purple-border: #ce93d8;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -150,7 +152,7 @@
             align-items: center;
             padding: 16px 20px;
             background: radial-gradient(ellipse at center, #3ab4a4 0%, #2a9d8f 100%);
-            color: white;
+            color: var(--text-dark);
         }
         .header-left {
             display: flex;
@@ -293,7 +295,7 @@
         }
         .section-title {
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 600;
             color: var(--text-light);
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -426,8 +428,8 @@
             border: 1px solid var(--teal-border);
         }
         .compact-card.prossimamente {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--gray-light) 100%);
-            border: 1px solid var(--gray-border);
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--purple-light) 100%);
+            border: 1px solid var(--purple-border);
         }
         .compact-card.spiagge {
             background: radial-gradient(ellipse at center, var(--white) 0%, var(--blue-light) 100%);
@@ -714,6 +716,10 @@
                             <span class="compact-icon">🏛️</span>
                             <div class="compact-title">Fortini</div>
                         </div>
+                        <div class="compact-card prossimamente" onclick="showPage('prossimamente')">
+                            <span class="compact-icon">🚀</span>
+                            <div class="compact-title">Novità</div>
+                        </div>
                     </div>
                 </section>
 
@@ -949,7 +955,8 @@
             'sos': 'slappy_sos.html',
             'profilo': 'slappy_profilo.html',
             'spiagge': 'slappy_spiagge.html',
-            'mappe': 'slappy_mappe.html'
+            'mappe': 'slappy_mappe.html',
+            'prossimamente': 'slappy_prossimamente.html'
         };
 
         function showPage(pageId) {
