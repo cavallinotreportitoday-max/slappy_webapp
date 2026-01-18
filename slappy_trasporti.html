@@ -417,7 +417,7 @@
 
         /* Card evidenziate con bordo sinistro */
         .main-cta.highlighted-green {
-            border-left: 4px solid var(--green);
+            border-left: 4px solid #2196f3;
         }
         .main-cta.highlighted-orange {
             border-left: 4px solid var(--orange);
@@ -446,11 +446,27 @@
             border: 1px solid var(--orange-border);
         }
 
-        /* Gradienti per ogni card */
-        .main-cta.journey { background: linear-gradient(180deg, var(--white) 0%, #ccfbf1 100%); }
-        .main-cta.zone { background: linear-gradient(180deg, var(--white) 0%, #d1fae5 100%); }
-        .main-cta.camping { background: linear-gradient(180deg, var(--white) 0%, #ffedd5 100%); }
-        .main-cta.ultimo { background: linear-gradient(180deg, var(--white) 0%, #fef3c7 100%); }
+        /* Gradienti per ogni card - tema blu/azzurro trasporti */
+        .main-cta.journey {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #bbdefb 100%);
+            border: 1px solid #90caf9;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .main-cta.zone {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #b3e5fc 100%);
+            border: 1px solid #81d4fa;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .main-cta.camping {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #b2ebf2 100%);
+            border: 1px solid #80deea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .main-cta.ultimo {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #c5cae9 100%);
+            border: 1px solid #9fa8da;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
 
         .main-cta-icon {
             width: var(--icon-size);
