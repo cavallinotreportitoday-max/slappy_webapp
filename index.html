@@ -199,6 +199,18 @@
             border-bottom: 1px solid var(--gray-border);
             gap: 12px;
         }
+        .subpage-header.consigli {
+            background: linear-gradient(135deg, #2a9d8f 0%, #48b5a9 50%, #6ec6bd 100%);
+            color: white;
+            border-bottom: none;
+        }
+        .subpage-header.consigli .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        .subpage-header.consigli .subpage-title {
+            color: white;
+        }
         .back-btn {
             width: 36px;
             height: 36px;
@@ -574,14 +586,27 @@
 
         /* CONSIGLI WEATHER BASED */
         .weather-advice {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--yellow-light) 100%);
-            border: 1px solid var(--yellow-border);
             border-radius: var(--radius-card);
             padding: 16px;
             margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 12px;
+        }
+        /* Sole → giallo/arancio chiaro */
+        .weather-advice.sunny {
+            background: radial-gradient(ellipse at center, #ffffff 0%, #fff8e1 100%);
+            border: 1px solid #ffecb3;
+        }
+        /* Nuvoloso → grigio chiaro */
+        .weather-advice.cloudy {
+            background: radial-gradient(ellipse at center, #ffffff 0%, #f5f5f5 100%);
+            border: 1px solid #e0e0e0;
+        }
+        /* Pioggia/Temporale → blu */
+        .weather-advice.rainy {
+            background: radial-gradient(ellipse at center, #e3f2fd 0%, #bbdefb 100%);
+            border: 1px solid #90caf9;
         }
         .weather-advice-icon {
             font-size: 32px;
@@ -718,18 +743,18 @@
         <!-- PAGE: CONSIGLI DI OGGI -->
         <!-- ==================== -->
         <div class="page" id="page-consigli">
-            <header class="subpage-header">
+            <header class="subpage-header consigli">
                 <button class="back-btn" onclick="showPage('home')">←</button>
-                <div class="subpage-title">Consigli di Oggi</div>
+                <div class="subpage-title">✨ Consigli di Oggi</div>
             </header>
 
             <div class="subpage-content">
-                <!-- Weather-based advice -->
-                <div class="weather-advice">
-                    <div class="weather-advice-icon">☀️</div>
+                <!-- Weather-based advice (classe dinamica: sunny/cloudy/rainy) -->
+                <div class="weather-advice sunny" id="weather-advice-box">
+                    <div class="weather-advice-icon" id="weather-advice-icon">☀️</div>
                     <div class="weather-advice-text">
-                        <div class="weather-advice-title">Giornata soleggiata</div>
-                        <div class="weather-advice-desc">12° · Pioggia prevista alle 16:00</div>
+                        <div class="weather-advice-title" id="weather-advice-title">Giornata soleggiata</div>
+                        <div class="weather-advice-desc" id="weather-advice-desc">Caricamento...</div>
                     </div>
                 </div>
 
@@ -738,41 +763,33 @@
                 </section>
 
                 <!-- Consigli basati sul meteo: sole + pioggia pomeriggio -->
-                <div class="content-card">
+                <a href="slappy_fortini.html" class="content-card" style="text-decoration: none; color: inherit;">
                     <div class="content-card-icon teal">🚴</div>
                     <div class="content-card-body">
                         <div class="content-card-title">Bici sui Fortini</div>
                         <div class="content-card-desc">Mattina ideale · Vento leggero</div>
                     </div>
-                </div>
+                </a>
 
-                <div class="content-card">
+                <a href="slappy_spiagge.html" class="content-card" style="text-decoration: none; color: inherit;">
                     <div class="content-card-icon blue">🏖️</div>
                     <div class="content-card-body">
                         <div class="content-card-title">Spiaggia Ca' Savio</div>
                         <div class="content-card-desc">Mare calmo · Bandiera verde</div>
                     </div>
-                </div>
-
-                <div class="content-card">
-                    <div class="content-card-icon orange">🍝</div>
-                    <div class="content-card-body">
-                        <div class="content-card-title">Pranzo al Porto</div>
-                        <div class="content-card-desc">Prima della pioggia · Pesce fresco</div>
-                    </div>
-                </div>
+                </a>
 
                 <section class="section" style="margin-top: 24px;">
                     <div class="section-title">Per il pomeriggio (pioggia)</div>
                 </section>
 
-                <div class="content-card">
+                <a href="slappy_fortini.html#museo-amalfi" class="content-card" style="text-decoration: none; color: inherit;">
                     <div class="content-card-icon purple">🏛️</div>
                     <div class="content-card-body">
-                        <div class="content-card-title">Visita Forte Treporti</div>
-                        <div class="content-card-desc">Al coperto · Storia locale</div>
+                        <div class="content-card-title">Museo Batteria Amalfi</div>
+                        <div class="content-card-desc">Al coperto · Storia della Grande Guerra</div>
                     </div>
-                </div>
+                </a>
 
                 <div class="content-card">
                     <div class="content-card-icon yellow">☕</div>
@@ -786,13 +803,13 @@
                     <div class="section-title">Stasera</div>
                 </section>
 
-                <div class="content-card">
+                <a href="slappy_eventi.html" class="content-card" style="text-decoration: none; color: inherit;">
                     <div class="content-card-icon purple">🎵</div>
                     <div class="content-card-body">
                         <div class="content-card-title">Jazz al Porto</div>
                         <div class="content-card-desc">21:00 · Gratis · Dopo la pioggia</div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
 
@@ -953,6 +970,64 @@
                 window.scrollTo(0, 0);
             }
         }
+
+        // Carica meteo dinamico per pagina Consigli
+        async function loadConsigliWeather() {
+            const box = document.getElementById('weather-advice-box');
+            const icon = document.getElementById('weather-advice-icon');
+            const title = document.getElementById('weather-advice-title');
+            const desc = document.getElementById('weather-advice-desc');
+
+            if (!box) return;
+
+            try {
+                const lat = 45.4583, lon = 12.5275;
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Europe/Rome&forecast_days=1`;
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                const temp = Math.round(data.current.temperature_2m);
+                const code = data.current.weather_code;
+                const precipProb = data.daily.precipitation_probability_max[0];
+
+                // Determina stato meteo e aggiorna UI
+                let weatherClass, weatherIcon, weatherTitle;
+
+                if (code <= 3) {
+                    // Sereno o poco nuvoloso
+                    weatherClass = 'sunny';
+                    weatherIcon = '☀️';
+                    weatherTitle = 'Giornata soleggiata';
+                } else if (code <= 48) {
+                    // Nuvoloso o nebbia
+                    weatherClass = 'cloudy';
+                    weatherIcon = '☁️';
+                    weatherTitle = 'Giornata nuvolosa';
+                } else {
+                    // Pioggia o temporale
+                    weatherClass = 'rainy';
+                    weatherIcon = code >= 95 ? '⛈️' : '🌧️';
+                    weatherTitle = code >= 95 ? 'Temporale in arrivo' : 'Giornata piovosa';
+                }
+
+                box.className = 'weather-advice ' + weatherClass;
+                icon.textContent = weatherIcon;
+                title.textContent = weatherTitle;
+
+                let descText = `${temp}°C`;
+                if (precipProb > 30) {
+                    descText += ` · ${precipProb}% probabilità pioggia`;
+                }
+                desc.textContent = descText;
+
+            } catch (error) {
+                desc.textContent = 'Meteo non disponibile';
+            }
+        }
+
+        // Carica meteo all'avvio
+        document.addEventListener('DOMContentLoaded', loadConsigliWeather);
     </script>
 </body>
 </html>
