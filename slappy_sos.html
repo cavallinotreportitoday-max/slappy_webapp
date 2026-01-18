@@ -82,8 +82,8 @@
             --white: #ffffff;
             --shadow-md: 0 2px 8px rgba(0,0,0,0.06);
 
-            /* Gradient */
-            --gradient-sos: radial-gradient(ellipse at center, #ffcdd2 0%, #e6b5ba 100%);
+            /* Gradient - header più scuro */
+            --gradient-sos: radial-gradient(ellipse at center, #ef9a9a 0%, #e57373 100%);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -151,31 +151,33 @@
             padding-bottom: calc(var(--nav-height) + 20px);
         }
 
-        /* ===== BLOCCO 1: EMERGENZA 112 ===== */
+        /* ===== BLOCCO 1: EMERGENZA 112 - Stile SLAPPY pastello ===== */
         .emergency-block {
-            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            background: radial-gradient(ellipse at center, #ffcdd2 0%, #ef9a9a 100%);
+            border: 1px solid #f48fb1;
             border-radius: var(--radius-card);
             padding: 24px 20px;
             margin-bottom: var(--gap-sections);
             text-align: center;
+            box-shadow: var(--shadow-md);
         }
         .emergency-number {
             font-size: 72px;
-            font-weight: 500;
-            color: var(--white);
+            font-weight: 600;
+            color: #c62828;
             line-height: 1;
             margin-bottom: 8px;
             letter-spacing: -2px;
         }
         .emergency-label {
             font-size: 18px;
-            font-weight: 500;
-            color: var(--white);
+            font-weight: 600;
+            color: var(--gray-900);
             margin-bottom: 4px;
         }
         .emergency-hint {
             font-size: 12px;
-            color: rgba(255,255,255,0.8);
+            color: var(--gray-600);
             margin-bottom: 20px;
         }
         .emergency-actions {
@@ -195,14 +197,17 @@
             cursor: pointer;
             border: none;
             text-decoration: none;
+            box-shadow: var(--shadow-md);
         }
         .emergency-btn.call {
-            background: var(--white);
-            color: var(--red);
+            background: radial-gradient(ellipse at center, var(--white) 0%, #ffebee 100%);
+            border: 1px solid #ef9a9a;
+            color: var(--gray-900);
         }
         .emergency-btn.location {
-            background: rgba(255,255,255,0.2);
-            color: var(--white);
+            background: radial-gradient(ellipse at center, var(--white) 0%, #e3f2fd 100%);
+            border: 1px solid #90caf9;
+            color: var(--gray-900);
         }
         .emergency-btn:active { transform: scale(0.98); }
 
@@ -226,6 +231,7 @@
             display: flex;
             align-items: center;
             gap: var(--gap-inner);
+            box-shadow: var(--shadow-md);
         }
         .help-card:hover { border-color: var(--gray-300); }
 
@@ -239,9 +245,18 @@
             font-size: 20px;
             flex-shrink: 0;
         }
-        .help-icon.pharmacy { background: var(--green-100); }
-        .help-icon.hospital { background: var(--red-100); }
-        .help-icon.doctor { background: var(--orange-100); }
+        .help-icon.pharmacy {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #c8e6c9 100%);
+            border: 1px solid #a5d6a7;
+        }
+        .help-icon.hospital {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #ffcdd2 100%);
+            border: 1px solid #ef9a9a;
+        }
+        .help-icon.doctor {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #ffe0b2 100%);
+            border: 1px solid #ffcc80;
+        }
 
         .help-content { flex: 1; min-width: 0; }
         .help-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
@@ -250,31 +265,47 @@
 
         .help-status {
             font-size: 10px;
-            font-weight: 500;
-            padding: 4px 8px;
+            font-weight: 600;
+            padding: 4px 10px;
             border-radius: 100px;
             text-transform: uppercase;
             flex-shrink: 0;
         }
-        .help-status.open { background: var(--green); color: var(--white); }
-        .help-status.closed { background: var(--gray-400); color: var(--white); }
+        .help-status.open {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #c8e6c9 100%);
+            border: 1px solid #a5d6a7;
+            color: #2e7d32;
+        }
+        .help-status.closed {
+            background: var(--gray-100);
+            border: 1px solid var(--gray-300);
+            color: var(--gray-500);
+        }
 
         .help-actions { display: flex; gap: 8px; flex-shrink: 0; }
 
         .action-btn {
             width: var(--icon-size);
             height: var(--icon-size);
-            border-radius: 50%;
+            border-radius: var(--radius-icon);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
-            border: none;
             cursor: pointer;
             text-decoration: none;
+            box-shadow: var(--shadow-md);
         }
-        .action-btn.call { background: var(--green); color: var(--white); }
-        .action-btn.nav { background: var(--blue); color: var(--white); }
+        .action-btn.call {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #c8e6c9 100%);
+            border: 1px solid #a5d6a7;
+            color: var(--gray-700);
+        }
+        .action-btn.nav {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #bbdefb 100%);
+            border: 1px solid #90caf9;
+            color: var(--gray-700);
+        }
         .action-btn:active { transform: scale(0.95); }
 
         /* ===== BLOCCO 3: ACCORDION ===== */
@@ -348,11 +379,26 @@
         .accordion-item-sub { font-size: var(--font-meta); color: var(--gray-500); }
         .accordion-item-arrow { font-size: 16px; color: var(--gray-300); }
 
-        .icon-bg-red { background: var(--red-100); }
-        .icon-bg-green { background: var(--green-100); }
-        .icon-bg-blue { background: var(--blue-100); }
-        .icon-bg-yellow { background: var(--yellow-100); }
-        .icon-bg-orange { background: var(--orange-100); }
+        .icon-bg-red {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #ffcdd2 100%);
+            border: 1px solid #ef9a9a;
+        }
+        .icon-bg-green {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #c8e6c9 100%);
+            border: 1px solid #a5d6a7;
+        }
+        .icon-bg-blue {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #bbdefb 100%);
+            border: 1px solid #90caf9;
+        }
+        .icon-bg-yellow {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #fff9c4 100%);
+            border: 1px solid #fff176;
+        }
+        .icon-bg-orange {
+            background: radial-gradient(ellipse at center, var(--white) 0%, #ffe0b2 100%);
+            border: 1px solid #ffcc80;
+        }
 
         /* ===== SUBPAGES ===== */
         .subpage {
@@ -375,8 +421,8 @@
         }
 
         .subpage-header {
-            background: var(--red);
-            color: var(--white);
+            background: radial-gradient(ellipse at center, #ef9a9a 0%, #e57373 100%);
+            color: var(--gray-900);
             padding: 12px var(--padding-page);
             height: 48px;
             display: flex;
@@ -387,17 +433,17 @@
         .subpage-back {
             width: 32px;
             height: 32px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.1);
             border: 1px solid transparent;
             border-radius: var(--radius-button);
-            color: var(--white);
+            color: var(--gray-900);
             font-size: 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .subpage-back:hover { border-color: rgba(255,255,255,0.4); }
+        .subpage-back:hover { background: rgba(0,0,0,0.15); }
         .subpage-title { font-size: var(--font-title); font-weight: var(--weight-title); }
 
         /* Tab bar scrollabile */
@@ -426,9 +472,10 @@
         }
         .subpage-tab:hover { border-color: var(--gray-300); }
         .subpage-tab.active {
-            background: var(--red);
-            color: var(--white);
-            border-color: var(--red);
+            background: radial-gradient(ellipse at center, var(--white) 0%, #ffcdd2 100%);
+            color: var(--gray-900);
+            border-color: #ef9a9a;
+            font-weight: 600;
         }
 
         .subpage-content {
