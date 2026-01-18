@@ -181,18 +181,36 @@
             background: var(--white);
             border: 1px solid var(--gray-200);
             border-radius: var(--radius-card);
-            padding: 16px;
+            padding: 16px 12px;
             margin-bottom: 16px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         .details-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
+            gap: 12px 8px;
         }
-        .detail-item { text-align: center; }
-        .detail-icon { font-size: 24px; margin-bottom: 6px; }
-        .detail-value { font-size: 15px; font-weight: 700; color: var(--text-dark); }
+        .detail-item {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .detail-icon {
+            font-size: 22px;
+            margin-bottom: 6px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .detail-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
         .detail-label { font-size: 10px; color: var(--text-light); text-transform: uppercase; margin-top: 2px; }
 
         /* MAREE CARD */
@@ -257,6 +275,19 @@
             width: 100%;
             height: 100%;
         }
+        .maree-curve svg path.wave-line {
+            animation: waveFloat 2.5s ease-in-out infinite;
+        }
+        .maree-curve svg path.wave-fill {
+            animation: waveFloat 2.5s ease-in-out infinite;
+        }
+        @keyframes waveFloat {
+            0% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(-1px) translateY(-2px); }
+            50% { transform: translateX(0) translateY(-3px); }
+            75% { transform: translateX(1px) translateY(-2px); }
+            100% { transform: translateX(0) translateY(0); }
+        }
         .maree-now-marker {
             position: absolute;
             top: 0;
@@ -287,15 +318,145 @@
             align-items: center;
             gap: 10px;
         }
-        .maree-next-icon { font-size: 20px; }
+        .maree-next-icon { font-size: 14px; }
         .maree-next-text { flex: 1; }
         .maree-next-label { font-size: 11px; color: var(--text-light); }
         .maree-next-value { font-size: 14px; font-weight: 700; color: #1e40af; }
 
-        /* FORECAST CARDS */
+        /* MAREE CARD CLICCABILE */
+        .maree-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .maree-card:active {
+            transform: scale(0.98);
+        }
+        .maree-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .maree-expand-hint {
+            font-size: 11px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .maree-expand-hint span {
+            font-size: 16px;
+        }
+
+        /* MODAL MAREE SETTIMANALI */
+        .maree-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 20px;
+        }
+        .maree-modal-overlay.active {
+            display: flex;
+        }
+        .maree-modal {
+            background: var(--white);
+            border-radius: 20px 20px 0 0;
+            width: 100%;
+            max-width: 480px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .maree-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--gray-200);
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            z-index: 1;
+        }
+        .maree-modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .maree-modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gray-100);
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .maree-modal-content {
+            padding: 16px 20px 20px;
+        }
+        .maree-day-section {
+            margin-bottom: 16px;
+        }
+        .maree-day-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .maree-day-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+        .maree-day-item {
+            background: var(--gray-100);
+            border-radius: 8px;
+            padding: 8px 4px;
+            text-align: center;
+        }
+        .maree-day-item.alta {
+            background: rgba(22,163,74,0.1);
+        }
+        .maree-day-item.bassa {
+            background: rgba(37,99,235,0.1);
+        }
+        .maree-day-item-time {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .maree-day-item-level {
+            font-size: 10px;
+            color: var(--text-medium);
+            margin-top: 2px;
+        }
+        .maree-day-item-type {
+            font-size: 9px;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+        .maree-day-item-type.alta { color: #16a34a; }
+        .maree-day-item-type.bassa { color: #2563eb; }
+
+        /* FORECAST CARDS - colore basato su balneazione */
         .forecast-card {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--teal-light) 100%);
-            border: 1px solid var(--teal-border);
             border-radius: var(--radius-card);
             padding: 14px 16px;
             margin-bottom: 10px;
@@ -303,31 +464,145 @@
             align-items: center;
             gap: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            cursor: pointer;
+            transition: transform 0.2s;
         }
-        .forecast-card.purple {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--purple-light) 100%);
-            border-color: var(--purple-border);
+        .forecast-card:active {
+            transform: scale(0.98);
         }
-        .forecast-card.orange {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--orange-light) 100%);
-            border-color: var(--orange-border);
+        .forecast-card.flag-green {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
         }
-        .forecast-card.blue {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--blue-light) 100%);
-            border-color: var(--blue-border);
+        .forecast-card.flag-yellow {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
         }
-        .forecast-card.green {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--green-light) 100%);
-            border-color: var(--green-border);
+        .forecast-card.flag-red {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
         }
-        .forecast-card.yellow {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--yellow-light) 100%);
-            border-color: var(--yellow-border);
+
+        /* MODAL DETTAGLIO GIORNO */
+        .day-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
         }
-        .forecast-card.red {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--red-light) 100%);
-            border-color: var(--red-border);
+        .day-modal-overlay.active {
+            display: flex;
         }
+        .day-modal {
+            background: var(--white);
+            border-radius: 20px 20px 0 0;
+            width: 100%;
+            max-width: 480px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+        }
+        .day-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--gray-200);
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            z-index: 1;
+        }
+        .day-modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .day-modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gray-100);
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .day-modal-content {
+            padding: 16px 20px 20px;
+        }
+        .day-modal-hero {
+            text-align: center;
+            padding: 16px 0 20px;
+            border-bottom: 1px solid var(--gray-200);
+            margin-bottom: 16px;
+        }
+        .day-modal-icon { font-size: 48px; margin-bottom: 8px; }
+        .day-modal-temp { font-size: 36px; font-weight: 700; color: var(--text-dark); }
+        .day-modal-condition { font-size: 14px; color: var(--text-medium); margin-top: 4px; }
+        .day-modal-section {
+            margin-bottom: 16px;
+        }
+        .day-modal-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .day-modal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .day-modal-item {
+            background: var(--gray-100);
+            border-radius: 10px;
+            padding: 10px 8px;
+            text-align: center;
+        }
+        .day-modal-item-icon { font-size: 18px; margin-bottom: 4px; }
+        .day-modal-item-value { font-size: 13px; font-weight: 700; color: var(--text-dark); }
+        .day-modal-item-label { font-size: 9px; color: var(--text-light); text-transform: uppercase; margin-top: 2px; }
+        .day-modal-tides {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+        .day-modal-tide {
+            background: rgba(59,130,246,0.1);
+            border-radius: 8px;
+            padding: 8px 4px;
+            text-align: center;
+        }
+        .day-modal-tide.alta { background: rgba(22,163,74,0.1); }
+        .day-modal-tide.bassa { background: rgba(37,99,235,0.1); }
+        .day-modal-tide-time { font-size: 12px; font-weight: 700; color: var(--text-dark); }
+        .day-modal-tide-level { font-size: 10px; color: var(--text-medium); }
+        .day-modal-tide-type { font-size: 9px; font-weight: 600; margin-top: 2px; }
+        .day-modal-tide-type.alta { color: #16a34a; }
+        .day-modal-tide-type.bassa { color: #2563eb; }
+        .day-modal-advice {
+            background: var(--gray-100);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .day-modal-advice-icon { font-size: 24px; }
+        .day-modal-advice-text { flex: 1; }
+        .day-modal-advice-title { font-size: 13px; font-weight: 700; color: var(--text-dark); }
+        .day-modal-advice-desc { font-size: 11px; color: var(--text-medium); margin-top: 2px; }
         .forecast-day {
             width: 44px;
             text-align: center;
@@ -358,19 +633,6 @@
             color: var(--text-medium);
         }
         .forecast-detail-icon { font-size: 12px; }
-        .forecast-flag {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-        .forecast-flag.green { background: #dcfce7; }
-        .forecast-flag.yellow { background: #fef9c3; }
-        .forecast-flag.red { background: #fee2e2; }
 
         /* TIP CARD */
         .tip-card {
@@ -439,7 +701,7 @@
         .legenda-dot.yellow { background: #facc15; }
         .legenda-dot.red { background: #ef4444; }
 
-        /* TAB BAR */
+        /* TAB BAR MINIMAL */
         .tab-bar {
             position: fixed;
             bottom: 0;
@@ -447,34 +709,57 @@
             transform: translateX(-50%);
             width: 100%;
             max-width: 480px;
-            background: var(--white);
-            padding: 12px 16px;
+            background: #f8f9fa;
+            padding: 8px 16px;
             padding-bottom: max(12px, env(safe-area-inset-bottom));
             display: flex;
             justify-content: space-around;
-            gap: 12px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            border-top: 1px solid #e0e0e0;
             z-index: 1000;
         }
         .tab-btn {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: center;
-            gap: 5px;
-            padding: 10px 8px;
-            border-radius: 10px;
+            gap: 4px;
+            padding: 6px 16px;
             cursor: pointer;
             text-decoration: none;
-            transition: transform 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            position: relative;
+            background: none;
+            border: none;
         }
-        .tab-btn:active { transform: scale(0.96); }
-        .tab-btn-icon { font-size: 17px; }
-        .tab-btn-label { font-size: 11px; font-weight: 700; color: var(--gray-900); }
-        .tab-btn.meteo { background: radial-gradient(ellipse at center, #ffffff 0%, #fff59d 100%); border: 1px solid #fff9c4; }
-        .tab-btn.trasporti { background: radial-gradient(ellipse at center, #ffffff 0%, #90caf9 100%); border: 1px solid #bbdefb; }
-        .tab-btn.sos { background: radial-gradient(ellipse at center, #ffffff 0%, #ffcdd2 100%); border: 1px solid #ffcdd2; }
-        .tab-btn.home { background: radial-gradient(ellipse at center, #ffffff 0%, #b2dfdb 100%); border: 1px solid #b2dfdb; }
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 3px;
+            border-radius: 2px;
+            background: transparent;
+            transition: background 0.2s;
+        }
+        .tab-btn:active { opacity: 0.7; }
+        .tab-btn-icon {
+            font-size: 24px;
+            filter: grayscale(100%);
+            opacity: 0.5;
+            transition: all 0.2s;
+        }
+        .tab-btn-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: #888888;
+            transition: color 0.2s;
+        }
+        .tab-btn.active .tab-btn-icon { filter: grayscale(0%); opacity: 1; }
+        .tab-btn.active .tab-btn-label { color: var(--text-dark); font-weight: 600; }
+        .tab-btn.home.active::after { background: #78909c; }
+        .tab-btn.meteo.active::after { background: #fbc02d; }
+        .tab-btn.trasporti.active::after { background: #42a5f5; }
+        .tab-btn.sos.active::after { background: #ef5350; }
     </style>
 </head>
 <body>
@@ -499,7 +784,7 @@
             <span class="tab-btn-icon">🏠</span>
             <span class="tab-btn-label">Home</span>
         </a>
-        <a href="slappy_meteo.html" class="tab-btn meteo">
+        <a href="slappy_meteo.html" class="tab-btn meteo active">
             <span class="tab-btn-icon">🌤️</span>
             <span class="tab-btn-label">Meteo</span>
         </a>
@@ -551,7 +836,16 @@ const tidesData = [
     { time: '01:24', level: '+72', type: 'alta' }
 ];
 
-const cardColors = ['teal', 'purple', 'orange', 'blue', 'green', 'yellow', 'teal'];
+// Maree settimanali (simulate - in produzione usare API reale)
+const weeklyTidesData = [
+    { day: 0, tides: [{ time: '06:42', level: '+12', type: 'bassa' }, { time: '12:58', level: '+87', type: 'alta' }, { time: '19:15', level: '-8', type: 'bassa' }, { time: '01:24', level: '+72', type: 'alta' }] },
+    { day: 1, tides: [{ time: '07:18', level: '+8', type: 'bassa' }, { time: '13:35', level: '+92', type: 'alta' }, { time: '19:52', level: '-12', type: 'bassa' }, { time: '02:01', level: '+68', type: 'alta' }] },
+    { day: 2, tides: [{ time: '07:55', level: '+5', type: 'bassa' }, { time: '14:12', level: '+95', type: 'alta' }, { time: '20:30', level: '-15', type: 'bassa' }, { time: '02:38', level: '+65', type: 'alta' }] },
+    { day: 3, tides: [{ time: '08:32', level: '+3', type: 'bassa' }, { time: '14:50', level: '+98', type: 'alta' }, { time: '21:08', level: '-18', type: 'bassa' }, { time: '03:15', level: '+62', type: 'alta' }] },
+    { day: 4, tides: [{ time: '09:10', level: '+6', type: 'bassa' }, { time: '15:28', level: '+94', type: 'alta' }, { time: '21:47', level: '-14', type: 'bassa' }, { time: '03:53', level: '+66', type: 'alta' }] },
+    { day: 5, tides: [{ time: '09:48', level: '+10', type: 'bassa' }, { time: '16:06', level: '+88', type: 'alta' }, { time: '22:26', level: '-9', type: 'bassa' }, { time: '04:31', level: '+70', type: 'alta' }] },
+    { day: 6, tides: [{ time: '10:27', level: '+15', type: 'bassa' }, { time: '16:45', level: '+82', type: 'alta' }, { time: '23:05', level: '-3', type: 'bassa' }, { time: '05:10', level: '+75', type: 'alta' }] }
+];
 
 function getWeatherInfo(code) {
     return weatherCodes[code] || { icon: '🌡️', desc: 'N/D' };
@@ -593,6 +887,157 @@ function getNowPosition() {
     return ((now.getHours() * 60 + now.getMinutes()) / 1440) * 100;
 }
 
+function openTidesModal() {
+    document.getElementById('tidesModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeTidesModal() {
+    document.getElementById('tidesModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Variabili globali per il modal dettaglio giorno
+let cachedWeatherData = null;
+let cachedMarineData = null;
+
+function openDayModal(dayIndex) {
+    if (!cachedWeatherData || !cachedMarineData) return;
+
+    const daily = cachedWeatherData.daily;
+    const dailyMarine = cachedMarineData.daily || {};
+
+    const date = new Date(daily.time[dayIndex]);
+    const dayLabel = dayIndex === 0 ? 'Oggi' : `${dayNamesFull[date.getDay()]} ${date.getDate()} ${monthNames[date.getMonth()]}`;
+    const dayWeather = getWeatherInfo(daily.weather_code[dayIndex]);
+    const tempMax = Math.round(daily.temperature_2m_max[dayIndex]);
+    const tempMin = Math.round(daily.temperature_2m_min[dayIndex]);
+    const waveHeight = dailyMarine.wave_height_max?.[dayIndex] || 0;
+    const dayFlag = getFlagStatus(daily.weather_code[dayIndex], 15, waveHeight);
+    const rainProb = daily.precipitation_probability_max[dayIndex];
+    const seaStatus = getSeaStatus(waveHeight);
+    const dayTides = weeklyTidesData[dayIndex]?.tides || tidesData;
+
+    const adviceMap = {
+        green: { icon: '🏖️', title: 'Giornata ideale per il mare', desc: 'Condizioni perfette per nuotare e attività in spiaggia' },
+        yellow: { icon: '⚠️', title: 'Prestare attenzione', desc: 'Mare mosso, bagno con cautela. Meglio passeggiate' },
+        red: { icon: '🏠', title: 'Evitare il bagno', desc: 'Condizioni avverse. Consigliati musei e attività indoor' }
+    };
+    const advice = adviceMap[dayFlag.color];
+
+    const modalHtml = `
+        <div class="day-modal-hero">
+            <div class="day-modal-icon">${dayWeather.icon}</div>
+            <div class="day-modal-temp">${tempMax}° / ${tempMin}°</div>
+            <div class="day-modal-condition">${dayWeather.desc}</div>
+        </div>
+
+        <div class="day-modal-section">
+            <div class="day-modal-section-title">Dettagli Meteo</div>
+            <div class="day-modal-grid">
+                <div class="day-modal-item">
+                    <div class="day-modal-item-icon">🌡️</div>
+                    <div class="day-modal-item-value">${tempMax}°</div>
+                    <div class="day-modal-item-label">Max</div>
+                </div>
+                <div class="day-modal-item">
+                    <div class="day-modal-item-icon">🌡️</div>
+                    <div class="day-modal-item-value">${tempMin}°</div>
+                    <div class="day-modal-item-label">Min</div>
+                </div>
+                <div class="day-modal-item">
+                    <div class="day-modal-item-icon">☔</div>
+                    <div class="day-modal-item-value">${rainProb}%</div>
+                    <div class="day-modal-item-label">Pioggia</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-modal-section">
+            <div class="day-modal-section-title">Stato Mare</div>
+            <div class="day-modal-grid">
+                <div class="day-modal-item">
+                    <div class="day-modal-item-icon">🌊</div>
+                    <div class="day-modal-item-value">${waveHeight.toFixed(1)}m</div>
+                    <div class="day-modal-item-label">Onde</div>
+                </div>
+                <div class="day-modal-item">
+                    <div class="day-modal-item-icon">🏄</div>
+                    <div class="day-modal-item-value">${seaStatus}</div>
+                    <div class="day-modal-item-label">Mare</div>
+                </div>
+                <div class="day-modal-item" style="background: ${dayFlag.color === 'green' ? '#dcfce7' : dayFlag.color === 'yellow' ? '#fef9c3' : '#fee2e2'}">
+                    <div class="day-modal-item-icon">🚩</div>
+                    <div class="day-modal-item-value">${dayFlag.title.replace('Bandiera ', '')}</div>
+                    <div class="day-modal-item-label">Bandiera</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-modal-section">
+            <div class="day-modal-section-title">Maree del Giorno</div>
+            <div class="day-modal-tides">
+                ${dayTides.map(t => `
+                    <div class="day-modal-tide ${t.type}">
+                        <div class="day-modal-tide-time">${t.time}</div>
+                        <div class="day-modal-tide-level">${t.level}cm</div>
+                        <div class="day-modal-tide-type ${t.type}">${t.type === 'alta' ? '▲ Alta' : '▼ Bassa'}</div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <div class="day-modal-section">
+            <div class="day-modal-section-title">Consiglio</div>
+            <div class="day-modal-advice">
+                <div class="day-modal-advice-icon">${advice.icon}</div>
+                <div class="day-modal-advice-text">
+                    <div class="day-modal-advice-title">${advice.title}</div>
+                    <div class="day-modal-advice-desc">${advice.desc}</div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('dayModalTitle').textContent = dayLabel;
+    document.getElementById('dayModalContent').innerHTML = modalHtml;
+    document.getElementById('dayModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDayModal() {
+    document.getElementById('dayModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function generateWeeklyTidesHTML() {
+    const today = new Date();
+    let html = '';
+
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
+        const dayLabel = i === 0 ? 'Oggi' : `${dayNamesFull[date.getDay()]} ${date.getDate()} ${monthNames[date.getMonth()]}`;
+        const dayTides = weeklyTidesData[i].tides;
+
+        html += `
+            <div class="maree-day-section">
+                <div class="maree-day-title">${dayLabel}</div>
+                <div class="maree-day-grid">
+                    ${dayTides.map(t => `
+                        <div class="maree-day-item ${t.type}">
+                            <div class="maree-day-item-time">${t.time}</div>
+                            <div class="maree-day-item-level">${t.level}cm</div>
+                            <div class="maree-day-item-type ${t.type}">${t.type === 'alta' ? '▲ Alta' : '▼ Bassa'}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+    return html;
+}
+
 async function loadWeatherData() {
     try {
         const weatherUrl = 'https://api.open-meteo.com/v1/forecast?latitude=45.458&longitude=12.508&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m,uv_index&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max&timezone=Europe/Rome&forecast_days=7';
@@ -619,6 +1064,10 @@ async function loadWeatherData() {
 }
 
 function renderPage(weather, marine) {
+    // Cache data for day modal
+    cachedWeatherData = weather;
+    cachedMarineData = marine;
+
     const current = weather.current;
     const daily = weather.daily;
     const currentMarine = marine.current || {};
@@ -694,7 +1143,7 @@ function renderPage(weather, marine) {
 
         <!-- MAREE -->
         <div class="section-title">Maree Oggi</div>
-        <div class="maree-card">
+        <div class="maree-card" onclick="openTidesModal()">
             <div class="maree-title">
                 <span class="maree-title-icon">🌊</span>
                 Punta Sabbioni
@@ -711,26 +1160,39 @@ function renderPage(weather, marine) {
             <div class="maree-graph">
                 <div class="maree-curve">
                     <svg viewBox="0 0 100 50" preserveAspectRatio="none">
-                        <path d="M0,35 Q12.5,45 25,35 Q37.5,10 50,35 Q62.5,48 75,35 Q87.5,15 100,30"
+                        <path class="wave-line" d="M0,35 Q12.5,45 25,35 Q37.5,10 50,35 Q62.5,48 75,35 Q87.5,15 100,30"
                               fill="none" stroke="rgba(59,130,246,0.5)" stroke-width="2"/>
-                        <path d="M0,35 Q12.5,45 25,35 Q37.5,10 50,35 Q62.5,48 75,35 Q87.5,15 100,30 L100,50 L0,50 Z"
+                        <path class="wave-fill" d="M0,35 Q12.5,45 25,35 Q37.5,10 50,35 Q62.5,48 75,35 Q87.5,15 100,30 L100,50 L0,50 Z"
                               fill="rgba(59,130,246,0.15)"/>
                     </svg>
                 </div>
                 <div class="maree-now-marker" style="left: ${nowPos}%"></div>
             </div>
             <div class="maree-next-box">
-                <span class="maree-next-icon">${nextTide.type === 'alta' ? '🔺' : '🔻'}</span>
+                <span class="maree-next-icon">${nextTide.type === 'alta' ? '▲' : '▼'}</span>
                 <div class="maree-next-text">
                     <div class="maree-next-label">Prossima marea</div>
-                    <div class="maree-next-value">${nextTide.type === 'alta' ? 'Alta' : 'Bassa'} alle ${nextTide.time} (${nextTide.level}cm)</div>
+                    <div class="maree-next-value">${nextTide.type === 'alta' ? 'Alta' : 'Bassa'} ${nextTide.time} (${nextTide.level}cm)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL MAREE SETTIMANALI -->
+        <div class="maree-modal-overlay" id="tidesModal" onclick="if(event.target === this) closeTidesModal()">
+            <div class="maree-modal">
+                <div class="maree-modal-header">
+                    <div class="maree-modal-title">🌊 Maree - Prossimi 7 Giorni</div>
+                    <button class="maree-modal-close" onclick="closeTidesModal()">✕</button>
+                </div>
+                <div class="maree-modal-content">
+                    ${generateWeeklyTidesHTML()}
                 </div>
             </div>
         </div>
 
         <!-- TIP -->
         <a href="slappy_fortini.html" class="tip-card">
-            <div class="tip-icon">💡</div>
+            <div class="tip-icon">🚴</div>
             <div class="tip-content">
                 <div class="tip-title">${flag.color === 'green' ? 'Ideale per escursioni' : flag.color === 'yellow' ? 'Attività con prudenza' : 'Meglio attività indoor'}</div>
                 <div class="tip-desc">${flag.color === 'green' ? 'Bici sui fortini consigliata' : flag.color === 'yellow' ? 'Controlla il meteo prima di uscire' : 'Musei o shopping consigliati'}</div>
@@ -753,7 +1215,7 @@ function renderPage(weather, marine) {
         const seaStatus = getSeaStatus(waveHeight);
 
         html += `
-            <div class="forecast-card ${cardColors[i % cardColors.length]}">
+            <div class="forecast-card flag-${dayFlag.color}" onclick="openDayModal(${i})">
                 <div class="forecast-day">
                     <div class="forecast-day-name">${dayName}</div>
                     <div class="forecast-day-num">${dayNum} ${monthNames[date.getMonth()]}</div>
@@ -768,7 +1230,6 @@ function renderPage(weather, marine) {
                         <span class="forecast-detail"><span class="forecast-detail-icon">🌊</span>${seaStatus}</span>
                     </div>
                 </div>
-                <div class="forecast-flag ${dayFlag.color}">${dayFlag.emoji}</div>
             </div>
         `;
     }
@@ -789,6 +1250,18 @@ function renderPage(weather, marine) {
                 <div class="legenda-item">
                     <div class="legenda-dot red"></div>
                     <span>Sconsigliata</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL DETTAGLIO GIORNO -->
+        <div class="day-modal-overlay" id="dayModal" onclick="if(event.target === this) closeDayModal()">
+            <div class="day-modal">
+                <div class="day-modal-header">
+                    <div class="day-modal-title" id="dayModalTitle">Dettaglio Giorno</div>
+                    <button class="day-modal-close" onclick="closeDayModal()">✕</button>
+                </div>
+                <div class="day-modal-content" id="dayModalContent">
                 </div>
             </div>
         </div>
