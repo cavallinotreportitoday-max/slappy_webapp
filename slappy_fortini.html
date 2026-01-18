@@ -115,14 +115,14 @@
         .page { padding: var(--padding-page); display: flex; flex-direction: column; gap: var(--gap-sections); }
         
         .app { width: 100%; height: 100dvh; display: flex; flex-direction: column; background: var(--gray-50); position: relative; overflow: hidden; }
-        .header { background: var(--gradient-fortini); color: var(--gray-900); height: var(--header-height); padding: 0 var(--padding-page); display: flex; align-items: center; gap: var(--gap-inner); flex-shrink: 0; }
-        .header-back { width: 32px; height: 32px; background: rgba(0,0,0,0.1); border: none; border-radius: var(--radius-button); color: var(--gray-900); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+        .header { background: linear-gradient(180deg, #b5a69b 0%, #8d7b6e 100%); color: var(--white); height: var(--header-height); padding: 0 var(--padding-page); display: flex; align-items: center; gap: var(--gap-inner); flex-shrink: 0; }
+        .header-back { width: 36px; height: 36px; background: rgba(255,255,255,0.2); border: none; border-radius: var(--radius-button); color: #ffffff; font-size: 24px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; text-decoration: none; }
         .header-back.hidden { visibility: hidden; }
         .header-content { flex: 1; }
         .header-title { font-size: var(--font-title); font-weight: var(--weight-title); }
         .header-subtitle { font-size: var(--font-meta); opacity: 0.9; margin-top: 2px; }
         .screens { flex: 1; overflow: hidden; position: relative; }
-        .screen { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; padding: var(--padding-page); padding-bottom: calc(var(--nav-height) + 16px); background: var(--gray-50); opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s; }
+        .screen { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; padding: 12px; padding-bottom: calc(var(--nav-height) + 12px); background: var(--gray-50); opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s; }
         .screen.active { opacity: 1; visibility: visible; }
         .hero-compact { background: var(--sepia-500); border-radius: var(--radius-card); padding: var(--padding-card); color: var(--white); margin-bottom: var(--gap-sections); display: flex; align-items: center; gap: var(--gap-inner); }
         .hero-icon { font-size: 32px; }
@@ -133,45 +133,45 @@
         .percorso-intro-soft .percorso-intro-text { font-size: var(--font-body); color: var(--gray-700); line-height: 1.5; }
         .percorso-intro-soft .percorso-intro-text strong { color: var(--gray-900); font-weight: var(--weight-title); }
         .percorso-meta { display: flex; gap: var(--gap-inner); margin-top: 8px; font-size: var(--font-meta); color: var(--sepia-600); font-weight: var(--weight-body); }
-        .cta-percorso { margin: var(--gap-sections) 0; }
-        .btn-percorso-main { width: 100%; height: var(--button-height); padding: 0 var(--button-padding-x); background: var(--sepia-500); color: var(--white); border: none; border-radius: var(--radius-button); font-size: var(--button-font-size); font-weight: var(--button-font-weight); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .altre-strutture { margin-top: var(--gap-sections); padding-top: var(--gap-sections); border-top: var(--border-default); }
-        .altre-strutture-label { font-size: var(--font-meta); font-weight: 500; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: var(--gap-inner); }
+        .cta-percorso { margin: 12px 0; }
+        .btn-percorso-main { width: 100%; height: 42px; padding: 0 var(--button-padding-x); background: linear-gradient(180deg, #b5a69b 0%, #8d7b6e 100%); color: var(--white); border: none; border-radius: var(--radius-button); font-size: var(--button-font-size); font-weight: var(--button-font-weight); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 8px rgba(141, 123, 110, 0.3); }
+        .altre-strutture { margin-top: 12px; padding-top: 12px; border-top: var(--border-default); }
+        .altre-strutture-label { font-size: var(--font-meta); font-weight: 500; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
         .altre-strutture-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .altra-card { background: var(--gray-50); border: var(--border-default); border-radius: var(--radius-button); padding: var(--gap-inner) 8px; text-align: center; cursor: pointer; }
-        .altra-card:hover { border-color: var(--gray-300); }
+        .altra-card { background: radial-gradient(ellipse at center, #ebe5e1 0%, #b5a69b 100%); border: 1px solid #a1887f; border-radius: var(--radius-button); padding: 12px 8px; text-align: center; cursor: pointer; }
+        .altra-card:hover { border-color: #8d7b6e; }
         .altra-icon { display: block; font-size: 20px; margin-bottom: 4px; }
         .altra-name { display: block; font-size: var(--font-meta); font-weight: var(--weight-body); color: var(--gray-700); }
         .altra-count { display: block; font-size: 10px; color: var(--gray-500); margin-top: 2px; }
-        .mode-switch-bottom { margin-top: var(--gap-sections); padding: var(--padding-card); background: var(--gray-50); border-radius: var(--radius-card); display: flex; align-items: center; justify-content: space-between; }
+        .mode-switch-bottom { margin-top: 12px; padding: 10px 12px; background: var(--gray-50); border-radius: var(--radius-card); display: flex; align-items: center; justify-content: space-between; }
         .mode-switch-label { font-size: var(--font-body); color: var(--gray-500); }
-        .mode-btn-storia { height: 36px; padding: 0 var(--button-padding-x); background: transparent; border: var(--border-default); border-radius: var(--radius-button); font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-700); cursor: pointer; }
-        .mode-btn-storia:hover { border-color: var(--gray-300); }
+        .mode-btn-storia { height: 36px; padding: 0 var(--button-padding-x); background: linear-gradient(180deg, #b5a69b 0%, #8d7b6e 100%); border: none; border-radius: var(--radius-button); font-size: var(--font-body); font-weight: var(--weight-body); color: var(--white); cursor: pointer; }
+        .mode-btn-storia:hover { opacity: 0.9; }
         .lista-header { display: flex; align-items: center; gap: var(--gap-inner); padding: var(--gap-inner) 0; margin-bottom: var(--gap-inner); border-bottom: var(--border-default); }
         .lista-header-icon { font-size: 28px; }
         .lista-header-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); }
         .lista-header-count { font-size: var(--font-meta); color: var(--gray-500); }
         .lista-info { margin-top: var(--gap-inner); padding: var(--padding-card); background: var(--gray-50); border-radius: var(--radius-button); font-size: var(--font-body); color: var(--gray-500); line-height: 1.5; }
-        .tappa-card { background: var(--white); border: var(--border-default); border-radius: var(--radius-card); padding: var(--padding-card); margin-bottom: var(--gap-cards); display: flex; gap: var(--gap-inner); position: relative; cursor: pointer; }
+        .tappa-card { background: var(--white); border: var(--border-default); border-radius: var(--radius-card); padding: 14px 14px; margin-bottom: 10px; display: flex; gap: 12px; position: relative; cursor: pointer; }
         .tappa-card:hover { border-color: var(--gray-300); }
-        .tappa-card::before { content: ''; position: absolute; left: 30px; top: 58px; bottom: -10px; width: 2px; background: var(--sepia-100); }
+        .tappa-card::before { content: ''; position: absolute; left: 26px; top: 48px; bottom: -8px; width: 2px; background: var(--sepia-100); }
         .tappa-card:last-of-type::before { display: none; }
-        .tappa-number { width: 32px; height: 32px; flex-shrink: 0; background: var(--brown-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--font-title); font-weight: var(--weight-title); color: var(--white); position: relative; z-index: 1; }
+        .tappa-number { width: 32px; height: 32px; flex-shrink: 0; background: #8d7b6e; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--font-title); font-weight: var(--weight-title); color: var(--white); position: relative; z-index: 1; }
         .tappa-content { flex: 1; min-width: 0; }
         .tappa-title { font-size: var(--font-title); font-weight: var(--weight-title); color: var(--gray-900); margin-bottom: 4px; }
         .tappa-highlight { font-size: var(--font-body); color: var(--gray-700); line-height: 1.4; }
-        .tappa-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; gap: 8px; }
+        .tappa-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; gap: 8px; }
         .tappa-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 500; padding: 4px 10px; border-radius: var(--radius-badge); }
         .tappa-badge.museo { background: var(--green-100); color: #065f46; }
         .tappa-badge.visitabile { background: var(--blue-100); color: #1e40af; }
         .tappa-badge.esterno { background: var(--gray-100); color: var(--gray-600); }
-        .btn-vai { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; background: var(--sepia-500); color: var(--white); border: none; border-radius: var(--radius-button); font-size: var(--font-body); font-weight: var(--button-font-weight); cursor: pointer; }
+        .btn-vai { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; background: radial-gradient(ellipse at center, #ebe5e1 0%, #b5a69b 100%); color: #5d4037; border: 1px solid #a1887f; border-radius: var(--radius-button); font-size: var(--font-body); font-weight: var(--button-font-weight); cursor: pointer; }
         /* SWIPE TABS ORIZZONTALI - SLAPPY STANDARD */
         .swipe-tabs { display: flex; gap: var(--gap-cards); overflow-x: auto; padding: 4px 0 var(--gap-sections); -webkit-overflow-scrolling: touch; scrollbar-width: none; }
         .swipe-tabs::-webkit-scrollbar { display: none; }
-        .swipe-tab { flex-shrink: 0; display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 var(--button-padding-x); background: var(--white); border: var(--border-default); border-radius: var(--radius-badge); font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-700); cursor: pointer; white-space: nowrap; }
-        .swipe-tab:hover { border-color: var(--gray-300); }
-        .swipe-tab.active { border-color: var(--sepia-500); border-width: 1.5px; color: var(--sepia-600); }
+        .swipe-tab { flex-shrink: 0; display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 var(--button-padding-x); background: radial-gradient(ellipse at center, #f5f0ed 0%, #d7ccc8 100%); border: 1px solid #a1887f; border-radius: var(--radius-badge); font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-700); cursor: pointer; white-space: nowrap; }
+        .swipe-tab:hover { border-color: #8d7b6e; }
+        .swipe-tab.active { background: radial-gradient(ellipse at center, #ebe5e1 0%, #b5a69b 100%); border-color: #8d7b6e; border-width: 1.5px; color: #5d4037; }
         .swipe-tab-icon { font-size: 16px; }
         .swipe-card-actions { display: flex; gap: 8px; }
         .swipe-card-actions .btn { flex: 1; padding: 10px; }
@@ -235,6 +235,15 @@
         .btn-mappa { flex: 1; height: var(--button-height); padding: 0 var(--button-padding-x); border-radius: var(--radius-button); font-size: var(--button-font-size); font-weight: var(--button-font-weight); cursor: pointer; }
         .btn-mappa-secondary { background: var(--white); color: var(--sepia-600); border: 1px solid var(--sepia-400); }
         .btn-mappa-secondary:hover { border-color: var(--gray-300); }
+        /* ACCORDION DETTAGLI CATEGORIA */
+        .cat-details { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .cat-details.open { max-height: 1200px; }
+        .cat-details-inner { padding: var(--padding-page); padding-top: 0; }
+        .cat-details-section { margin-bottom: var(--gap-sections); }
+        .cat-details-section:last-child { margin-bottom: 0; }
+        .cat-details-title { font-size: var(--font-body); font-weight: var(--weight-title); color: var(--gray-900); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .cat-close-btn { width: 100%; height: 40px; background: var(--gray-100); border: none; border-radius: var(--radius-button); font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-600); cursor: pointer; margin-top: var(--gap-sections); }
+        .cat-close-btn:hover { background: var(--gray-200); }
         /* TAB BAR MINIMAL */
         .tab-bar {
             position: fixed;
@@ -309,45 +318,36 @@
         <!-- MAIN SCREEN -->
         <div class="screen active" id="screen-main">
             <div id="mode-percorso">
-                <div class="percorso-intro-soft">
-                    <div class="percorso-intro-text">
-                        Circa <strong>200 fortificazioni</strong> raccontano la difesa della laguna di Venezia tra il 1845 e il 1945. Ecco le tre tappe principali.
-                    </div>
-                    <div class="percorso-meta">
-                        <span>🚴 Percorso ciclabile</span>
-                        <span>⏱️ 2-3 ore</span>
-                    </div>
-                </div>
-                <div class="tappa-card clickable" onclick="go('pisani')">
+                <div class="tappa-card clickable" onclick="goToCategory('batterie', 0)">
                     <div class="tappa-number">1</div>
                     <div class="tappa-content">
                         <div class="tappa-title">Batteria Vettor Pisani</div>
                         <div class="tappa-highlight">Spazi aperti, batteria restaurata, visita semplice.</div>
                         <div class="tappa-footer">
                             <span class="tappa-badge museo">🎟️ Museo</span>
-                            <button class="btn-vai" onclick="event.stopPropagation(); go('pisani')">📍 Vai</button>
+                            <button class="btn-vai" onclick="event.stopPropagation(); goToCategory('batterie', 0)">📍 Vai</button>
                         </div>
                     </div>
                 </div>
-                <div class="tappa-card clickable" onclick="go('amalfi')">
+                <div class="tappa-card clickable" onclick="goToCategory('batterie', 1)">
                     <div class="tappa-number">2</div>
                     <div class="tappa-content">
                         <div class="tappa-title">Batteria Amalfi</div>
                         <div class="tappa-highlight">La struttura più imponente della costa. Torre corazzata visibile, recentemente restaurata.</div>
                         <div class="tappa-footer">
                             <span class="tappa-badge visitabile">Visitabile</span>
-                            <button class="btn-vai" onclick="event.stopPropagation(); go('amalfi')">📍 Vai</button>
+                            <button class="btn-vai" onclick="event.stopPropagation(); goToCategory('batterie', 1)">📍 Vai</button>
                         </div>
                     </div>
                 </div>
-                <div class="tappa-card clickable" onclick="go('forte-vecchio')">
+                <div class="tappa-card clickable" onclick="goToCategory('forti', 0)">
                     <div class="tappa-number">3</div>
                     <div class="tappa-content">
                         <div class="tappa-title">Forte Vecchio</div>
                         <div class="tappa-highlight">Il forte più antico del territorio. Mura in mattoni rossi, fossato e atmosfera d'altri tempi.</div>
                         <div class="tappa-footer">
                             <span class="tappa-badge visitabile">Visitabile</span>
-                            <button class="btn-vai" onclick="event.stopPropagation(); go('forte-vecchio')">📍 Vai</button>
+                            <button class="btn-vai" onclick="event.stopPropagation(); goToCategory('forti', 0)">📍 Vai</button>
                         </div>
                     </div>
                 </div>
@@ -778,28 +778,150 @@
 </div>
 
 <script>
-    // DATI CATEGORIE
+    // DATI CATEGORIE CON DETTAGLI COMPLETI
     const categoryData = {
         batterie: [
-            { id: 'pisani', icon: '💣', title: 'Pisani', fullTitle: 'Batteria Vettor Pisani', subtitle: 'Ca\' Savio • Museo', desc: 'Museo principale della difesa costiera. Uno dei primi edifici militari in cemento armato in Italia (1909-1912). Armata con 6 obici antinave da 280mm, fu attiva durante la Battaglia del Solstizio.', location: '📍 Ca\' Savio', status: '🎟️ Museo' },
-            { id: 'amalfi', icon: '💣', title: 'Amalfi', fullTitle: 'Batteria Amalfi', subtitle: 'Ca\' Savio • Visitabile', desc: 'La struttura più imponente del sistema difensivo costiero. Dotata di torre corazzata girevole a 360°, costruita tra il 1915 e il 1917. Recentemente restaurata con un investimento di €3 milioni.', location: '📍 Litorale', status: '👁️ Visitabile' },
-            { id: 'san-marco', icon: '💣', title: 'San Marco', fullTitle: 'Batteria San Marco', subtitle: 'Cavallino • Solo esterno', desc: 'Costruita nei primi del \'900 con torre corazzata girevole a 360°, tecnologia all\'avanguardia per l\'epoca. Operativa sul fronte del Basso Piave durante la Grande Guerra.', location: '📍 Cavallino', status: '👁️ Solo esterno' },
-            { id: 'radaelli', icon: '💣', title: 'Radaelli', fullTitle: 'Batteria Radaelli', subtitle: 'Cavallino Est • Solo esterno', desc: 'Architettura unica simile ai forti alpini, caso raro tra le batterie costiere veneziane. Struttura robusta e compatta progettata per resistere ai bombardamenti navali.', location: '📍 Cavallino Est', status: '👁️ Solo esterno' }
+            {
+                id: 'pisani', icon: '💣', title: 'Pisani', fullTitle: 'Batteria Vettor Pisani',
+                subtitle: 'Ca\' Savio • Museo',
+                desc: 'Museo principale della difesa costiera. Uno dei primi edifici militari in cemento armato in Italia (1909-1912). Armata con 6 obici antinave da 280mm, fu attiva durante la Battaglia del Solstizio.',
+                location: '📍 Ca\' Savio', status: '🎟️ Museo',
+                mapsQuery: 'Batteria Pisani Ca Savio',
+                info: [
+                    { icon: '📍', label: 'Dove', value: 'Via V. Pisani 40, Ca\' Savio' },
+                    { icon: '⏰', label: 'Apertura', value: 'Primavera 2026' },
+                    { icon: '📞', label: 'Tel', value: '041 2909555' }
+                ],
+                prezzi: [
+                    { tipo: 'Adulti', prezzo: '€10' },
+                    { tipo: 'Residenti', prezzo: '€5' },
+                    { tipo: 'Famiglia (2+2)', prezzo: '€20' }
+                ],
+                approfondimento: 'Intitolata al comandante veneziano Vettor Pisani, eroe della vittoria del 1380 contro Genova. Rappresenta uno dei primi edifici militari in cemento armato in Italia (1909-1912). L\'armamento originale comprendeva 6 obici antinave da 280mm. Fu attiva durante la Battaglia del Solstizio nel giugno 1918.'
+            },
+            {
+                id: 'amalfi', icon: '💣', title: 'Amalfi', fullTitle: 'Batteria Amalfi',
+                subtitle: 'Ca\' Savio • Visitabile',
+                desc: 'La struttura più imponente del sistema difensivo costiero. Dotata di torre corazzata girevole a 360°, costruita tra il 1915 e il 1917. Recentemente restaurata con un investimento di €3 milioni.',
+                location: '📍 Litorale', status: '👁️ Visitabile',
+                mapsQuery: 'Batteria Amalfi Cavallino',
+                info: [
+                    { icon: '📍', label: 'Dove', value: 'Ca\' Savio, litorale' },
+                    { icon: '🏗️', label: 'Costruzione', value: '1915-1917' },
+                    { icon: '🔧', label: 'Restauro', value: '€3 milioni' }
+                ],
+                prezzi: null,
+                approfondimento: 'La Batteria Amalfi rappresenta la struttura più imponente e tecnologicamente avanzata del sistema difensivo costiero. Era dotata di cannoni a lunga gittata montati su torri corazzate girevoli a 360 gradi. Durante la Grande Guerra fu operativa sul fronte del Basso Piave.'
+            },
+            {
+                id: 'san-marco', icon: '💣', title: 'San Marco', fullTitle: 'Batteria San Marco',
+                subtitle: 'Cavallino • Solo esterno',
+                desc: 'Costruita nei primi del \'900 con torre corazzata girevole a 360°, tecnologia all\'avanguardia per l\'epoca. Operativa sul fronte del Basso Piave durante la Grande Guerra.',
+                location: '📍 Cavallino', status: '👁️ Solo esterno',
+                mapsQuery: 'Batteria San Marco Cavallino',
+                info: [
+                    { icon: '📍', label: 'Dove', value: 'Cavallino' },
+                    { icon: '🏗️', label: 'Periodo', value: 'Inizi 1900' },
+                    { icon: '👁️', label: 'Accesso', value: 'Solo esterno' }
+                ],
+                prezzi: null,
+                approfondimento: 'La Batteria San Marco fu costruita nei primi anni del Novecento come parte del sistema di difesa costiera. Era equipaggiata con una torre corazzata girevole a 360°, tecnologia all\'avanguardia per l\'epoca. La sua posizione strategica consentiva di coprire un ampio settore sia verso il mare che verso l\'entroterra.'
+            },
+            {
+                id: 'radaelli', icon: '💣', title: 'Radaelli', fullTitle: 'Batteria Radaelli',
+                subtitle: 'Cavallino Est • Solo esterno',
+                desc: 'Architettura unica simile ai forti alpini, caso raro tra le batterie costiere veneziane. Struttura robusta e compatta progettata per resistere ai bombardamenti navali.',
+                location: '📍 Cavallino Est', status: '👁️ Solo esterno',
+                mapsQuery: 'Batteria Radaelli Cavallino',
+                info: [
+                    { icon: '📍', label: 'Dove', value: 'Cavallino Est' },
+                    { icon: '🏗️', label: 'Periodo', value: 'Inizi 1900' },
+                    { icon: '👁️', label: 'Accesso', value: 'Solo esterno' }
+                ],
+                prezzi: null,
+                approfondimento: 'La Batteria Radaelli presenta un\'architettura particolarmente interessante, con caratteristiche costruttive simili alle fortificazioni alpine dell\'epoca. Questa peculiarità la rende un caso unico tra le batterie costiere veneziane. La struttura robusta e compatta era progettata per resistere ai bombardamenti navali.'
+            }
         ],
         bunker: [
-            { id: 'bunker-faro', icon: '🪖', title: 'Cavallino Nord', fullTitle: 'Bunker Cavallino Nord', subtitle: 'Presso il Faro • WWII', desc: 'Costruiti dall\'Organizzazione Todt tra il 1943 e il 1945 come parte del Vallo Atlantico Adriatico. Postazioni antiaeree e antisbarco in cemento armato, sopravvissute alla ritirata tedesca.', location: '📍 Faro', status: '👁️ Visibile' },
-            { id: 'bunker-sabbioni', icon: '🪖', title: 'Punta Sabbioni', fullTitle: 'Bunker Punta Sabbioni', subtitle: 'Batteria Nuova • WWII', desc: 'Posizione strategica alla punta estrema del litorale per il controllo dell\'accesso alla laguna. Strutture massicce in cemento armato che emergono dalla vegetazione come monumenti silenziosi.', location: '📍 Punta Sabbioni', status: '👁️ Visibile' }
+            {
+                id: 'bunker-faro', icon: '🪖', title: 'Cavallino Nord', fullTitle: 'Bunker Cavallino Nord',
+                subtitle: 'Presso il Faro • WWII',
+                desc: 'Costruiti dall\'Organizzazione Todt tra il 1943 e il 1945 come parte del Vallo Atlantico Adriatico. Postazioni antiaeree e antisbarco in cemento armato, sopravvissute alla ritirata tedesca.',
+                location: '📍 Faro', status: '👁️ Visibile',
+                mapsQuery: 'Faro di Cavallino',
+                info: [
+                    { icon: '📍', label: 'Dove', value: 'Presso il Faro' },
+                    { icon: '🏗️', label: 'Periodo', value: '1943-1945' },
+                    { icon: '👁️', label: 'Accesso', value: 'Visibile' }
+                ],
+                prezzi: null,
+                approfondimento: 'I bunker presso il Faro di Cavallino furono costruiti dall\'Organizzazione Todt durante l\'occupazione tedesca. Facevano parte del Vallo Atlantico Adriatico, la linea difensiva tedesca lungo le coste. Progettati come postazioni antiaeree e antisbarco, sono sopravvissuti alla ritirata tedesca del 1945.'
+            },
+            {
+                id: 'bunker-sabbioni', icon: '🪖', title: 'Punta Sabbioni', fullTitle: 'Bunker Punta Sabbioni',
+                subtitle: 'Batteria Nuova • WWII',
+                desc: 'Posizione strategica alla punta estrema del litorale per il controllo dell\'accesso alla laguna. Strutture massicce in cemento armato che emergono dalla vegetazione come monumenti silenziosi.',
+                location: '📍 Punta Sabbioni', status: '👁️ Visibile',
+                mapsQuery: 'Punta Sabbioni',
+                info: [
+                    { icon: '📍', label: 'Dove', value: 'Punta Sabbioni' },
+                    { icon: '🏗️', label: 'Periodo', value: '1943-1945' },
+                    { icon: '👁️', label: 'Accesso', value: 'Visibile' }
+                ],
+                prezzi: null,
+                approfondimento: 'Il gruppo di bunker presso Punta Sabbioni sorge nell\'area della Batteria Nuova, uno dei punti strategicamente più importanti per il controllo dell\'accesso alla laguna. Da qui era possibile controllare sia il canale di accesso a Venezia che un ampio tratto di mare aperto.'
+            }
         ],
         torri: [
-            { id: 'torri-casson', icon: '🗼', title: 'Via Casson', fullTitle: 'Torri Via Casson', subtitle: 'Visibili dalla strada', desc: 'Tra le torri telemetriche meglio conservate del territorio. Costruite durante la Grande Guerra per la rete di osservazione che coordinava il fuoco delle batterie costiere tramite triangolazione.', location: '📍 Via Casson', status: '👁️ Visibili' },
-            { id: 'torri-pordelio', icon: '🗼', title: 'Via Pordelio', fullTitle: 'Torri Via Pordelio', subtitle: 'Lungo la ciclabile', desc: 'Facilmente raggiungibili dalla pista ciclabile. Osservatori militari con piattaforme in cima per calcolare la distanza dei bersagli e comunicare le coordinate via telegrafo.', location: '📍 Ciclabile', status: '👁️ Visibili' }
+            {
+                id: 'torri-casson', icon: '🗼', title: 'Via Casson', fullTitle: 'Torri Via Casson',
+                subtitle: 'Visibili dalla strada',
+                desc: 'Tra le torri telemetriche meglio conservate del territorio. Costruite durante la Grande Guerra per la rete di osservazione che coordinava il fuoco delle batterie costiere tramite triangolazione.',
+                location: '📍 Via Casson', status: '👁️ Visibili',
+                mapsQuery: 'Via Casson Cavallino Treporti',
+                info: [
+                    { icon: '📍', label: 'Dove', value: 'Via Casson, Cavallino-Treporti' },
+                    { icon: '🏗️', label: 'Periodo', value: 'Prima Guerra Mondiale' },
+                    { icon: '👁️', label: 'Accesso', value: 'Visibili dalla strada' }
+                ],
+                prezzi: null,
+                approfondimento: 'Le torri telemetriche di Via Casson sono tra le meglio conservate del territorio. Dalla loro sommità, gli osservatori militari potevano controllare un ampio settore di mare e terraferma, comunicando via telegrafo le coordinate dei bersagli alle postazioni d\'artiglieria.'
+            },
+            {
+                id: 'torri-pordelio', icon: '🗼', title: 'Via Pordelio', fullTitle: 'Torri Via Pordelio',
+                subtitle: 'Lungo la ciclabile',
+                desc: 'Facilmente raggiungibili dalla pista ciclabile. Osservatori militari con piattaforme in cima per calcolare la distanza dei bersagli e comunicare le coordinate via telegrafo.',
+                location: '📍 Ciclabile', status: '👁️ Visibili',
+                mapsQuery: 'Via Pordelio Cavallino Treporti',
+                info: [
+                    { icon: '📍', label: 'Dove', value: 'Via Pordelio, ciclabile' },
+                    { icon: '🏗️', label: 'Periodo', value: 'Prima Guerra Mondiale' },
+                    { icon: '👁️', label: 'Accesso', value: 'Visibili' }
+                ],
+                prezzi: null,
+                approfondimento: 'Le torri telemetriche lungo Via Pordelio sono facilmente raggiungibili dalla pista ciclabile. Il funzionamento si basava sul principio della triangolazione: osservatori in torri diverse misuravano gli angoli verso lo stesso bersaglio per calcolarne la distanza precisa.'
+            }
         ],
         forti: [
-            { id: 'forte-vecchio', icon: '🏰', title: 'Forte Vecchio', fullTitle: 'Forte Vecchio', subtitle: 'Punta Sabbioni • Visitabile', desc: 'Unico forte completo del territorio, costruito dall\'Impero Austriaco (1845-1851). 26.000 m² con mura in mattoni rossi e pietra d\'Istria, fossato collegato alla laguna. Dal 1996 gestito dall\'associazione "Forte Vecchio".', location: '📍 Punta Sabbioni', status: '👁️ Visitabile' }
+            {
+                id: 'forte-vecchio', icon: '🏰', title: 'Forte Vecchio', fullTitle: 'Forte Vecchio',
+                subtitle: 'Punta Sabbioni • Visitabile',
+                desc: 'Unico forte completo del territorio, costruito dall\'Impero Austriaco (1845-1851). 26.000 m² con mura in mattoni rossi e pietra d\'Istria, fossato collegato alla laguna. Dal 1996 gestito dall\'associazione "Forte Vecchio".',
+                location: '📍 Punta Sabbioni', status: '👁️ Visitabile',
+                mapsQuery: 'Forte Vecchio Punta Sabbioni',
+                info: [
+                    { icon: '📍', label: 'Dove', value: 'Punta Sabbioni, Lio Grando' },
+                    { icon: '📐', label: 'Estensione', value: '26.000 m²' },
+                    { icon: '🏗️', label: 'Costruzione', value: '1845-1851' }
+                ],
+                prezzi: null,
+                approfondimento: 'Il Forte Vecchio è la struttura militare più antica del territorio. Fu costruito dall\'Impero Austriaco per difendere l\'ingresso settentrionale della laguna di Venezia. L\'architettura presenta una pianta lunettata con fronte arcuato verso il mare. Nel corso della storia è stato polveriera, base telegoniometrica, magazzino tedesco e rifugio per sfollati. Dal 1996 è gestito dall\'associazione "Forte Vecchio".'
+            }
         ]
     };
 
     const categoryIndex = { batterie: 0, bunker: 0, torri: 0, forti: 0 };
+    let detailsExpanded = { batterie: false, bunker: false, torri: false, forti: false };
 
     const screens = {
         'main': { title: '🏛️ Fortificazioni', subtitle: 'Scopri le tracce della storia' },
@@ -897,22 +1019,42 @@
         if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // RENDER CATEGORIA con TABS
+    // RENDER CATEGORIA con TABS e ACCORDION
     function renderCategory(cat) {
         const data = categoryData[cat];
         const idx = categoryIndex[cat];
         const item = data[idx];
+        const isExpanded = detailsExpanded[cat];
 
         // Render tabs
-        const tabsHtml = data.map((d, i) => 
+        const tabsHtml = data.map((d, i) =>
             `<button class="swipe-tab ${i === idx ? 'active' : ''}" onclick="selectTab('${cat}', ${i})">
                 <span class="swipe-tab-icon">${d.icon}</span>
                 ${d.title}
             </button>`
         ).join('');
         document.getElementById(cat + '-tabs').innerHTML = tabsHtml;
-        
-        // Render content card
+
+        // Genera HTML info pratiche
+        const infoHtml = item.info ? item.info.map(row =>
+            `<div class="detail-info-row">
+                <span class="detail-info-icon">${row.icon}</span>
+                <span class="detail-info-label">${row.label}</span>
+                <span class="detail-info-value">${row.value}</span>
+            </div>`
+        ).join('') : '';
+
+        // Genera HTML prezzi (se presenti)
+        const prezziHtml = item.prezzi ? `
+            <div class="cat-details-section">
+                <div class="cat-details-title">🎟️ Biglietti</div>
+                <div class="prezzi-box">
+                    ${item.prezzi.map(p => `<div class="prezzi-row"><span>${p.tipo}</span><span>${p.prezzo}</span></div>`).join('')}
+                </div>
+            </div>
+        ` : '';
+
+        // Render content card con accordion
         const html = `
             <div class="detail-card" style="margin-top: 0;">
                 <div class="detail-header">
@@ -932,20 +1074,60 @@
                     </div>
                 </div>
                 <div class="detail-actions">
-                    <button class="btn btn-primary" onclick="go('${item.id}')">📍 Vedi dettagli</button>
+                    <button class="btn btn-primary" onclick="toggleDetails('${cat}')">${isExpanded ? '▲ Chiudi dettagli' : '📍 Vedi dettagli'}</button>
+                </div>
+
+                <!-- ACCORDION DETTAGLI -->
+                <div class="cat-details ${isExpanded ? 'open' : ''}" id="cat-details-${cat}">
+                    <div class="cat-details-inner">
+                        <div class="cat-details-section">
+                            <div class="cat-details-title">📍 Info pratiche</div>
+                            ${infoHtml}
+                        </div>
+                        ${prezziHtml}
+                        <div class="cat-details-section">
+                            <div class="cat-details-title">📜 Approfondimento</div>
+                            <div class="detail-section-content">${item.approfondimento}</div>
+                        </div>
+                        <div style="display: flex; gap: var(--gap-cards); margin-top: var(--gap-sections);">
+                            <button class="btn btn-primary" onclick="openMaps('${item.mapsQuery}')" style="flex: 1;">📍 Naviga</button>
+                        </div>
+                        <button class="cat-close-btn" onclick="toggleDetails('${cat}')">▲ Chiudi</button>
+                    </div>
                 </div>
             </div>
         `;
         document.getElementById(cat + '-content').innerHTML = html;
-        
+
         // Scroll tab attivo in vista
         const activeTab = document.querySelector('#' + cat + '-tabs .swipe-tab.active');
         if (activeTab) activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     }
 
+    function toggleDetails(cat) {
+        detailsExpanded[cat] = !detailsExpanded[cat];
+        renderCategory(cat);
+
+        // Se aperto, scrolla per mostrare i dettagli
+        if (detailsExpanded[cat]) {
+            setTimeout(() => {
+                const details = document.getElementById('cat-details-' + cat);
+                if (details) details.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+    }
+
     function selectTab(cat, idx) {
         categoryIndex[cat] = idx;
+        detailsExpanded[cat] = false; // Chiudi dettagli quando cambi tab
         renderCategory(cat);
+    }
+
+    // Naviga alla lista categoria con tab specifico selezionato
+    function goToCategory(cat, idx) {
+        categoryIndex[cat] = idx;
+        detailsExpanded[cat] = false;
+        go('lista-' + cat);
     }
 
     // TOUCH SWIPE per cambiare tab nelle liste
