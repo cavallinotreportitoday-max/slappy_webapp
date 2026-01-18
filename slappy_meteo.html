@@ -591,6 +591,75 @@
         .day-modal-tide-type { font-size: 9px; font-weight: 600; margin-top: 2px; }
         .day-modal-tide-type.alta { color: #16a34a; }
         .day-modal-tide-type.bassa { color: #2563eb; }
+
+        /* ORARI GIORNO */
+        .day-modal-hours {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+        }
+        .day-modal-hour {
+            background: var(--gray-100);
+            border-radius: 10px;
+            padding: 10px 4px;
+            text-align: center;
+        }
+        .day-modal-hour-time {
+            font-size: 10px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+        .day-modal-hour-icon {
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+        .day-modal-hour-temp {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* BOX DATI FISSI */
+        .static-data-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-card);
+            padding: 16px;
+            margin-top: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .static-data-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .static-data-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .static-data-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .static-data-icon {
+            font-size: 20px;
+        }
+        .static-data-text {
+            flex: 1;
+        }
+        .static-data-label {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+        .static-data-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
         .day-modal-advice {
             background: var(--gray-100);
             border-radius: 12px;
@@ -905,6 +974,7 @@ function openDayModal(dayIndex) {
     if (!cachedWeatherData || !cachedMarineData) return;
 
     const daily = cachedWeatherData.daily;
+    const hourly = cachedWeatherData.hourly || {};
     const dailyMarine = cachedMarineData.daily || {};
 
     const date = new Date(daily.time[dayIndex]);
@@ -913,10 +983,33 @@ function openDayModal(dayIndex) {
     const tempMax = Math.round(daily.temperature_2m_max[dayIndex]);
     const tempMin = Math.round(daily.temperature_2m_min[dayIndex]);
     const waveHeight = dailyMarine.wave_height_max?.[dayIndex] || 0;
-    const dayFlag = getFlagStatus(daily.weather_code[dayIndex], 15, waveHeight);
+    const seaTemp = dailyMarine.sea_surface_temperature_max?.[dayIndex] || 'N/D';
+    const windMax = daily.wind_speed_10m_max?.[dayIndex] || 'N/D';
+    const uvMax = daily.uv_index_max?.[dayIndex] || 'N/D';
+    const dayFlag = getFlagStatus(daily.weather_code[dayIndex], windMax, waveHeight);
     const rainProb = daily.precipitation_probability_max[dayIndex];
     const seaStatus = getSeaStatus(waveHeight);
     const dayTides = weeklyTidesData[dayIndex]?.tides || tidesData;
+
+    // Orari del giorno (7, 10, 13, 16, 19, 22)
+    const hoursToShow = [7, 10, 13, 16, 19, 22];
+    const startHourIndex = dayIndex * 24;
+    let hoursHtml = '';
+    hoursToShow.forEach(h => {
+        const idx = startHourIndex + h;
+        if (hourly.temperature_2m && hourly.temperature_2m[idx] !== undefined) {
+            const temp = Math.round(hourly.temperature_2m[idx]);
+            const code = hourly.weather_code?.[idx] || 0;
+            const icon = getWeatherInfo(code).icon;
+            hoursHtml += `
+                <div class="day-modal-hour">
+                    <div class="day-modal-hour-time">${h}:00</div>
+                    <div class="day-modal-hour-icon">${icon}</div>
+                    <div class="day-modal-hour-temp">${temp}°</div>
+                </div>
+            `;
+        }
+    });
 
     const adviceMap = {
         green: { icon: '🏖️', title: 'Giornata ideale per il mare', desc: 'Condizioni perfette per nuotare e attività in spiaggia' },
@@ -933,38 +1026,39 @@ function openDayModal(dayIndex) {
         </div>
 
         <div class="day-modal-section">
-            <div class="day-modal-section-title">Dettagli Meteo</div>
-            <div class="day-modal-grid">
-                <div class="day-modal-item">
-                    <div class="day-modal-item-icon">🌡️</div>
-                    <div class="day-modal-item-value">${tempMax}°</div>
-                    <div class="day-modal-item-label">Max</div>
-                </div>
-                <div class="day-modal-item">
-                    <div class="day-modal-item-icon">🌡️</div>
-                    <div class="day-modal-item-value">${tempMin}°</div>
-                    <div class="day-modal-item-label">Min</div>
-                </div>
-                <div class="day-modal-item">
-                    <div class="day-modal-item-icon">☔</div>
-                    <div class="day-modal-item-value">${rainProb}%</div>
-                    <div class="day-modal-item-label">Pioggia</div>
-                </div>
+            <div class="day-modal-section-title">Previsione Oraria</div>
+            <div class="day-modal-hours">
+                ${hoursHtml}
             </div>
         </div>
 
         <div class="day-modal-section">
-            <div class="day-modal-section-title">Stato Mare</div>
+            <div class="day-modal-section-title">Dettagli Meteo</div>
             <div class="day-modal-grid">
+                <div class="day-modal-item">
+                    <div class="day-modal-item-icon">🌡️</div>
+                    <div class="day-modal-item-value">${typeof seaTemp === 'number' ? Math.round(seaTemp) + '°C' : seaTemp}</div>
+                    <div class="day-modal-item-label">Acqua</div>
+                </div>
                 <div class="day-modal-item">
                     <div class="day-modal-item-icon">🌊</div>
                     <div class="day-modal-item-value">${waveHeight.toFixed(1)}m</div>
                     <div class="day-modal-item-label">Onde</div>
                 </div>
                 <div class="day-modal-item">
-                    <div class="day-modal-item-icon">🏄</div>
-                    <div class="day-modal-item-value">${seaStatus}</div>
-                    <div class="day-modal-item-label">Mare</div>
+                    <div class="day-modal-item-icon">☔</div>
+                    <div class="day-modal-item-value">${rainProb}%</div>
+                    <div class="day-modal-item-label">Pioggia</div>
+                </div>
+                <div class="day-modal-item">
+                    <div class="day-modal-item-icon">💨</div>
+                    <div class="day-modal-item-value">${typeof windMax === 'number' ? Math.round(windMax) + ' km/h' : windMax}</div>
+                    <div class="day-modal-item-label">Vento</div>
+                </div>
+                <div class="day-modal-item">
+                    <div class="day-modal-item-icon">☀️</div>
+                    <div class="day-modal-item-value">${typeof uvMax === 'number' ? Math.round(uvMax) : uvMax}</div>
+                    <div class="day-modal-item-label">UV</div>
                 </div>
                 <div class="day-modal-item" style="background: ${dayFlag.color === 'green' ? '#dcfce7' : dayFlag.color === 'yellow' ? '#fef9c3' : '#fee2e2'}">
                     <div class="day-modal-item-icon">🚩</div>
@@ -1040,8 +1134,8 @@ function generateWeeklyTidesHTML() {
 
 async function loadWeatherData() {
     try {
-        const weatherUrl = 'https://api.open-meteo.com/v1/forecast?latitude=45.458&longitude=12.508&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m,uv_index&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max&timezone=Europe/Rome&forecast_days=7';
-        const marineUrl = 'https://marine-api.open-meteo.com/v1/marine?latitude=45.458&longitude=12.508&current=wave_height,sea_surface_temperature&daily=wave_height_max&timezone=Europe/Rome&forecast_days=7';
+        const weatherUrl = 'https://api.open-meteo.com/v1/forecast?latitude=45.458&longitude=12.508&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m,uv_index&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max,wind_speed_10m_max,uv_index_max&hourly=temperature_2m,weather_code&timezone=Europe/Rome&forecast_days=7';
+        const marineUrl = 'https://marine-api.open-meteo.com/v1/marine?latitude=45.458&longitude=12.508&current=wave_height,sea_surface_temperature&daily=wave_height_max,sea_surface_temperature_max&timezone=Europe/Rome&forecast_days=7';
 
         const [weatherRes, marineRes] = await Promise.all([
             fetch(weatherUrl),
@@ -1101,42 +1195,6 @@ function renderPage(weather, marine) {
                 <div class="flag-info">
                     <div class="flag-title">${flag.title}</div>
                     <div class="flag-desc">${flag.desc}</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DETTAGLI -->
-        <div class="details-card">
-            <div class="details-grid">
-                <div class="detail-item">
-                    <div class="detail-icon">🌡️</div>
-                    <div class="detail-value">${currentMarine.sea_surface_temperature ? Math.round(currentMarine.sea_surface_temperature) + '°C' : 'N/D'}</div>
-                    <div class="detail-label">Acqua</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-icon">🌊</div>
-                    <div class="detail-value">${currentMarine.wave_height ? currentMarine.wave_height.toFixed(1) + 'm' : 'N/D'}</div>
-                    <div class="detail-label">Onde</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-icon">☔</div>
-                    <div class="detail-value">${daily.precipitation_probability_max[0]}%</div>
-                    <div class="detail-label">Pioggia</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-icon">💨</div>
-                    <div class="detail-value">${Math.round(current.wind_speed_10m)} km/h</div>
-                    <div class="detail-label">Vento</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-icon">☀️</div>
-                    <div class="detail-value">${Math.round(current.uv_index)}</div>
-                    <div class="detail-label">UV</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-icon">💧</div>
-                    <div class="detail-value">${current.relative_humidity_2m}%</div>
-                    <div class="detail-label">Umidità</div>
                 </div>
             </div>
         </div>
@@ -1250,6 +1308,41 @@ function renderPage(weather, marine) {
                 <div class="legenda-item">
                     <div class="legenda-dot red"></div>
                     <span>Sconsigliata</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- DATI FISSI SETTIMANA -->
+        <div class="static-data-card">
+            <div class="static-data-title">Info Spiaggia</div>
+            <div class="static-data-grid">
+                <div class="static-data-item">
+                    <span class="static-data-icon">🏖️</span>
+                    <div class="static-data-text">
+                        <div class="static-data-label">Sabbia</div>
+                        <div class="static-data-value">Fine e dorata</div>
+                    </div>
+                </div>
+                <div class="static-data-item">
+                    <span class="static-data-icon">🌊</span>
+                    <div class="static-data-text">
+                        <div class="static-data-label">Fondale</div>
+                        <div class="static-data-value">Basso e sabbioso</div>
+                    </div>
+                </div>
+                <div class="static-data-item">
+                    <span class="static-data-icon">🏳️</span>
+                    <div class="static-data-text">
+                        <div class="static-data-label">Bandiera Blu</div>
+                        <div class="static-data-value">Sì, dal 2010</div>
+                    </div>
+                </div>
+                <div class="static-data-item">
+                    <span class="static-data-icon">📏</span>
+                    <div class="static-data-text">
+                        <div class="static-data-label">Litorale</div>
+                        <div class="static-data-value">15 km</div>
+                    </div>
                 </div>
             </div>
         </div>
