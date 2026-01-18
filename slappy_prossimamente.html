@@ -42,9 +42,9 @@
             .app { box-shadow: 0 0 60px rgba(0,0,0,0.1); }
         }
 
-        /* HEADER */
+        /* HEADER - stesso tono del bottone home */
         .header {
-            background: radial-gradient(ellipse at center, #4dd0e1 0%, #00bcd4 100%);
+            background: radial-gradient(ellipse at center, #e0f7fa 0%, #b2ebf2 100%);
             color: var(--text-dark);
             padding: 16px 20px;
             display: flex;
@@ -54,7 +54,7 @@
         .header-back {
             width: 36px;
             height: 36px;
-            background: rgba(0,0,0,0.1);
+            background: rgba(0,0,0,0.08);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -73,25 +73,27 @@
             font-weight: 700;
         }
 
-        /* HERO */
+        /* HERO - rettangolo sotto header, 1 tono più scuro */
         .hero {
-            background: radial-gradient(ellipse at center, #00acc1 0%, #0097a7 100%);
-            padding: 24px 20px;
+            background: radial-gradient(ellipse at center, #80deea 0%, #4dd0e1 100%);
+            margin: 16px;
+            border-radius: var(--radius-card);
+            padding: 20px;
             text-align: center;
-            color: white;
+            color: var(--text-dark);
         }
         .hero-icon {
-            font-size: 48px;
-            margin-bottom: 12px;
-        }
-        .hero-title {
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 40px;
             margin-bottom: 8px;
         }
+        .hero-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
         .hero-subtitle {
-            font-size: 14px;
-            opacity: 0.9;
+            font-size: 13px;
+            opacity: 0.8;
         }
 
         /* CONTENT */
