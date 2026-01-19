@@ -75,8 +75,7 @@
         
         /* Header */
         .header { background: var(--gradient-laguna); color: var(--gray-900); padding: var(--padding-card) var(--padding-page); display: flex; align-items: center; gap: var(--gap-inner); }
-        .header-back { width: var(--icon-size); height: var(--icon-size); display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.1); border-radius: 50%; cursor: pointer; border: 1px solid transparent; color: var(--gray-900); font-size: 18px; text-decoration: none; }
-        .header-back:hover { border-color: rgba(0,0,0,0.2); }
+        .header-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.08); border-radius: 10px; cursor: pointer; border: none; color: var(--gray-900); font-size: 18px; text-decoration: none; }
         .header-back.hidden { visibility: hidden; }
         .header-title { font-size: var(--font-title); font-weight: var(--weight-title); }
         
@@ -235,10 +234,11 @@
         .tab-btn:active { transform: scale(0.96); }
         .tab-btn-icon { font-size: 17px; }
         .tab-btn-label { font-size: 11px; font-weight: 700; color: var(--gray-900); }
-        .tab-btn.meteo { background: radial-gradient(ellipse at center, #ffffff 0%, #fff59d 100%); border: 1px solid #fff9c4; }
-        .tab-btn.trasporti { background: radial-gradient(ellipse at center, #ffffff 0%, #90caf9 100%); border: 1px solid #bbdefb; }
-        .tab-btn.sos { background: radial-gradient(ellipse at center, #ffffff 0%, #ffcdd2 100%); border: 1px solid #ffcdd2; }
-        .tab-btn.home { background: radial-gradient(ellipse at center, #ffffff 0%, #b2dfdb 100%); border: 1px solid #b2dfdb; }
+        .tab-btn.home { background: radial-gradient(ellipse at center, #ffffff 0%, #cfd8dc 100%); border: 1px solid #b0bec5; }
+        .tab-btn.meteo { background: radial-gradient(ellipse at center, #ffffff 0%, #b2dfdb 100%); border: 1px solid #80cbc4; }
+        .tab-btn.maree { background: radial-gradient(ellipse at center, #ffffff 0%, #b2ebf2 100%); border: 1px solid #80deea; }
+        .tab-btn.laguna { background: radial-gradient(ellipse at center, #ffffff 0%, #c8e6c9 100%); border: 1px solid #a5d6a7; }
+        .tab-btn.esplora { background: radial-gradient(ellipse at center, #ffffff 0%, #d7ccc8 100%); border: 1px solid #bcaaa4; }
         
         /* Accordion per "Altri" */
         .accordion { margin-top: var(--gap-cards); }
@@ -2352,16 +2352,20 @@
             <span class="tab-btn-label">Home</span>
         </a>
         <a href="slappy_meteo.html" class="tab-btn meteo">
-            <span class="tab-btn-icon">🌤️</span>
+            <span class="tab-btn-icon">☀️</span>
             <span class="tab-btn-label">Meteo</span>
         </a>
-        <a href="slappy_trasporti.html" class="tab-btn trasporti">
-            <span class="tab-btn-icon">🚌</span>
-            <span class="tab-btn-label">Trasporti</span>
+        <a href="slappy_meteo.html#maree" class="tab-btn maree">
+            <span class="tab-btn-icon">🌊</span>
+            <span class="tab-btn-label">Maree</span>
         </a>
-        <a href="slappy_sos.html" class="tab-btn sos">
-            <span class="tab-btn-icon">🆘</span>
-            <span class="tab-btn-label">SOS</span>
+        <a href="slappy_laguna.html" class="tab-btn laguna">
+            <span class="tab-btn-icon">🌿</span>
+            <span class="tab-btn-label">Laguna</span>
+        </a>
+        <a href="slappy_home.html#esplora-section" class="tab-btn esplora">
+            <span class="tab-btn-icon">🧭</span>
+            <span class="tab-btn-label">Esplora</span>
         </a>
     </nav>
 </div>

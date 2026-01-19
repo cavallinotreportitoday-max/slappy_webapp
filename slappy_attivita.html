@@ -79,7 +79,7 @@
 
         /* HEADER */
         .header { background: radial-gradient(ellipse at center, #b2dfdb 0%, #99c7c3 100%); color: var(--gray-900); padding: var(--padding-card) var(--padding-page); display: flex; align-items: center; gap: var(--gap-inner); position: sticky; top: 0; z-index: 100; }
-        .header-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.1); border-radius: 50%; cursor: pointer; border: none; color: var(--gray-900); font-size: 18px; text-decoration: none; }
+        .header-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.08); border-radius: 10px; cursor: pointer; border: none; color: var(--gray-900); font-size: 18px; text-decoration: none; }
         .header-back.hidden { visibility: hidden; }
         .header-content { flex: 1; }
         .header-title { font-size: var(--font-title); font-weight: var(--weight-title); }
@@ -313,9 +313,10 @@
         .tab-btn.active .tab-btn-icon { filter: grayscale(0%); opacity: 1; }
         .tab-btn.active .tab-btn-label { color: var(--gray-900); font-weight: 600; }
         .tab-btn.home.active::after { background: #78909c; }
-        .tab-btn.meteo.active::after { background: #fbc02d; }
+        .tab-btn.meteo.active::after { background: #2a9d8f; }
         .tab-btn.trasporti.active::after { background: #42a5f5; }
-        .tab-btn.sos.active::after { background: #ef5350; }
+        .tab-btn.attivita.active::after { background: #26a69a; }
+        .tab-btn.esplora.active::after { background: #8d6e63; }
     </style>
 </head>
 <body>
@@ -2070,16 +2071,20 @@
             <span class="tab-btn-label">Home</span>
         </a>
         <a href="slappy_meteo.html" class="tab-btn meteo">
-            <span class="tab-btn-icon">🌤️</span>
+            <span class="tab-btn-icon">☀️</span>
             <span class="tab-btn-label">Meteo</span>
         </a>
         <a href="slappy_trasporti.html" class="tab-btn trasporti">
             <span class="tab-btn-icon">🚌</span>
             <span class="tab-btn-label">Trasporti</span>
         </a>
-        <a href="slappy_sos.html" class="tab-btn sos">
-            <span class="tab-btn-icon">🆘</span>
-            <span class="tab-btn-label">SOS</span>
+        <a href="slappy_attivita.html" class="tab-btn attivita active">
+            <span class="tab-btn-icon">🎯</span>
+            <span class="tab-btn-label">Attività</span>
+        </a>
+        <a href="slappy_home.html#esplora-section" class="tab-btn esplora">
+            <span class="tab-btn-icon">🧭</span>
+            <span class="tab-btn-label">Esplora</span>
         </a>
     </nav>
 </div>

@@ -62,7 +62,7 @@
             display: flex;
             align-items: center;
             padding: 16px 20px;
-            background: radial-gradient(ellipse at center, #3ab4a4 0%, #2a9d8f 100%);
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--teal-light) 100%);
             gap: 12px;
         }
         .header-back {
@@ -99,6 +99,7 @@
             margin-bottom: 12px;
             margin-top: 20px;
             padding: 0 4px;
+            text-align: center;
         }
         .section-title:first-child { margin-top: 0; }
 
@@ -119,62 +120,117 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* HERO METEO */
-        .hero-meteo {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--teal-light) 100%);
-            border: 1px solid var(--teal-border);
+        /* INFO CARD - GIALLO (meteo principale) */
+        .info-card {
+            background: radial-gradient(ellipse at center, #fff8e1 0%, #ffecb3 100%);
+            border: 1px solid #ffe082;
             border-radius: var(--radius-card);
             padding: 20px;
             margin-bottom: 16px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
-        .hero-meteo.yellow {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--yellow-light) 100%);
-            border-color: var(--yellow-border);
+        .info-card.yellow {
+            background: radial-gradient(ellipse at center, #fff8e1 0%, #ffecb3 100%);
+            border-color: #ffe082;
         }
-        .hero-meteo.red {
+        .info-card.red {
             background: radial-gradient(ellipse at center, var(--white) 0%, var(--red-light) 100%);
             border-color: var(--red-border);
         }
-        .hero-row {
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+        .info-item {
+            text-align: center;
+            flex: 1;
+        }
+        .info-item-icon-wrapper {
+            height: 28px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            justify-content: center;
+            margin-bottom: 6px;
+            gap: 8px;
         }
-        .hero-icon { font-size: 56px; line-height: 1; }
-        .hero-temp-block { flex: 1; }
-        .hero-temp { font-size: 48px; font-weight: 700; color: var(--text-dark); line-height: 1; }
-        .hero-condition { font-size: 16px; font-weight: 600; color: var(--text-dark); margin-top: 4px; }
-        .hero-feels { font-size: 12px; color: var(--text-medium); margin-top: 2px; }
-        .hero-right { text-align: right; }
-        .hero-minmax { font-size: 13px; color: var(--text-medium); }
-        .hero-date { font-size: 11px; color: var(--text-light); margin-top: 4px; }
-        .hero-flag {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(0,0,0,0.06);
+        .info-item-icon {
+            font-size: 20px;
         }
-        .flag-dot {
-            width: 16px;
-            height: 16px;
+        .info-item-dot {
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            flex-shrink: 0;
         }
-        .flag-dot.green { background: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.6); }
-        .flag-dot.yellow { background: #facc15; box-shadow: 0 0 8px rgba(250,204,21,0.6); }
-        .flag-dot.red { background: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.6); }
-        .flag-info { flex: 1; }
-        .flag-title { font-size: 14px; font-weight: 700; }
-        .hero-meteo .flag-title { color: #166534; }
-        .hero-meteo.yellow .flag-title { color: #854d0e; }
-        .hero-meteo.red .flag-title { color: #991b1b; }
-        .flag-desc { font-size: 11px; }
-        .hero-meteo .flag-desc { color: #15803d; }
-        .hero-meteo.yellow .flag-desc { color: #a16207; }
-        .hero-meteo.red .flag-desc { color: #b91c1c; }
+        .info-item-dot.green { background: #4ade80; box-shadow: 0 0 8px rgba(74, 222, 128, 0.6); }
+        .info-item-dot.yellow { background: #facc15; box-shadow: 0 0 8px rgba(250, 204, 21, 0.6); }
+        .info-item-dot.red { background: #ef4444; box-shadow: 0 0 8px rgba(239, 68, 68, 0.6); }
+        .info-item-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .info-item-label {
+            font-size: 9px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+        .info-divider {
+            width: 1px;
+            height: 50px;
+            background: rgba(0,0,0,0.08);
+            margin-top: 4px;
+        }
+
+        /* BOX DETTAGLI COMPATTO - VERDE ACQUA MEDIO */
+        .meteo-details {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            background: radial-gradient(ellipse at center, #b2dfdb 0%, #80cbc4 100%);
+            border: 1px solid #4db6ac;
+            border-radius: var(--radius-card);
+            padding: 14px 16px;
+            margin-bottom: 16px;
+        }
+        .meteo-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--text-medium);
+        }
+        .meteo-detail-icon { font-size: 14px; }
+        .meteo-detail-value { font-weight: 600; color: var(--text-dark); }
+        .meteo-detail-divider { color: rgba(0,0,0,0.15); }
+
+        /* BOX CONSIGLIO */
+        .advice-box {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-card);
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .advice-box.warning {
+            background: linear-gradient(180deg, #fff8e1 0%, #ffecb3 100%);
+            border-color: #ffe082;
+        }
+        .advice-box.danger {
+            background: linear-gradient(180deg, #ffebee 0%, #ffcdd2 100%);
+            border-color: #ef9a9a;
+        }
+        .advice-box-icon { font-size: 32px; flex-shrink: 0; }
+        .advice-box-content { flex: 1; }
+        .advice-box-title { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+        .advice-box-desc { font-size: 12px; color: var(--text-medium); margin-top: 2px; }
 
         /* DETTAGLI GRID */
         .details-card {
@@ -213,10 +269,10 @@
         }
         .detail-label { font-size: 10px; color: var(--text-light); text-transform: uppercase; margin-top: 2px; }
 
-        /* MAREE CARD */
+        /* MAREE CARD - VERDE ACQUA CHIARO */
         .maree-card {
-            background: radial-gradient(ellipse at center, var(--white) 0%, var(--blue-light) 100%);
-            border: 1px solid var(--blue-border);
+            background: radial-gradient(ellipse at center, #e0f2f1 0%, #b2dfdb 100%);
+            border: 1px solid #80cbc4;
             border-radius: var(--radius-card);
             padding: 20px;
             margin-bottom: 16px;
@@ -239,26 +295,32 @@
             margin-bottom: 16px;
         }
         .maree-box {
-            background: var(--white);
             border-radius: 12px;
             padding: 10px 6px;
             text-align: center;
-            border: 1px solid rgba(59,130,246,0.2);
+        }
+        .maree-box.alta {
+            background: #b2dfdb;
+            border: 1px solid #80cbc4;
+        }
+        .maree-box.bassa {
+            background: #e0f2f1;
+            border: 1px solid #b2dfdb;
         }
         .maree-box.next {
-            border: 2px solid #3b82f6;
-            background: rgba(59,130,246,0.05);
+            border: 2px solid var(--teal);
+            box-shadow: 0 0 8px rgba(42,157,143,0.3);
         }
         .maree-box-time { font-size: 13px; font-weight: 700; color: var(--text-dark); }
         .maree-box-level { font-size: 11px; color: var(--text-medium); margin-top: 2px; }
         .maree-box-type { font-size: 10px; font-weight: 600; margin-top: 4px; }
         .maree-box-type.alta { color: #16a34a; }
-        .maree-box-type.bassa { color: #2563eb; }
+        .maree-box-type.bassa { color: #1565c0; }
 
         /* GRAFICO MAREE */
         .maree-graph {
             height: 50px;
-            background: linear-gradient(to bottom, rgba(59,130,246,0.05) 0%, rgba(59,130,246,0.1) 100%);
+            background: linear-gradient(to bottom, rgba(42,157,143,0.05) 0%, rgba(42,157,143,0.1) 100%);
             border-radius: 10px;
             position: relative;
             margin-bottom: 12px;
@@ -310,8 +372,8 @@
             border-radius: 4px;
         }
         .maree-next-box {
-            background: rgba(59,130,246,0.1);
-            border: 1px solid rgba(59,130,246,0.3);
+            background: rgba(42,157,143,0.1);
+            border: 1px solid rgba(42,157,143,0.3);
             border-radius: 10px;
             padding: 10px 14px;
             display: flex;
@@ -321,7 +383,7 @@
         .maree-next-icon { font-size: 14px; }
         .maree-next-text { flex: 1; }
         .maree-next-label { font-size: 11px; color: var(--text-light); }
-        .maree-next-value { font-size: 14px; font-weight: 700; color: #1e40af; }
+        .maree-next-value { font-size: 14px; font-weight: 700; color: #1a7a70; }
 
         /* MAREE CARD CLICCABILE */
         .maree-card {
@@ -426,16 +488,17 @@
             gap: 6px;
         }
         .maree-day-item {
-            background: var(--gray-100);
             border-radius: 8px;
             padding: 8px 4px;
             text-align: center;
         }
         .maree-day-item.alta {
-            background: rgba(22,163,74,0.1);
+            background: #b2dfdb;
+            border: 1px solid #80cbc4;
         }
         .maree-day-item.bassa {
-            background: rgba(37,99,235,0.1);
+            background: #e0f2f1;
+            border: 1px solid #b2dfdb;
         }
         .maree-day-item-time {
             font-size: 12px;
@@ -453,34 +516,101 @@
             margin-top: 3px;
         }
         .maree-day-item-type.alta { color: #16a34a; }
-        .maree-day-item-type.bassa { color: #2563eb; }
+        .maree-day-item-type.bassa { color: #1565c0; }
 
-        /* FORECAST CARDS - colore basato su balneazione */
-        .forecast-card {
-            border-radius: var(--radius-card);
-            padding: 14px 16px;
-            margin-bottom: 10px;
+        /* FORECAST SCROLL CONTAINER */
+        .forecast-scroll {
             display: flex;
-            align-items: center;
             gap: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            overflow-x: auto;
+            padding: 4px 0 16px 0;
+            margin: 0 -16px;
+            padding-left: 16px;
+            padding-right: 16px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .forecast-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .forecast-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* FORECAST CARDS - stile compatto per scroll */
+        .forecast-card {
+            flex: 0 0 auto;
+            width: 100px;
+            border-radius: var(--radius-card);
+            padding: 14px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             cursor: pointer;
             transition: transform 0.2s;
+            scroll-snap-align: start;
         }
         .forecast-card:active {
-            transform: scale(0.98);
+            transform: scale(0.96);
         }
-        .forecast-card.flag-green {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
+
+        /* SFONDI FORECAST CARD BASATI SUL METEO */
+        .forecast-card.weather-sereno {
+            background: linear-gradient(180deg, #fffde7 0%, #fff9c4 100%);
+            border: 1px solid #fff59d;
         }
-        .forecast-card.flag-yellow {
-            background: #fff3cd;
-            border: 1px solid #ffeeba;
+        .forecast-card.weather-parziale {
+            background: linear-gradient(180deg, #fffde7 0%, #f5f5f5 100%);
+            border: 1px solid #e0e0e0;
         }
-        .forecast-card.flag-red {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
+        .forecast-card.weather-nuvoloso {
+            background: linear-gradient(180deg, #fafafa 0%, #eeeeee 100%);
+            border: 1px solid #e0e0e0;
+        }
+        .forecast-card.weather-pioggia {
+            background: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 100%);
+            border: 1px solid #90caf9;
+        }
+        .forecast-card.weather-temporale {
+            background: linear-gradient(180deg, #ede7f6 0%, #d1c4e9 100%);
+            border: 1px solid #b39ddb;
+        }
+        .forecast-card.weather-neve {
+            background: linear-gradient(180deg, #fafafa 0%, #e8f5e9 100%);
+            border: 1px solid #c8e6c9;
+        }
+
+        /* Elementi card compatta */
+        .forecast-card .forecast-day-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .forecast-card .forecast-icon {
+            font-size: 32px;
+            width: auto;
+        }
+        .forecast-card .forecast-temps-compact {
+            text-align: center;
+        }
+        .forecast-card .forecast-temp-max {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .forecast-card .forecast-temp-min {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        .forecast-card .forecast-sea {
+            font-size: 10px;
+            color: var(--text-medium);
+            display: flex;
+            align-items: center;
+            gap: 3px;
         }
 
         /* MODAL DETTAGLIO GIORNO */
@@ -559,62 +689,104 @@
             letter-spacing: 1px;
             margin-bottom: 10px;
         }
-        .day-modal-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+        /* BARRE DETTAGLI MODAL (stile header verde) */
+        .day-modal-details-bar {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--teal-light) 100%);
+            border: 1px solid var(--teal-border);
+            border-radius: var(--radius-card);
+            padding: 14px 16px;
+            margin-bottom: 10px;
         }
-        .day-modal-item {
-            background: var(--gray-100);
-            border-radius: 10px;
-            padding: 10px 8px;
-            text-align: center;
+        .day-modal-details-bar:last-child {
+            margin-bottom: 0;
         }
-        .day-modal-item-icon { font-size: 18px; margin-bottom: 4px; }
-        .day-modal-item-value { font-size: 13px; font-weight: 700; color: var(--text-dark); }
-        .day-modal-item-label { font-size: 9px; color: var(--text-light); text-transform: uppercase; margin-top: 2px; }
+        .day-modal-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--text-medium);
+        }
+        .day-modal-detail-icon { font-size: 14px; }
+        .day-modal-detail-value { font-weight: 600; color: var(--text-dark); }
+        .day-modal-detail-divider { color: rgba(0,0,0,0.15); }
+        .flag-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 4px rgba(0,0,0,0.2);
+        }
+
+        /* MAREE MODAL (stile verde acqua come pagina principale) */
+        .day-modal-tides-container {
+            background: radial-gradient(ellipse at center, var(--white) 0%, var(--teal-light) 100%);
+            border: 1px solid var(--teal-border);
+            border-radius: var(--radius-card);
+            padding: 14px;
+        }
         .day-modal-tides {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
+            gap: 8px;
         }
         .day-modal-tide {
-            background: rgba(59,130,246,0.1);
-            border-radius: 8px;
-            padding: 8px 4px;
+            border-radius: 12px;
+            padding: 10px 6px;
             text-align: center;
         }
-        .day-modal-tide.alta { background: rgba(22,163,74,0.1); }
-        .day-modal-tide.bassa { background: rgba(37,99,235,0.1); }
-        .day-modal-tide-time { font-size: 12px; font-weight: 700; color: var(--text-dark); }
-        .day-modal-tide-level { font-size: 10px; color: var(--text-medium); }
-        .day-modal-tide-type { font-size: 9px; font-weight: 600; margin-top: 2px; }
+        .day-modal-tide.alta {
+            background: #b2dfdb;
+            border: 1px solid #80cbc4;
+        }
+        .day-modal-tide.bassa {
+            background: #e0f2f1;
+            border: 1px solid #b2dfdb;
+        }
+        .day-modal-tide-time { font-size: 13px; font-weight: 700; color: var(--text-dark); }
+        .day-modal-tide-level { font-size: 11px; color: var(--text-medium); margin-top: 2px; }
+        .day-modal-tide-type { font-size: 10px; font-weight: 600; margin-top: 4px; }
         .day-modal-tide-type.alta { color: #16a34a; }
-        .day-modal-tide-type.bassa { color: #2563eb; }
+        .day-modal-tide-type.bassa { color: #1565c0; }
 
         /* ORARI GIORNO */
         .day-modal-hours {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 6px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .day-modal-hours::-webkit-scrollbar {
+            display: none;
+        }
+        .day-modal-hours {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
         .day-modal-hour {
-            background: var(--gray-100);
-            border-radius: 10px;
-            padding: 10px 4px;
+            flex: 0 0 auto;
+            width: 58px;
+            border-radius: 12px;
+            padding: 10px 6px;
             text-align: center;
         }
         .day-modal-hour-time {
             font-size: 10px;
-            color: var(--text-light);
+            color: var(--text-medium);
+            font-weight: 600;
             margin-bottom: 4px;
         }
         .day-modal-hour-icon {
-            font-size: 18px;
+            font-size: 20px;
             margin-bottom: 2px;
         }
         .day-modal-hour-temp {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             color: var(--text-dark);
         }
@@ -826,7 +998,8 @@
         .tab-btn.active .tab-btn-icon { filter: grayscale(0%); opacity: 1; }
         .tab-btn.active .tab-btn-label { color: var(--text-dark); font-weight: 600; }
         .tab-btn.home.active::after { background: #78909c; }
-        .tab-btn.meteo.active::after { background: #fbc02d; }
+        .tab-btn.meteo.active::after { background: #2a9d8f; }
+        .tab-btn.esplora.active::after { background: #8d6e63; }
         .tab-btn.trasporti.active::after { background: #42a5f5; }
         .tab-btn.sos.active::after { background: #ef5350; }
     </style>
@@ -854,8 +1027,12 @@
             <span class="tab-btn-label">Home</span>
         </a>
         <a href="slappy_meteo.html" class="tab-btn meteo active">
-            <span class="tab-btn-icon">🌤️</span>
+            <span class="tab-btn-icon">☀️</span>
             <span class="tab-btn-label">Meteo</span>
+        </a>
+        <a href="slappy_home.html#esplora-section" class="tab-btn esplora">
+            <span class="tab-btn-icon">🧭</span>
+            <span class="tab-btn-label">Esplora</span>
         </a>
         <a href="slappy_trasporti.html" class="tab-btn trasporti">
             <span class="tab-btn-icon">🚌</span>
@@ -920,6 +1097,82 @@ function getWeatherInfo(code) {
     return weatherCodes[code] || { icon: '🌡️', desc: 'N/D' };
 }
 
+function getWeatherBackground(code) {
+    // Sereno: 0, 1
+    if (code === 0 || code === 1) return 'weather-sereno';
+    // Parzialmente nuvoloso: 2
+    if (code === 2) return 'weather-parziale';
+    // Nuvoloso: 3, 45, 48 (nebbia)
+    if (code === 3 || code === 45 || code === 48) return 'weather-nuvoloso';
+    // Neve: 71, 73, 75
+    if (code >= 71 && code <= 75) return 'weather-neve';
+    // Temporale: 82, 95, 96, 99
+    if (code === 82 || code >= 95) return 'weather-temporale';
+    // Pioggia: 51-65, 80, 81
+    if ((code >= 51 && code <= 65) || code === 80 || code === 81) return 'weather-pioggia';
+    // Default
+    return 'weather-nuvoloso';
+}
+
+function getHourlyGradient(code, hour) {
+    const isNight = hour >= 21 || hour <= 5;
+
+    if (isNight) {
+        // COLORI NOTTE (testo bianco)
+        // Sereno notte: 0, 1
+        if (code === 0 || code === 1) return { gradient: 'linear-gradient(180deg, #1a237e 0%, #3949ab 100%)', isNight: true };
+        // Parzialmente nuvoloso notte: 2
+        if (code === 2) return { gradient: 'linear-gradient(180deg, #283593 0%, #5c6bc0 100%)', isNight: true };
+        // Nuvoloso notte: 3, 45, 48 (nebbia)
+        if (code === 3 || code === 45 || code === 48) return { gradient: 'linear-gradient(180deg, #37474f 0%, #546e7a 100%)', isNight: true };
+        // Neve notte: 71, 73, 75
+        if (code >= 71 && code <= 75) return { gradient: 'linear-gradient(180deg, #e8eaf6 0%, #c5cae9 100%)', isNight: false };
+        // Temporale notte: 82, 95, 96, 99
+        if (code === 82 || code >= 95) return { gradient: 'linear-gradient(180deg, #311b92 0%, #512da8 100%)', isNight: true };
+        // Pioggia notte: 51-65, 80, 81
+        if ((code >= 51 && code <= 65) || code === 80 || code === 81) return { gradient: 'linear-gradient(180deg, #0d47a1 0%, #1565c0 100%)', isNight: true };
+        // Default notte
+        return { gradient: 'linear-gradient(180deg, #37474f 0%, #546e7a 100%)', isNight: true };
+    } else {
+        // COLORI GIORNO (testo scuro)
+        // Sereno: 0, 1
+        if (code === 0 || code === 1) return { gradient: 'linear-gradient(180deg, #fff8e1 0%, #ffecb3 100%)', isNight: false };
+        // Parzialmente nuvoloso: 2
+        if (code === 2) return { gradient: 'linear-gradient(180deg, #fff8e1 0%, #e0e0e0 100%)', isNight: false };
+        // Nuvoloso: 3, 45, 48 (nebbia)
+        if (code === 3 || code === 45 || code === 48) return { gradient: 'linear-gradient(180deg, #f5f5f5 0%, #e0e0e0 100%)', isNight: false };
+        // Neve: 71, 73, 75
+        if (code >= 71 && code <= 75) return { gradient: 'linear-gradient(180deg, #fafafa 0%, #e1f5fe 100%)', isNight: false };
+        // Temporale: 82, 95, 96, 99
+        if (code === 82 || code >= 95) return { gradient: 'linear-gradient(180deg, #e8eaf6 0%, #5c6bc0 100%)', isNight: false };
+        // Pioggia: 51-65, 80, 81
+        if ((code >= 51 && code <= 65) || code === 80 || code === 81) return { gradient: 'linear-gradient(180deg, #e3f2fd 0%, #90caf9 100%)', isNight: false };
+        // Default
+        return { gradient: 'linear-gradient(180deg, #f5f5f5 0%, #e0e0e0 100%)', isNight: false };
+    }
+}
+
+function getWeatherIcon(code, hour) {
+    const isNight = hour >= 21 || hour <= 5;
+
+    // Pioggia/Temporale: stessa icona giorno/notte
+    if (code >= 95) return '⛈️';
+    if ((code >= 51 && code <= 65) || code === 80 || code === 81 || code === 82) return '🌧️';
+    if (code >= 71 && code <= 75) return '🌨️';
+
+    // Condizioni che cambiano tra giorno e notte
+    if (isNight) {
+        // Notte
+        if (code === 0 || code === 1) return '🌙'; // Sereno notte
+        if (code === 2) return '🌙'; // Parz. nuvoloso notte
+        if (code === 3 || code === 45 || code === 48) return '☁️'; // Nuvoloso/nebbia
+        return '🌙';
+    } else {
+        // Giorno
+        return getWeatherInfo(code).icon;
+    }
+}
+
 function getFlagStatus(weatherCode, windSpeed, waveHeight) {
     if (weatherCode >= 95 || windSpeed > 40 || waveHeight > 1.5) {
         return { color: 'red', title: 'Bandiera Rossa', desc: 'Bagno vietato', emoji: '⛔' };
@@ -935,6 +1188,93 @@ function getSeaStatus(waveHeight) {
     if (waveHeight < 0.8) return 'Poco mosso';
     if (waveHeight < 1.5) return 'Mosso';
     return 'Molto mosso';
+}
+
+function getSeaStatusSub(waveHeight) {
+    if (waveHeight < 0.3) return 'Onde basse';
+    if (waveHeight < 0.8) return 'Onde moderate';
+    if (waveHeight < 1.5) return 'Fare attenzione';
+    return 'Stare a riva';
+}
+
+function getRainForecast(hourly, currentHour) {
+    // Controlla le prossime 12 ore per pioggia
+    const rainCodes = [51, 53, 55, 61, 63, 65, 80, 81, 82, 95, 96, 99];
+
+    if (!hourly || !hourly.weather_code) {
+        return { willRain: false, icon: '☀️', title: 'Nessuna pioggia', sub: 'Giornata asciutta' };
+    }
+
+    for (let i = currentHour; i < Math.min(currentHour + 12, 24); i++) {
+        const code = hourly.weather_code[i];
+        if (rainCodes.includes(code)) {
+            const hour = i.toString().padStart(2, '0') + ':00';
+            if (code >= 95) {
+                return { willRain: true, icon: '⛈️', title: 'Temporale ' + hour, sub: 'Cerca riparo' };
+            } else if (code >= 61) {
+                return { willRain: true, icon: '🌧️', title: 'Pioggia ' + hour, sub: 'Porta l\'ombrello' };
+            } else {
+                return { willRain: true, icon: '🌦️', title: 'Pioggerella ' + hour, sub: 'Leggera pioggia' };
+            }
+        }
+    }
+
+    return { willRain: false, icon: '☀️', title: 'Nessuna pioggia', sub: 'Giornata asciutta' };
+}
+
+function getAdvice(flagColor, weatherCode, windSpeed) {
+    // Temporale o pioggia forte
+    if (weatherCode >= 95 || weatherCode === 65 || weatherCode === 82) {
+        return {
+            icon: '⚠️',
+            title: 'Temporale in arrivo',
+            desc: 'Evita spiaggia e attività all\'aperto. Rimani al riparo.',
+            boxClass: 'danger'
+        };
+    }
+    // Bandiera rossa
+    if (flagColor === 'red') {
+        return {
+            icon: '🚫',
+            title: 'Bagno vietato oggi',
+            desc: 'Mare pericoloso. Consigliamo musei o attività al coperto.',
+            boxClass: 'danger'
+        };
+    }
+    // Vento forte
+    if (windSpeed > 30) {
+        return {
+            icon: '💨',
+            title: 'Giornata ventosa',
+            desc: 'Attenzione in spiaggia. Ideale per kitesurf!',
+            boxClass: 'warning'
+        };
+    }
+    // Bandiera gialla
+    if (flagColor === 'yellow') {
+        return {
+            icon: '⚠️',
+            title: 'Bagno con cautela',
+            desc: 'Mare mosso, resta vicino alla riva. Segui i bagnini.',
+            boxClass: 'warning'
+        };
+    }
+    // Pioggia leggera
+    if (weatherCode >= 51 && weatherCode <= 63) {
+        return {
+            icon: '🌧️',
+            title: 'Possibili piogge',
+            desc: 'Porta un ombrello. Buona giornata per visite culturali.',
+            boxClass: 'warning'
+        };
+    }
+    // Tutto ok
+    return {
+        icon: '💡',
+        title: 'Giornata ideale',
+        desc: 'Condizioni perfette per spiaggia, nuoto e attività all\'aperto!',
+        boxClass: ''
+    };
 }
 
 function getNextTide() {
@@ -991,8 +1331,8 @@ function openDayModal(dayIndex) {
     const seaStatus = getSeaStatus(waveHeight);
     const dayTides = weeklyTidesData[dayIndex]?.tides || tidesData;
 
-    // Orari del giorno (7, 10, 13, 16, 19, 22)
-    const hoursToShow = [7, 10, 13, 16, 19, 22];
+    // Orari del giorno (6, 9, 12, 15, 18, 21, 0)
+    const hoursToShow = [6, 9, 12, 15, 18, 21, 0];
     const startHourIndex = dayIndex * 24;
     let hoursHtml = '';
     hoursToShow.forEach(h => {
@@ -1000,12 +1340,16 @@ function openDayModal(dayIndex) {
         if (hourly.temperature_2m && hourly.temperature_2m[idx] !== undefined) {
             const temp = Math.round(hourly.temperature_2m[idx]);
             const code = hourly.weather_code?.[idx] || 0;
-            const icon = getWeatherInfo(code).icon;
+            const icon = getWeatherIcon(code, h);
+            const styleInfo = getHourlyGradient(code, h);
+            const timeLabel = h === 0 ? '00:00' : `${h}:00`;
+            const textColor = styleInfo.isNight ? '#ffffff' : 'var(--text-dark)';
+            const timeColor = styleInfo.isNight ? 'rgba(255,255,255,0.8)' : 'var(--text-medium)';
             hoursHtml += `
-                <div class="day-modal-hour">
-                    <div class="day-modal-hour-time">${h}:00</div>
+                <div class="day-modal-hour" style="background: ${styleInfo.gradient};">
+                    <div class="day-modal-hour-time" style="color: ${timeColor};">${timeLabel}</div>
                     <div class="day-modal-hour-icon">${icon}</div>
-                    <div class="day-modal-hour-temp">${temp}°</div>
+                    <div class="day-modal-hour-temp" style="color: ${textColor};">${temp}°</div>
                 </div>
             `;
         }
@@ -1034,50 +1378,34 @@ function openDayModal(dayIndex) {
 
         <div class="day-modal-section">
             <div class="day-modal-section-title">Dettagli Meteo</div>
-            <div class="day-modal-grid">
-                <div class="day-modal-item">
-                    <div class="day-modal-item-icon">🌡️</div>
-                    <div class="day-modal-item-value">${typeof seaTemp === 'number' ? Math.round(seaTemp) + '°C' : seaTemp}</div>
-                    <div class="day-modal-item-label">Acqua</div>
-                </div>
-                <div class="day-modal-item">
-                    <div class="day-modal-item-icon">🌊</div>
-                    <div class="day-modal-item-value">${waveHeight.toFixed(1)}m</div>
-                    <div class="day-modal-item-label">Onde</div>
-                </div>
-                <div class="day-modal-item">
-                    <div class="day-modal-item-icon">☔</div>
-                    <div class="day-modal-item-value">${rainProb}%</div>
-                    <div class="day-modal-item-label">Pioggia</div>
-                </div>
-                <div class="day-modal-item">
-                    <div class="day-modal-item-icon">💨</div>
-                    <div class="day-modal-item-value">${typeof windMax === 'number' ? Math.round(windMax) + ' km/h' : windMax}</div>
-                    <div class="day-modal-item-label">Vento</div>
-                </div>
-                <div class="day-modal-item">
-                    <div class="day-modal-item-icon">☀️</div>
-                    <div class="day-modal-item-value">${typeof uvMax === 'number' ? Math.round(uvMax) : uvMax}</div>
-                    <div class="day-modal-item-label">UV</div>
-                </div>
-                <div class="day-modal-item" style="background: ${dayFlag.color === 'green' ? '#dcfce7' : dayFlag.color === 'yellow' ? '#fef9c3' : '#fee2e2'}">
-                    <div class="day-modal-item-icon">🚩</div>
-                    <div class="day-modal-item-value">${dayFlag.title.replace('Bandiera ', '')}</div>
-                    <div class="day-modal-item-label">Bandiera</div>
-                </div>
+            <div class="day-modal-details-bar">
+                <span class="day-modal-detail-item"><span class="day-modal-detail-icon">💧</span> <span class="day-modal-detail-value">${typeof seaTemp === 'number' ? Math.round(seaTemp) + '°C' : seaTemp}</span> Acqua</span>
+                <span class="day-modal-detail-divider">|</span>
+                <span class="day-modal-detail-item"><span class="day-modal-detail-icon">🌊</span> <span class="day-modal-detail-value">${waveHeight.toFixed(1)}m</span> Onde</span>
+                <span class="day-modal-detail-divider">|</span>
+                <span class="day-modal-detail-item"><span class="day-modal-detail-icon">☔</span> <span class="day-modal-detail-value">${rainProb}%</span> Pioggia</span>
+            </div>
+            <div class="day-modal-details-bar">
+                <span class="day-modal-detail-item"><span class="day-modal-detail-icon">💨</span> <span class="day-modal-detail-value">${typeof windMax === 'number' ? Math.round(windMax) + 'km/h' : windMax}</span> Vento</span>
+                <span class="day-modal-detail-divider">|</span>
+                <span class="day-modal-detail-item"><span class="day-modal-detail-icon">☀️</span> <span class="day-modal-detail-value">${typeof uvMax === 'number' ? Math.round(uvMax) : uvMax}</span> UV</span>
+                <span class="day-modal-detail-divider">|</span>
+                <span class="day-modal-detail-item"><span class="flag-dot" style="background: ${dayFlag.color === 'green' ? '#4CAF50' : dayFlag.color === 'yellow' ? '#FFC107' : '#F44336'}"></span> <span class="day-modal-detail-value">${dayFlag.title}</span></span>
             </div>
         </div>
 
         <div class="day-modal-section">
             <div class="day-modal-section-title">Maree del Giorno</div>
-            <div class="day-modal-tides">
-                ${dayTides.map(t => `
-                    <div class="day-modal-tide ${t.type}">
-                        <div class="day-modal-tide-time">${t.time}</div>
-                        <div class="day-modal-tide-level">${t.level}cm</div>
-                        <div class="day-modal-tide-type ${t.type}">${t.type === 'alta' ? '▲ Alta' : '▼ Bassa'}</div>
-                    </div>
-                `).join('')}
+            <div class="day-modal-tides-container">
+                <div class="day-modal-tides">
+                    ${dayTides.map(t => `
+                        <div class="day-modal-tide ${t.type}">
+                            <div class="day-modal-tide-time">${t.time}</div>
+                            <div class="day-modal-tide-level">${t.level}cm</div>
+                            <div class="day-modal-tide-type ${t.type}">${t.type === 'alta' ? '▲ Alta' : '▼ Bassa'}</div>
+                        </div>
+                    `).join('')}
+                </div>
             </div>
         </div>
 
@@ -1171,32 +1499,59 @@ function renderPage(weather, marine) {
     const flag = getFlagStatus(current.weather_code, current.wind_speed_10m, currentMarine.wave_height || 0);
     const nextTide = getNextTide();
     const nowPos = getNowPosition();
+    const waveHeight = currentMarine.wave_height || 0;
+    const seaStatus = getSeaStatus(waveHeight);
+    const seaStatusSub = getSeaStatusSub(waveHeight);
 
     const today = new Date();
-    const dateStr = `${dayNamesFull[today.getDay()]} ${today.getDate()} ${monthNames[today.getMonth()]}`;
+    const rainForecast = getRainForecast(weather.hourly, today.getHours());
+
+    const giorni = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+    const mesi = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
+    const dataOggi = `${giorni[today.getDay()]} ${today.getDate()} ${mesi[today.getMonth()]}`;
 
     let html = `
-        <!-- HERO METEO -->
-        <div class="hero-meteo ${flag.color === 'green' ? '' : flag.color}">
-            <div class="hero-row">
-                <span class="hero-icon">${weatherInfo.icon}</span>
-                <div class="hero-temp-block">
-                    <div class="hero-temp">${Math.round(current.temperature_2m)}°</div>
-                    <div class="hero-condition">${weatherInfo.desc}</div>
-                    <div class="hero-feels">Percepita ${Math.round(current.apparent_temperature)}°</div>
+        <!-- DATA OGGI -->
+        <div class="section-title" style="margin-top: 0;">${dataOggi}</div>
+
+        <!-- INFO CARD (identico a home) -->
+        <div class="info-card ${flag.color === 'green' ? '' : flag.color}">
+            <div class="info-row">
+                <div class="info-item">
+                    <div class="info-item-icon-wrapper">
+                        <div class="info-item-dot ${flag.color}"></div>
+                        <span style="font-size: 18px;">${weatherInfo.icon}</span>
+                        <span style="font-size: 14px; font-weight: 600; color: var(--text-dark);">${Math.round(current.temperature_2m)}°</span>
+                    </div>
+                    <div class="info-item-value">${flag.title}</div>
+                    <div class="info-item-label">${flag.desc}</div>
                 </div>
-                <div class="hero-right">
-                    <div class="hero-minmax">↑ ${Math.round(daily.temperature_2m_max[0])}° ↓ ${Math.round(daily.temperature_2m_min[0])}°</div>
-                    <div class="hero-date">${dateStr}</div>
+                <div class="info-divider"></div>
+                <div class="info-item">
+                    <div class="info-item-icon-wrapper">
+                        <span class="info-item-icon">🌊</span>
+                    </div>
+                    <div class="info-item-value">Mare ${seaStatus}</div>
+                    <div class="info-item-label">${seaStatusSub}</div>
+                </div>
+                <div class="info-divider"></div>
+                <div class="info-item">
+                    <div class="info-item-icon-wrapper">
+                        <span class="info-item-icon">${rainForecast.icon}</span>
+                    </div>
+                    <div class="info-item-value">${rainForecast.title}</div>
+                    <div class="info-item-label">${rainForecast.sub}</div>
                 </div>
             </div>
-            <div class="hero-flag">
-                <div class="flag-dot ${flag.color}"></div>
-                <div class="flag-info">
-                    <div class="flag-title">${flag.title}</div>
-                    <div class="flag-desc">${flag.desc}</div>
-                </div>
-            </div>
+        </div>
+
+        <!-- BOX DETTAGLI -->
+        <div class="meteo-details">
+            <span class="meteo-detail-item"><span class="meteo-detail-icon">💨</span> <span class="meteo-detail-value">${Math.round(current.wind_speed_10m)}km/h</span> Vento</span>
+            <span class="meteo-detail-divider">|</span>
+            <span class="meteo-detail-item"><span class="meteo-detail-icon">☀️</span> <span class="meteo-detail-value">${current.uv_index ? Math.round(current.uv_index) : 'N/D'}</span> UV</span>
+            <span class="meteo-detail-divider">|</span>
+            <span class="meteo-detail-item"><span class="meteo-detail-icon">💦</span> <span class="meteo-detail-value">${current.relative_humidity_2m}%</span> Umidità</span>
         </div>
 
         <!-- MAREE -->
@@ -1208,7 +1563,7 @@ function renderPage(weather, marine) {
             </div>
             <div class="maree-boxes">
                 ${tidesData.map((t, i) => `
-                    <div class="maree-box ${i === nextTide.index ? 'next' : ''}">
+                    <div class="maree-box ${t.type} ${i === nextTide.index ? 'next' : ''}">
                         <div class="maree-box-time">${t.time}</div>
                         <div class="maree-box-level">${t.level}cm</div>
                         <div class="maree-box-type ${t.type}">${t.type === 'alta' ? '▲ Alta' : '▼ Bassa'}</div>
@@ -1219,9 +1574,9 @@ function renderPage(weather, marine) {
                 <div class="maree-curve">
                     <svg viewBox="0 0 100 50" preserveAspectRatio="none">
                         <path class="wave-line" d="M0,35 Q12.5,45 25,35 Q37.5,10 50,35 Q62.5,48 75,35 Q87.5,15 100,30"
-                              fill="none" stroke="rgba(59,130,246,0.5)" stroke-width="2"/>
+                              fill="none" stroke="rgba(42,157,143,0.5)" stroke-width="2"/>
                         <path class="wave-fill" d="M0,35 Q12.5,45 25,35 Q37.5,10 50,35 Q62.5,48 75,35 Q87.5,15 100,30 L100,50 L0,50 Z"
-                              fill="rgba(59,130,246,0.15)"/>
+                              fill="rgba(42,157,143,0.15)"/>
                     </svg>
                 </div>
                 <div class="maree-now-marker" style="left: ${nowPos}%"></div>
@@ -1248,102 +1603,45 @@ function renderPage(weather, marine) {
             </div>
         </div>
 
-        <!-- TIP -->
-        <a href="slappy_fortini.html" class="tip-card">
-            <div class="tip-icon">🚴</div>
-            <div class="tip-content">
-                <div class="tip-title">${flag.color === 'green' ? 'Ideale per escursioni' : flag.color === 'yellow' ? 'Attività con prudenza' : 'Meglio attività indoor'}</div>
-                <div class="tip-desc">${flag.color === 'green' ? 'Bici sui fortini consigliata' : flag.color === 'yellow' ? 'Controlla il meteo prima di uscire' : 'Musei o shopping consigliati'}</div>
-            </div>
-            <span class="tip-arrow">›</span>
-        </a>
-
         <!-- FORECAST 7 GIORNI -->
         <div class="section-title">Prossimi 7 Giorni</div>
+        <div class="forecast-scroll">
     `;
 
     for (let i = 0; i < 7; i++) {
         const date = new Date(daily.time[i]);
         const dayName = i === 0 ? 'Oggi' : dayNames[date.getDay()];
-        const dayNum = date.getDate();
         const dayWeather = getWeatherInfo(daily.weather_code[i]);
         const waveHeight = dailyMarine.wave_height_max?.[i] || 0;
-        const dayFlag = getFlagStatus(daily.weather_code[i], 15, waveHeight);
-        const rainProb = daily.precipitation_probability_max[i];
+        const dayWeatherBg = getWeatherBackground(daily.weather_code[i]);
         const seaStatus = getSeaStatus(waveHeight);
+        const clickHandler = i === 0 ? '' : `onclick="openDayModal(${i})"`;
 
         html += `
-            <div class="forecast-card flag-${dayFlag.color}" onclick="openDayModal(${i})">
-                <div class="forecast-day">
-                    <div class="forecast-day-name">${dayName}</div>
-                    <div class="forecast-day-num">${dayNum} ${monthNames[date.getMonth()]}</div>
-                </div>
+            <div class="forecast-card ${dayWeatherBg}" ${clickHandler} style="${i === 0 ? 'opacity: 0.7; cursor: default;' : ''}">
+                <div class="forecast-day-name">${dayName}</div>
                 <div class="forecast-icon">${dayWeather.icon}</div>
-                <div class="forecast-temps">
-                    <div class="forecast-temp-row">
-                        ${Math.round(daily.temperature_2m_max[i])}° <span class="forecast-temp-min">/ ${Math.round(daily.temperature_2m_min[i])}°</span>
-                    </div>
-                    <div class="forecast-details">
-                        <span class="forecast-detail"><span class="forecast-detail-icon">💧</span>${rainProb}%</span>
-                        <span class="forecast-detail"><span class="forecast-detail-icon">🌊</span>${seaStatus}</span>
-                    </div>
+                <div class="forecast-temps-compact">
+                    <span class="forecast-temp-max">${Math.round(daily.temperature_2m_max[i])}°</span>
+                    <span class="forecast-temp-min">/ ${Math.round(daily.temperature_2m_min[i])}°</span>
                 </div>
+                <div class="forecast-sea">🌊 ${seaStatus}</div>
             </div>
         `;
     }
 
-    html += `
-        <!-- LEGENDA -->
-        <div class="legenda-card">
-            <div class="legenda-title">Legenda Balneazione</div>
-            <div class="legenda-items">
-                <div class="legenda-item">
-                    <div class="legenda-dot green"></div>
-                    <span>OK</span>
-                </div>
-                <div class="legenda-item">
-                    <div class="legenda-dot yellow"></div>
-                    <span>Attenzione</span>
-                </div>
-                <div class="legenda-item">
-                    <div class="legenda-dot red"></div>
-                    <span>Sconsigliata</span>
-                </div>
-            </div>
-        </div>
+    html += `</div>`;
 
-        <!-- DATI FISSI SETTIMANA -->
-        <div class="static-data-card">
-            <div class="static-data-title">Info Spiaggia</div>
-            <div class="static-data-grid">
-                <div class="static-data-item">
-                    <span class="static-data-icon">🏖️</span>
-                    <div class="static-data-text">
-                        <div class="static-data-label">Sabbia</div>
-                        <div class="static-data-value">Fine e dorata</div>
-                    </div>
-                </div>
-                <div class="static-data-item">
-                    <span class="static-data-icon">🌊</span>
-                    <div class="static-data-text">
-                        <div class="static-data-label">Fondale</div>
-                        <div class="static-data-value">Basso e sabbioso</div>
-                    </div>
-                </div>
-                <div class="static-data-item">
-                    <span class="static-data-icon">🏳️</span>
-                    <div class="static-data-text">
-                        <div class="static-data-label">Bandiera Blu</div>
-                        <div class="static-data-value">Sì, dal 2010</div>
-                    </div>
-                </div>
-                <div class="static-data-item">
-                    <span class="static-data-icon">📏</span>
-                    <div class="static-data-text">
-                        <div class="static-data-label">Litorale</div>
-                        <div class="static-data-value">15 km</div>
-                    </div>
-                </div>
+    // Box consiglio basato sul meteo
+    const adviceData = getAdvice(flag.color, current.weather_code, current.wind_speed_10m);
+
+    html += `
+        <!-- BOX CONSIGLIO -->
+        <div class="advice-box ${adviceData.boxClass}">
+            <div class="advice-box-icon">${adviceData.icon}</div>
+            <div class="advice-box-content">
+                <div class="advice-box-title">${adviceData.title}</div>
+                <div class="advice-box-desc">${adviceData.desc}</div>
             </div>
         </div>
 

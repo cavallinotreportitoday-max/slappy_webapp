@@ -116,8 +116,7 @@
         
         .app { width: 100%; height: 100dvh; display: flex; flex-direction: column; background: var(--gray-50); position: relative; overflow: hidden; }
         .header { background: linear-gradient(180deg, #b5a69b 0%, #8d7b6e 100%); color: var(--white); height: var(--header-height); padding: 0 var(--padding-page); display: flex; align-items: center; gap: var(--gap-inner); flex-shrink: 0; }
-        .header-back { width: 36px; height: 36px; background: rgba(255,255,255,0.2); border: none; border-radius: var(--radius-button); color: #ffffff; font-size: 24px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; text-decoration: none; }
-        .header-back.hidden { visibility: hidden; }
+        .header-back { width: 36px; height: 36px; background: rgba(255,255,255,0.2); border: none; border-radius: 10px; color: #ffffff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; text-decoration: none; }
         .header-content { flex: 1; }
         .header-title { font-size: var(--font-title); font-weight: var(--weight-title); }
         .header-subtitle { font-size: var(--font-meta); opacity: 0.9; margin-top: 2px; }
@@ -177,7 +176,7 @@
         .swipe-card-actions .btn { flex: 1; padding: 10px; }
         /* DETAIL CARD - SLAPPY STANDARD */
         .detail-card { background: var(--white); border-radius: var(--radius-card); border: var(--border-default); overflow: hidden; }
-        .detail-header { background: var(--sepia-500); color: var(--white); padding: 20px; text-align: center; }
+        .detail-header { background: linear-gradient(180deg, #b5a69b 0%, #8d7b6e 100%); color: var(--white); padding: 20px; text-align: center; }
         .detail-icon { font-size: 40px; margin-bottom: var(--gap-inner); }
         .detail-title { font-size: 18px; font-weight: var(--weight-title); margin-bottom: 4px; }
         .detail-subtitle { font-size: var(--font-body); opacity: 0.9; }
@@ -198,7 +197,7 @@
         .detail-info-value { flex: 1; font-size: var(--font-body); font-weight: var(--weight-body); color: var(--gray-900); }
         .detail-actions { padding: var(--padding-page); border-top: 1px solid var(--gray-100); display: flex; gap: var(--gap-cards); }
         .btn { flex: 1; height: var(--button-height); padding: 0 var(--button-padding-x); border-radius: var(--radius-button); font-size: var(--button-font-size); font-weight: var(--button-font-weight); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .btn-primary { background: var(--sepia-500); color: var(--white); border: none; }
+        .btn-primary { background: linear-gradient(180deg, #b5a69b 0%, #8d7b6e 100%); color: var(--white); border: none; }
         .btn-secondary { background: var(--white); color: var(--sepia-600); border: var(--border-default); }
         .btn-secondary:hover { border-color: var(--gray-300); }
         .prezzi-box { background: var(--gray-50); border-radius: var(--radius-button); padding: var(--padding-card); }
@@ -300,9 +299,10 @@
         .tab-btn.active .tab-btn-icon { filter: grayscale(0%); opacity: 1; }
         .tab-btn.active .tab-btn-label { color: var(--gray-900); font-weight: 600; }
         .tab-btn.home.active::after { background: #78909c; }
-        .tab-btn.meteo.active::after { background: #fbc02d; }
-        .tab-btn.trasporti.active::after { background: #42a5f5; }
-        .tab-btn.sos.active::after { background: #ef5350; }
+        .tab-btn.naviga.active::after { background: #66bb6a; }
+        .tab-btn.biglietti.active::after { background: #ffa726; }
+        .tab-btn.fortini.active::after { background: #8d6e63; }
+        .tab-btn.esplora.active::after { background: #78909c; }
     </style>
 </head>
 <body>
@@ -762,17 +762,21 @@
             <span class="tab-btn-icon">🏠</span>
             <span class="tab-btn-label">Home</span>
         </a>
-        <a href="slappy_meteo.html" class="tab-btn meteo">
-            <span class="tab-btn-icon">🌤️</span>
-            <span class="tab-btn-label">Meteo</span>
+        <a href="#" class="tab-btn naviga" onclick="navigaFortino(); return false;">
+            <span class="tab-btn-icon">📍</span>
+            <span class="tab-btn-label">Naviga</span>
         </a>
-        <a href="slappy_trasporti.html" class="tab-btn trasporti">
-            <span class="tab-btn-icon">🚌</span>
-            <span class="tab-btn-label">Trasporti</span>
+        <a href="#" class="tab-btn biglietti" onclick="showBiglietti(); return false;">
+            <span class="tab-btn-icon">🎟️</span>
+            <span class="tab-btn-label">Biglietti</span>
         </a>
-        <a href="slappy_sos.html" class="tab-btn sos">
-            <span class="tab-btn-icon">🆘</span>
-            <span class="tab-btn-label">SOS</span>
+        <a href="slappy_fortini.html" class="tab-btn fortini active">
+            <span class="tab-btn-icon">🏰</span>
+            <span class="tab-btn-label">Fortini</span>
+        </a>
+        <a href="slappy_home.html#esplora-section" class="tab-btn esplora">
+            <span class="tab-btn-icon">🧭</span>
+            <span class="tab-btn-label">Esplora</span>
         </a>
     </nav>
 </div>
@@ -949,7 +953,7 @@
         if (id !== history[history.length - 1]) history.push(id);
         document.getElementById('headerTitle').textContent = screens[id]?.title || '🏛️ Fortificazioni';
         document.getElementById('headerSubtitle').textContent = screens[id]?.subtitle || '';
-        document.getElementById('backBtn').classList.toggle('hidden', id === 'main');
+        // Freccia sempre visibile - goBack() gestisce il ritorno alla home
 
         // Inizializza tabs se è una lista
         if (id.startsWith('lista-')) {
@@ -1073,9 +1077,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="detail-actions">
-                    <button class="btn btn-primary" onclick="toggleDetails('${cat}')">${isExpanded ? '▲ Chiudi dettagli' : '📍 Vedi dettagli'}</button>
-                </div>
+${isExpanded ? '' : `<div class="detail-actions">
+                    <button class="btn btn-primary" onclick="toggleDetails('${cat}')">📍 Vedi dettagli</button>
+                </div>`}
 
                 <!-- ACCORDION DETTAGLI -->
                 <div class="cat-details ${isExpanded ? 'open' : ''}" id="cat-details-${cat}">
@@ -1183,6 +1187,27 @@
             goBack();
         }
     }, { passive: true });
+
+    // Funzioni footer
+    function navigaFortino() {
+        // Naviga al fortino attualmente visualizzato
+        const currentCat = history[history.length - 1];
+        if (currentCat && currentCat.startsWith('lista-')) {
+            const cat = currentCat.replace('lista-', '');
+            const idx = categoryIndex[cat] || 0;
+            const item = categoriesData[cat]?.items[idx];
+            if (item && item.mapsQuery) {
+                openMaps(item.mapsQuery);
+                return;
+            }
+        }
+        // Default: apri Batteria Pisani
+        openMaps('Batteria Vettor Pisani Cavallino-Treporti');
+    }
+
+    function showBiglietti() {
+        alert('Info Biglietti:\\n\\nBatteria Pisani: €10 adulti, €5 residenti\\nVisite guidate su prenotazione\\nTel: 041 2909555');
+    }
 </script>
 </body>
 </html>

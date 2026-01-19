@@ -31,7 +31,7 @@
         @media (min-width: 481px) { body { display: flex; justify-content: center; } .app { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); } }
         
         .header { background: radial-gradient(ellipse at center, #b3e5fc 0%, #9bcce3 100%); color: var(--gray-900); padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
-        .header-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.1); border-radius: 50%; cursor: pointer; border: none; color: var(--gray-700); font-size: 18px; }
+        .header-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.08); border-radius: 10px; cursor: pointer; border: none; color: var(--gray-900); font-size: 18px; text-decoration: none; }
         .header-back.hidden { visibility: hidden; }
         .header-content { flex: 1; }
         .header-title { font-family: var(--font-display); font-size: 17px; font-weight: 600; }
@@ -275,9 +275,10 @@
         .tab-btn.active .tab-btn-icon { filter: grayscale(0%); opacity: 1; }
         .tab-btn.active .tab-btn-label { color: var(--gray-900); font-weight: 600; }
         .tab-btn.home.active::after { background: #78909c; }
-        .tab-btn.meteo.active::after { background: #fbc02d; }
-        .tab-btn.trasporti.active::after { background: #42a5f5; }
-        .tab-btn.sos.active::after { background: #ef5350; }
+        .tab-btn.meteo.active::after { background: #2a9d8f; }
+        .tab-btn.maree.active::after { background: #26a69a; }
+        .tab-btn.spiagge.active::after { background: #42a5f5; }
+        .tab-btn.esplora.active::after { background: #8d6e63; }
     </style>
 </head>
 <body>
@@ -570,16 +571,20 @@
             <span class="tab-btn-label">Home</span>
         </a>
         <a href="slappy_meteo.html" class="tab-btn meteo">
-            <span class="tab-btn-icon">🌤️</span>
+            <span class="tab-btn-icon">☀️</span>
             <span class="tab-btn-label">Meteo</span>
         </a>
-        <a href="slappy_trasporti.html" class="tab-btn trasporti">
-            <span class="tab-btn-icon">🚌</span>
-            <span class="tab-btn-label">Trasporti</span>
+        <a href="slappy_meteo.html#maree" class="tab-btn maree">
+            <span class="tab-btn-icon">🌊</span>
+            <span class="tab-btn-label">Maree</span>
         </a>
-        <a href="slappy_sos.html" class="tab-btn sos">
-            <span class="tab-btn-icon">🆘</span>
-            <span class="tab-btn-label">SOS</span>
+        <a href="slappy_spiagge.html" class="tab-btn spiagge active">
+            <span class="tab-btn-icon">🏖️</span>
+            <span class="tab-btn-label">Spiagge</span>
+        </a>
+        <a href="slappy_home.html#esplora-section" class="tab-btn esplora">
+            <span class="tab-btn-icon">🧭</span>
+            <span class="tab-btn-label">Esplora</span>
         </a>
     </nav>
 </div>

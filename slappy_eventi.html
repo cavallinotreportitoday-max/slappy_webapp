@@ -122,8 +122,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0,0,0,0.1);
-            border-radius: 50%;
+            background: rgba(0,0,0,0.08);
+            border-radius: 10px;
             cursor: pointer;
             border: none;
             color: var(--gray-900);
@@ -612,9 +612,10 @@
         .tab-btn.active .tab-btn-icon { filter: grayscale(0%); opacity: 1; }
         .tab-btn.active .tab-btn-label { color: var(--gray-900); font-weight: 600; }
         .tab-btn.home.active::after { background: #78909c; }
-        .tab-btn.meteo.active::after { background: #fbc02d; }
+        .tab-btn.calendario.active::after { background: #7e57c2; }
         .tab-btn.trasporti.active::after { background: #42a5f5; }
-        .tab-btn.sos.active::after { background: #ef5350; }
+        .tab-btn.eventi.active::after { background: #ec407a; }
+        .tab-btn.meteo.active::after { background: #2a9d8f; }
     </style>
 </head>
 <body>
@@ -1015,17 +1016,21 @@
             <span class="tab-btn-icon">🏠</span>
             <span class="tab-btn-label">Home</span>
         </a>
-        <a href="slappy_meteo.html" class="tab-btn meteo">
-            <span class="tab-btn-icon">🌤️</span>
-            <span class="tab-btn-label">Meteo</span>
+        <a href="#" class="tab-btn calendario" onclick="filterByDate(); return false;">
+            <span class="tab-btn-icon">📅</span>
+            <span class="tab-btn-label">Calendario</span>
         </a>
         <a href="slappy_trasporti.html" class="tab-btn trasporti">
             <span class="tab-btn-icon">🚌</span>
             <span class="tab-btn-label">Trasporti</span>
         </a>
-        <a href="slappy_sos.html" class="tab-btn sos">
-            <span class="tab-btn-icon">🆘</span>
-            <span class="tab-btn-label">SOS</span>
+        <a href="slappy_eventi.html" class="tab-btn eventi active">
+            <span class="tab-btn-icon">🎭</span>
+            <span class="tab-btn-label">Eventi</span>
+        </a>
+        <a href="slappy_meteo.html" class="tab-btn meteo">
+            <span class="tab-btn-icon">☀️</span>
+            <span class="tab-btn-label">Meteo</span>
         </a>
     </nav>
 </div>
@@ -1169,6 +1174,12 @@
     document.addEventListener('DOMContentLoaded', () => {
         setFilter('weekend');
     });
+
+    // Funzione calendario footer
+    function filterByDate() {
+        // Mostra il filtro "Questa settimana"
+        setFilter('settimana');
+    }
 </script>
 </body>
 </html>
