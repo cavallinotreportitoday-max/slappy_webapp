@@ -132,6 +132,7 @@
         }
         .header-back:hover { background: rgba(0,0,0,0.15); }
         .header-back.hidden { visibility: hidden; }
+        .hidden { display: none !important; }
         .header-content { flex: 1; }
         .header-title { font-size: 17px; font-weight: var(--weight-title); }
         .header-subtitle { font-size: var(--font-body); opacity: 0.9; margin-top: 2px; }
@@ -141,7 +142,7 @@
            ===================================================== */
         .hero {
             background: radial-gradient(ellipse at center, #e1bee7 0%, #c8a6ce 100%);
-            color: var(--white);
+            color: #333;
             padding: 16px var(--padding-page);
             margin: var(--padding-page);
             border-radius: 16px;
@@ -151,22 +152,23 @@
             font-size: 17px;
             font-weight: 600;
             margin-bottom: 10px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         .hero-summary {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            font-size: 14px;
+            gap: 12px;
+            font-size: 13px;
             font-weight: 500;
+            flex-wrap: wrap;
         }
         .hero-stat {
             display: flex;
             align-items: center;
-            gap: 6px;
-            background: rgba(255,255,255,0.25);
-            padding: 6px 12px;
-            border-radius: 20px;
+            gap: 4px;
+            background: rgba(255,255,255,0.5);
+            padding: 5px 10px;
+            border-radius: 16px;
+            color: #333;
         }
 
         /* =====================================================
@@ -770,6 +772,9 @@
                         Famiglie
                         <span class="filter-chip-count">3</span>
                     </button>
+                    <button class="filter-chip" data-filter="calendario" onclick="setFilter('calendario')">
+                        📅
+                    </button>
                 </div>
                 <div class="filter-feedback" id="filterFeedback">
                     Stai vedendo: <strong>Weekend · 3 eventi</strong>
@@ -777,7 +782,7 @@
             </div>
 
             <!-- CALENDARIO MENSILE -->
-            <div class="calendar-section">
+            <div class="calendar-section hidden" id="calendarSection">
                 <div class="calendar-header">
                     <span class="calendar-title" id="calendarTitle">Gennaio 2025</span>
                     <div class="calendar-nav">
@@ -1207,16 +1212,40 @@
     // =====================================================
     function setFilter(filter) {
         currentFilter = filter;
-        const data = eventsData[filter];
 
         // 1. Aggiorna chip attivo
         document.querySelectorAll('.filter-chip').forEach(chip => {
             chip.classList.toggle('active', chip.dataset.filter === filter);
         });
 
-        // 2. Aggiorna Hero (sincronizzato!)
+        const calendarSection = document.getElementById('calendarSection');
+        const eventsList = document.getElementById('eventsList');
+        const filterFeedback = document.getElementById('filterFeedback');
+
+        // 2. Gestisci vista calendario vs lista eventi
+        if (filter === 'calendario') {
+            // Mostra calendario, nascondi lista
+            calendarSection.classList.remove('hidden');
+            eventsList.classList.add('hidden');
+            filterFeedback.classList.add('hidden');
+
+            // Aggiorna hero per calendario
+            document.getElementById('heroPeriod').textContent = 'Calendario eventi';
+            document.getElementById('heroSummary').innerHTML = '<span class="hero-stat">📅 Seleziona una data</span>';
+            return;
+        }
+
+        // Per altri filtri: nascondi calendario, mostra lista
+        calendarSection.classList.add('hidden');
+        eventsList.classList.remove('hidden');
+        filterFeedback.classList.remove('hidden');
+
+        const data = eventsData[filter];
+        if (!data) return;
+
+        // 3. Aggiorna Hero (sincronizzato!)
         document.getElementById('heroPeriod').textContent = data.period;
-        
+
         let summaryHTML = '';
         if (data.music > 0) summaryHTML += `<span class="hero-stat">🎵 ${data.music} musica</span>`;
         if (data.family > 0) summaryHTML += `<span class="hero-stat">👨‍👩‍👧 ${data.family} famiglie</span>`;
@@ -1224,17 +1253,17 @@
         if (summaryHTML === '') summaryHTML = `<span class="hero-stat">${data.count} eventi</span>`;
         document.getElementById('heroSummary').innerHTML = summaryHTML;
 
-        // 3. Aggiorna feedback sotto chip
+        // 4. Aggiorna feedback sotto chip
         const filterNames = {
             oggi: 'Oggi',
             weekend: 'Weekend',
             gratis: 'Gratis',
             famiglie: 'Famiglie'
         };
-        document.getElementById('filterFeedback').innerHTML = 
+        document.getElementById('filterFeedback').innerHTML =
             `Stai vedendo: <strong>${filterNames[filter]} · ${data.count} eventi</strong>`;
 
-        // 4. Filtra sezioni visibili
+        // 5. Filtra sezioni visibili
         filterEvents(filter);
     }
 

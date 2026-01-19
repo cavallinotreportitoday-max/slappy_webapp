@@ -2229,10 +2229,10 @@
             display: none !important;
         }
 
-        /* Tip box - base */
+        /* Tip box - base - Stile BLU uniforme trasporti */
         .tip-box {
-            background: radial-gradient(ellipse at center, #ffffff 0%, #e0f2f1 100%);
-            border: 1px solid #b2dfdb;
+            background: radial-gradient(ellipse at center, #90caf9 0%, #78b2e0 100%);
+            border: none;
             border-radius: 16px;
             padding: 16px;
             display: flex;
@@ -2241,21 +2241,15 @@
             margin-top: var(--gap-sections);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.2);
         }
 
         .tip-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: #26a69a;
+            display: none;
         }
 
         .tip-icon {
-            font-size: 20px;
+            font-size: 22px;
             flex-shrink: 0;
             margin-top: 1px;
         }
@@ -2264,59 +2258,46 @@
             font-family: var(--font-system);
             font-size: 13px;
             line-height: 1.5;
-            color: var(--gray-700);
+            color: #ffffff;
         }
 
         .tip-content strong {
-            color: var(--teal-700);
-            font-weight: 500;
+            color: #ffffff;
+            font-weight: 600;
         }
 
-        /* Tip box variants */
-        .tip-box.info { 
-            background: linear-gradient(135deg, var(--blue-50) 0%, #e3f2fd 100%);
-            border-color: var(--blue-100); 
+        /* Tutte le varianti usano lo stesso stile blu */
+        .tip-box.info,
+        .tip-box.success,
+        .tip-box.warning,
+        .tip-box.camping,
+        .tip-box.cost {
+            background: radial-gradient(ellipse at center, #90caf9 0%, #78b2e0 100%);
         }
-        .tip-box.info::before { background: var(--blue-500); }
-        .tip-box.info .tip-content { color: var(--blue-dark); }
-        .tip-box.info .tip-content strong { color: var(--blue-600); }
+        .tip-box.info::before,
+        .tip-box.success::before,
+        .tip-box.warning::before,
+        .tip-box.camping::before,
+        .tip-box.cost::before { display: none; }
 
-        .tip-box.success { 
-            background: linear-gradient(135deg, var(--green-100) 0%, #e8f5e9 100%);
-            border-color: #6ee7b7; 
-        }
-        .tip-box.success::before { background: var(--green-500); }
-        .tip-box.success .tip-content { color: var(--green-dark); }
-        .tip-box.success .tip-content strong { color: var(--green-600); }
+        .tip-box.info .tip-content,
+        .tip-box.success .tip-content,
+        .tip-box.warning .tip-content,
+        .tip-box.camping .tip-content,
+        .tip-box.cost .tip-content { color: #ffffff; }
 
-        .tip-box.warning { 
-            background: linear-gradient(135deg, var(--orange-50) 0%, #fff3e0 100%);
-            border-color: var(--orange-100); 
-        }
-        .tip-box.warning::before { background: var(--orange-500); }
-        .tip-box.warning .tip-content { color: var(--orange-dark); }
-        .tip-box.warning .tip-content strong { color: var(--orange-600); }
-
-        .tip-box.camping {
-            background: linear-gradient(135deg, #f3e8ff 0%, #faf5ff 100%);
-            border-color: #e9d5ff;
-        }
-        .tip-box.camping::before { background: #a855f7; }
-        .tip-box.camping .tip-content { color: #6b21a8; }
-        .tip-box.camping .tip-content strong { color: #7c3aed; }
+        .tip-box.info .tip-content strong,
+        .tip-box.success .tip-content strong,
+        .tip-box.warning .tip-content strong,
+        .tip-box.camping .tip-content strong { color: #ffffff; font-weight: 600; }
 
         /* Card costo totale */
-        .tip-box.cost {
-            background: radial-gradient(ellipse at center, #ffffff 0%, #e0f2f1 100%);
-            border-color: #80cbc4;
-        }
-        .tip-box.cost::before { background: #26a69a; }
         .tip-box.cost .tip-icon { font-size: 24px; }
         .tip-box.cost .tip-content { font-size: 14px; }
         .tip-box.cost .tip-content strong {
             font-size: 18px;
             font-weight: 700;
-            color: #00695c;
+            color: #ffffff;
         }
 
         /* ===== ULTIMO MEZZO ===== */
