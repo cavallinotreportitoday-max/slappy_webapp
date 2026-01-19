@@ -688,23 +688,24 @@
             flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 16px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
         }
-        .zone-grid::-webkit-scrollbar { display: none; }
 
-        /* Chip CAPSULE - stile unificato */
+        /* ===== CAPSULE - Stile globale TRASPORTI ===== */
         .zone-chip {
             background: #ffffff;
-            border: 2px solid #e0e0e0;
-            border-radius: 25px;
-            padding: 12px 20px;
-            font-size: 15px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-size: 14px;
             font-weight: 500;
             color: #424242;
             cursor: pointer;
             transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            white-space: nowrap;
         }
 
         .zone-chip:hover {
@@ -712,9 +713,9 @@
         }
 
         .zone-chip.selected {
-            background: linear-gradient(135deg, #e0f2f1 0%, #80cbc4 100%);
-            border-color: #26a69a;
-            color: #00695c;
+            background: radial-gradient(ellipse at center, #90caf9 0%, #78b2e0 100%);
+            border: 2px solid #0D47A1;
+            color: #ffffff;
             font-weight: 600;
         }
 
@@ -723,106 +724,6 @@
             pointer-events: none;
         }
 
-        /* Chip DESTINAZIONI - colori tematici */
-        .zone-chip.dest-venezia {
-            background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%);
-            border-color: #ffc107;
-            color: #795548;
-        }
-        .zone-chip.dest-venezia.selected { background: #ffe082; border-color: #ff8f00; }
-
-        .zone-chip.dest-burano {
-            background: linear-gradient(135deg, #fce4ec 0%, #f48fb1 100%);
-            border-color: #ec407a;
-            color: #880e4f;
-        }
-        .zone-chip.dest-burano.selected { background: #f48fb1; border-color: #c2185b; }
-
-        .zone-chip.dest-murano {
-            background: linear-gradient(135deg, #ede7f6 0%, #b39ddb 100%);
-            border-color: #9575cd;
-            color: #4527a0;
-        }
-        .zone-chip.dest-murano.selected { background: #b39ddb; border-color: #7e57c2; }
-
-        .zone-chip.dest-lido {
-            background: linear-gradient(135deg, #e0f7fa 0%, #80deea 100%);
-            border-color: #26c6da;
-            color: #00695c;
-        }
-        .zone-chip.dest-lido.selected { background: #80deea; border-color: #00acc1; }
-
-        .zone-chip.dest-jesolo {
-            background: linear-gradient(135deg, #ffebee 0%, #ef9a9a 100%);
-            border-color: #ef5350;
-            color: #c62828;
-        }
-        .zone-chip.dest-jesolo.selected { background: #ef9a9a; border-color: #e53935; }
-
-        .zone-chip.dest-aeroporto {
-            background: linear-gradient(135deg, #eceff1 0%, #90a4ae 100%);
-            border-color: #78909c;
-            color: #37474f;
-        }
-        .zone-chip.dest-aeroporto.selected { background: #90a4ae; border-color: #546e7a; }
-
-        .zone-chip.dest-punta {
-            background: linear-gradient(135deg, #e0f2f1 0%, #80cbc4 100%);
-            border-color: #26a69a;
-            color: #004d40;
-        }
-        .zone-chip.dest-punta.selected { background: #80cbc4; border-color: #00897b; }
-
-        /* Fermate select */
-        .fermata-select {
-            background: var(--gray-50);
-            border-radius: var(--radius-card);
-            padding: 12px;
-            margin-top: 8px;
-            margin-bottom: 12px;
-        }
-
-        .fermata-select.hidden {
-            display: none;
-        }
-
-        .section-label-small {
-            font-size: var(--font-meta);
-            font-weight: 500;
-            color: var(--gray-500);
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
-
-        .fermata-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .fermata-chip {
-            padding: 8px 14px;
-            border: 2px solid #e0e0e0;
-            border-radius: 20px;
-            background: var(--white);
-            font-family: var(--font-system);
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--gray-600);
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-
-        .fermata-chip:hover {
-            border-color: #78b2e0;
-        }
-
-        .fermata-chip.selected {
-            background: #e3f2fd;
-            border-color: #78b2e0;
-            color: #1565c0;
-            font-weight: 600;
-        }
 
         /* ===== HIGHLIGHT BOX ===== */
         .highlight-box {
@@ -975,7 +876,6 @@
 
         .switch-tabs {
             display: flex;
-            flex-wrap: wrap;
             gap: 10px;
             overflow-x: auto;
             padding: 8px 0;
@@ -986,72 +886,28 @@
 
         .switch-tab {
             flex-shrink: 0;
-            padding: 12px 20px;
+            padding: 10px 18px;
             background: #ffffff;
-            border: 2px solid #e0e0e0;
-            border-radius: 25px;
-            font-size: 15px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
             font-weight: 500;
             color: #424242;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
             font-family: var(--font-system);
             white-space: nowrap;
             transition: all 0.15s;
+            text-align: center;
         }
 
         .switch-tab.active {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border-color: #42a5f5;
-            color: #1565c0;
+            background: radial-gradient(ellipse at center, #90caf9 0%, #78b2e0 100%);
+            border: 2px solid #0D47A1;
+            color: #ffffff;
             font-weight: 600;
-        }
-
-        /* Colori sezione Battelli */
-        .switch-tab.battelli.active {
-            background: linear-gradient(135deg, #e3f2fd 0%, #90caf9 100%);
-            border-color: #42a5f5;
-            color: #1565c0;
-        }
-        .switch-tab.bus.active {
-            background: linear-gradient(135deg, #e8f5e9 0%, #a5d6a7 100%);
-            border-color: #66bb6a;
-            color: #2e7d32;
-        }
-        .switch-tab.biglietti.active {
-            background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%);
-            border-color: #ffb300;
-            color: #f57f17;
-        }
-        .switch-tab.parcheggi.active {
-            background: linear-gradient(135deg, #eceff1 0%, #b0bec5 100%);
-            border-color: #78909c;
-            color: #455a64;
-        }
-
-        /* Colori sezione Info Trasporti */
-        .switch-tab.access.active {
-            background: linear-gradient(135deg, #f3e5f5 0%, #ce93d8 100%);
-            border-color: #ab47bc;
-            color: #7b1fa2;
-        }
-        .switch-tab.bici.active {
-            background: linear-gradient(135deg, #f1f8e9 0%, #aed581 100%);
-            border-color: #7cb342;
-            color: #558b2f;
-        }
-        .switch-tab.animali.active {
-            background: linear-gradient(135deg, #fbe9e7 0%, #ffab91 100%);
-            border-color: #ff7043;
-            color: #d84315;
-        }
-        .switch-tab.bagagli.active {
-            background: linear-gradient(135deg, #efebe9 0%, #bcaaa4 100%);
-            border-color: #8d6e63;
-            color: #5d4037;
         }
 
         .switch-tab:hover:not(.active) {
@@ -1071,7 +927,6 @@
 
         .sub-tabs {
             display: flex;
-            flex-wrap: wrap;
             gap: 10px;
             overflow-x: auto;
             padding: 8px 0;
@@ -1082,26 +937,27 @@
 
         .sub-tab {
             flex-shrink: 0;
-            padding: 12px 20px;
+            padding: 10px 18px;
             background: #ffffff;
-            border: 2px solid #e0e0e0;
-            border-radius: 25px;
-            font-size: 15px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
             font-weight: 500;
             color: #424242;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             font-family: var(--font-system);
             white-space: nowrap;
             transition: all 0.15s;
+            text-align: center;
         }
 
         .sub-tab.active {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border-color: #42a5f5;
-            color: #1565c0;
+            background: radial-gradient(ellipse at center, #90caf9 0%, #78b2e0 100%);
+            border: 2px solid #0D47A1;
+            color: #ffffff;
             font-weight: 600;
         }
 
@@ -2200,7 +2056,7 @@
         .action-btn {
             width: 100%;
             padding: 16px;
-            background: radial-gradient(ellipse at center, #4db6ac 0%, #26a69a 100%);
+            background: radial-gradient(ellipse at center, #90caf9 0%, #78b2e0 100%);
             color: var(--white);
             border: none;
             border-radius: 16px;
@@ -2209,12 +2065,12 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.15s;
-            box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
+            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
         }
 
         .action-btn:hover {
-            background: radial-gradient(ellipse at center, #26a69a 0%, #00897b 100%);
-            box-shadow: 0 6px 16px rgba(38, 166, 154, 0.4);
+            background: radial-gradient(ellipse at center, #78b2e0 0%, #5c9bc8 100%);
+            box-shadow: 0 6px 16px rgba(25, 118, 210, 0.4);
         }
         .action-btn:disabled { background: var(--gray-300); cursor: not-allowed; box-shadow: none; }
         .action-btn.secondary {
@@ -2301,6 +2157,30 @@
             background: #f5f5f5;
             padding: 4px 10px;
             border-radius: 12px;
+        }
+        .maps-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: radial-gradient(ellipse at center, #90caf9 0%, #78b2e0 100%);
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .maps-btn:hover {
+            background: radial-gradient(ellipse at center, #78b2e0 0%, #5c9bc8 100%);
+        }
+        .walk-maps-link {
+            color: #1976D2;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .walk-maps-link:hover {
+            text-decoration: underline;
         }
 
         /* Time picker chips */
@@ -2581,10 +2461,10 @@
         <div class="screen" id="screen-battelli">
             <div class="switch-tabs-wrapper">
                 <div class="switch-tabs">
-                    <button class="switch-tab battelli active" onclick="switchTab('battelli', this)">⛴️ Battelli</button>
-                    <button class="switch-tab bus" onclick="go('bus')">🚌 Bus</button>
-                    <button class="switch-tab biglietti" onclick="go('biglietti')">🎫 Biglietti</button>
-                    <button class="switch-tab parcheggi" onclick="go('parcheggi')">🚗 Parcheggi</button>
+                    <button class="switch-tab battelli active" onclick="switchTab('battelli', this)">Battelli</button>
+                    <button class="switch-tab bus" onclick="go('bus')">Bus</button>
+                    <button class="switch-tab biglietti" onclick="go('biglietti')">Biglietti</button>
+                    <button class="switch-tab parcheggi" onclick="go('parcheggi')">Parcheggi</button>
                 </div>
             </div>
 
@@ -2715,10 +2595,10 @@
         <div class="screen" id="screen-bus">
             <div class="switch-tabs-wrapper">
                 <div class="switch-tabs">
-                    <button class="switch-tab battelli" onclick="go('battelli')">⛴️ Battelli</button>
-                    <button class="switch-tab bus active" onclick="switchTab('bus', this)">🚌 Bus</button>
-                    <button class="switch-tab biglietti" onclick="go('biglietti')">🎫 Biglietti</button>
-                    <button class="switch-tab parcheggi" onclick="go('parcheggi')">🚗 Parcheggi</button>
+                    <button class="switch-tab battelli" onclick="go('battelli')">Battelli</button>
+                    <button class="switch-tab bus active" onclick="switchTab('bus', this)">Bus</button>
+                    <button class="switch-tab biglietti" onclick="go('biglietti')">Biglietti</button>
+                    <button class="switch-tab parcheggi" onclick="go('parcheggi')">Parcheggi</button>
                 </div>
             </div>
 
@@ -2909,10 +2789,10 @@
         <div class="screen" id="screen-biglietti">
             <div class="switch-tabs-wrapper">
                 <div class="switch-tabs">
-                    <button class="switch-tab battelli" onclick="go('battelli')">⛴️ Battelli</button>
-                    <button class="switch-tab bus" onclick="go('bus')">🚌 Bus</button>
-                    <button class="switch-tab biglietti active" onclick="switchTab('biglietti', this)">🎫 Biglietti</button>
-                    <button class="switch-tab parcheggi" onclick="go('parcheggi')">🚗 Parcheggi</button>
+                    <button class="switch-tab battelli" onclick="go('battelli')">Battelli</button>
+                    <button class="switch-tab bus" onclick="go('bus')">Bus</button>
+                    <button class="switch-tab biglietti active" onclick="switchTab('biglietti', this)">Biglietti</button>
+                    <button class="switch-tab parcheggi" onclick="go('parcheggi')">Parcheggi</button>
                 </div>
             </div>
 
@@ -3003,10 +2883,10 @@
         <div class="screen" id="screen-parcheggi">
             <div class="switch-tabs-wrapper">
                 <div class="switch-tabs">
-                    <button class="switch-tab battelli" onclick="go('battelli')">⛴️ Battelli</button>
-                    <button class="switch-tab bus" onclick="go('bus')">🚌 Bus</button>
-                    <button class="switch-tab biglietti" onclick="go('biglietti')">🎫 Biglietti</button>
-                    <button class="switch-tab parcheggi active" onclick="switchTab('parcheggi', this)">🚗 Parcheggi</button>
+                    <button class="switch-tab battelli" onclick="go('battelli')">Battelli</button>
+                    <button class="switch-tab bus" onclick="go('bus')">Bus</button>
+                    <button class="switch-tab biglietti" onclick="go('biglietti')">Biglietti</button>
+                    <button class="switch-tab parcheggi active" onclick="switchTab('parcheggi', this)">Parcheggi</button>
                 </div>
             </div>
 
@@ -3578,10 +3458,6 @@
                 <div class="zone-chip" onclick="selectZoneFrom(this, 'lio-grando')">Lio Grando</div>
             </div>
 
-            <div class="fermata-select hidden" id="fermataFromSelect">
-                <div class="section-label-small">Fermata specifica</div>
-                <div class="fermata-list" id="fermataFromList"></div>
-            </div>
 
             <div class="section-label">📍 Dove vuoi andare?</div>
 
@@ -3599,10 +3475,6 @@
                 <div class="zone-chip" onclick="selectZoneTo(this, 'lio-grando')">Lio Grando</div>
             </div>
 
-            <div class="fermata-select hidden" id="fermataToSelect">
-                <div class="section-label-small">Fermata specifica</div>
-                <div class="fermata-list" id="fermataToList"></div>
-            </div>
 
             <button class="action-btn" id="btnCalcInterno" onclick="calcInterno()">🚌 Calcola percorso interno</button>
 
@@ -3622,13 +3494,13 @@
             <div class="section-label" id="internoRoute">Ca' Savio → Jesolo • ~20 min</div>
 
             <div class="journey-steps" id="interno-steps">
-                <div class="journey-step">
+                <div class="journey-step walk-step" data-fermata="Ca' Savio - Via Fausta">
                     <div class="step-icon walk">🚶</div>
                     <div class="step-content">
-                        <div class="step-title">Vai alla fermata</div>
-                        <div class="step-detail">Ca' Savio - Via Fausta</div>
+                        <div class="step-title">Raggiungi la fermata</div>
+                        <div class="step-detail">Fermata Ca' Savio - Via Fausta</div>
                     </div>
-                    <div class="step-time">2 min</div>
+                    <div class="step-time"></div>
                 </div>
                 <div class="journey-step">
                     <div class="step-icon bus">🚌</div>
@@ -3661,12 +3533,12 @@
             <div class="section-label">📍 Dove sei adesso?</div>
 
             <div class="zone-grid" id="ultimoZone">
-                <div class="zone-chip dest-venezia" onclick="checkUltimo(this, 'venezia')">🏛️ Venezia</div>
-                <div class="zone-chip dest-lido" onclick="checkUltimo(this, 'lido')">🏖️ Lido</div>
-                <div class="zone-chip dest-burano" onclick="checkUltimo(this, 'burano')">🏘️ Burano</div>
-                <div class="zone-chip dest-murano" onclick="checkUltimo(this, 'murano')">🔮 Murano</div>
-                <div class="zone-chip dest-jesolo" onclick="checkUltimo(this, 'jesolo')">🎡 Jesolo</div>
-                <div class="zone-chip dest-punta" onclick="checkUltimo(this, 'punta-sabbioni')">⛴️ Punta Sabbioni</div>
+                <div class="zone-chip destination" onclick="checkUltimo(this, 'venezia')">Venezia</div>
+                <div class="zone-chip destination" onclick="checkUltimo(this, 'lido')">Lido</div>
+                <div class="zone-chip destination" onclick="checkUltimo(this, 'burano')">Burano</div>
+                <div class="zone-chip destination" onclick="checkUltimo(this, 'murano')">Murano</div>
+                <div class="zone-chip destination" onclick="checkUltimo(this, 'jesolo')">Jesolo</div>
+                <div class="zone-chip" onclick="checkUltimo(this, 'punta-sabbioni')">Punta Sabbioni</div>
                 <div class="zone-chip" onclick="checkUltimo(this, 'treporti')">Treporti</div>
                 <div class="zone-chip" onclick="checkUltimo(this, 'ca-savio')">Ca' Savio</div>
                 <div class="zone-chip" onclick="checkUltimo(this, 'ca-vio')">Ca' Vio</div>
@@ -3716,12 +3588,12 @@
             <div class="section-label">📍 Da dove parti?</div>
 
             <div class="zone-grid" id="ritornoZone">
-                <div class="zone-chip" onclick="calcRitorno('venezia')">🏛️ Venezia</div>
-                <div class="zone-chip" onclick="calcRitorno('lido')">🏖️ Lido</div>
-                <div class="zone-chip" onclick="calcRitorno('burano')">🏘️ Burano</div>
-                <div class="zone-chip" onclick="calcRitorno('murano')">🔮 Murano</div>
-                <div class="zone-chip" onclick="calcRitorno('jesolo')">🎡 Jesolo</div>
-                <div class="zone-chip" onclick="calcRitorno('punta-sabbioni')">⛴️ Punta Sabbioni</div>
+                <div class="zone-chip destination" onclick="calcRitorno('venezia')">Venezia</div>
+                <div class="zone-chip destination" onclick="calcRitorno('lido')">Lido</div>
+                <div class="zone-chip destination" onclick="calcRitorno('burano')">Burano</div>
+                <div class="zone-chip destination" onclick="calcRitorno('murano')">Murano</div>
+                <div class="zone-chip destination" onclick="calcRitorno('jesolo')">Jesolo</div>
+                <div class="zone-chip" onclick="calcRitorno('punta-sabbioni')">Punta Sabbioni</div>
                 <div class="zone-chip" onclick="calcRitorno('treporti')">Treporti</div>
                 <div class="zone-chip" onclick="calcRitorno('ca-savio')">Ca' Savio</div>
                 <div class="zone-chip" onclick="calcRitorno('ca-vio')">Ca' Vio</div>
@@ -3779,10 +3651,10 @@
         <div class="screen" id="screen-info-trasporti">
             <div class="switch-tabs-wrapper">
                 <div class="switch-tabs">
-                    <button class="switch-tab access active" onclick="switchInfoTab('access', this)">♿ Accessibilità</button>
-                    <button class="switch-tab bici" onclick="switchInfoTab('bici', this)">🚲 Bici</button>
-                    <button class="switch-tab animali" onclick="switchInfoTab('animali', this)">🐕 Animali</button>
-                    <button class="switch-tab bagagli" onclick="switchInfoTab('bagagli', this)">🧳 Bagagli</button>
+                    <button class="switch-tab access active" onclick="switchInfoTab('access', this)">Accessibilità</button>
+                    <button class="switch-tab bici" onclick="switchInfoTab('bici', this)">Bici</button>
+                    <button class="switch-tab animali" onclick="switchInfoTab('animali', this)">Animali</button>
+                    <button class="switch-tab bagagli" onclick="switchInfoTab('bagagli', this)">Bagagli</button>
                 </div>
             </div>
 
@@ -4129,20 +4001,16 @@
                 <div class="zone-chip" onclick="selectJourneyFrom(this, 'lio-grando')">Lio Grando</div>
             </div>
 
-            <div class="fermata-select hidden" id="journeyFermataSelect">
-                <div class="section-label-small">Fermata specifica</div>
-                <div class="fermata-list" id="journeyFermataList"></div>
-            </div>
 
             <div class="section-label">🎯 Dove vuoi andare?</div>
 
-            <div class="zone-grid" id="journeyTo">
-                <div class="zone-chip dest-venezia" onclick="selectDest(this, 'venezia')">🏛️ Venezia</div>
-                <div class="zone-chip dest-burano" onclick="selectDest(this, 'burano')">🏘️ Burano</div>
-                <div class="zone-chip dest-murano" onclick="selectDest(this, 'murano')">🔮 Murano</div>
-                <div class="zone-chip dest-lido" onclick="selectDest(this, 'lido')">🏖️ Lido</div>
-                <div class="zone-chip dest-jesolo" onclick="selectDest(this, 'jesolo')">🎡 Jesolo</div>
-                <div class="zone-chip dest-aeroporto" onclick="selectDest(this, 'aeroporto')">✈️ Aeroporto</div>
+            <div class="zone-grid destinations" id="journeyTo">
+                <div class="zone-chip destination" onclick="selectDest(this, 'venezia')">Venezia</div>
+                <div class="zone-chip destination" onclick="selectDest(this, 'burano')">Burano</div>
+                <div class="zone-chip destination" onclick="selectDest(this, 'murano')">Murano</div>
+                <div class="zone-chip destination" onclick="selectDest(this, 'lido')">Lido</div>
+                <div class="zone-chip destination" onclick="selectDest(this, 'jesolo')">Jesolo</div>
+                <div class="zone-chip destination" onclick="selectDest(this, 'aeroporto')">Aeroporto</div>
             </div>
 
             <button class="action-btn" id="btnCalcJourney" onclick="calcJourney()">🧭 Calcola percorso</button>
@@ -4158,13 +4026,13 @@
             <div class="section-label" id="journeyRoute">Ca' Savio → Venezia San Marco • ~45 min</div>
 
             <div class="journey-steps" id="journey-steps">
-                <div class="journey-step">
+                <div class="journey-step walk-step" data-fermata="Ca' Savio">
                     <div class="step-icon walk">🚶</div>
                     <div class="step-content">
-                        <div class="step-title">Cammina alla fermata</div>
+                        <div class="step-title">Raggiungi la fermata</div>
                         <div class="step-detail">Fermata bus Ca' Savio</div>
                     </div>
-                    <div class="step-time">3 min</div>
+                    <div class="step-time"></div>
                 </div>
                 <div class="journey-step">
                     <div class="step-icon bus">🚌</div>
@@ -4177,7 +4045,7 @@
                 <div class="journey-step">
                     <div class="step-icon walk">🚶</div>
                     <div class="step-content">
-                        <div class="step-title">Vai all'imbarcadero</div>
+                        <div class="step-title">Raggiungi l'imbarcadero</div>
                         <div class="step-detail">Segui indicazioni ACTV</div>
                     </div>
                     <div class="step-time">2 min</div>
@@ -4237,10 +4105,10 @@
     const history = ['main'];
     const screens = {
         'main': { title: '🚌 Trasporti', subtitle: 'Battelli, bus e info viaggio', parent: null },
-        'battelli': { title: '⛴️ Battelli', subtitle: 'ACTV per Venezia', parent: 'main' },
-        'bus': { title: '🚌 Bus', subtitle: 'ATVO 4 linee', parent: 'main' },
-        'biglietti': { title: '🎫 Biglietti', subtitle: 'Prezzi e acquisto', parent: 'main' },
-        'parcheggi': { title: '🚗 Parcheggi', subtitle: 'Tariffe e zone gratis', parent: 'main' },
+        'battelli': { title: 'Battelli', subtitle: 'ACTV per Venezia', parent: 'main' },
+        'bus': { title: 'Bus', subtitle: 'ATVO 4 linee', parent: 'main' },
+        'biglietti': { title: 'Biglietti', subtitle: 'Prezzi e acquisto', parent: 'main' },
+        'parcheggi': { title: 'Parcheggi', subtitle: 'Tariffe e zone gratis', parent: 'main' },
         'linea-14': { title: '⛴️ Linea 14', subtitle: 'Venezia Pietà', parent: 'battelli' },
         'linea-12': { title: '⛴️ Linea 12', subtitle: 'Burano, Murano, Venezia', parent: 'battelli' },
         'linea-15': { title: '⛴️ Linea 15', subtitle: 'Venezia San Zaccaria (Diretta)', parent: 'battelli' },
@@ -4253,10 +4121,10 @@
         'ultimo-mezzo': { title: '⏰ Ultimo mezzo', subtitle: 'Ce la fai a tornare?', parent: 'main' },
         'ritorno-struttura': { title: '🏕️ Rientra al camping', subtitle: 'Scegli da dove parti', parent: 'main' },
         'ritorno-result': { title: '🏕️ Percorso di ritorno', subtitle: 'Orari e costi per tornare', parent: 'ritorno-struttura' },
-        'info-access': { title: '♿ Accessibilità', subtitle: 'Info disabilità', parent: 'info-trasporti' },
-        'info-bici': { title: '🚲 Biciclette', subtitle: 'Regole trasporto', parent: 'info-trasporti' },
-        'info-animali': { title: '🐕 Animali', subtitle: 'Cani e altri', parent: 'info-trasporti' },
-        'info-bagagli': { title: '🧳 Bagagli', subtitle: 'Limiti e regole', parent: 'info-trasporti' },
+        'info-access': { title: 'Accessibilità', subtitle: 'Info disabilità', parent: 'info-trasporti' },
+        'info-bici': { title: 'Biciclette', subtitle: 'Regole trasporto', parent: 'info-trasporti' },
+        'info-animali': { title: 'Animali', subtitle: 'Cani e altri', parent: 'info-trasporti' },
+        'info-bagagli': { title: 'Bagagli', subtitle: 'Limiti e regole', parent: 'info-trasporti' },
         'info-trasporti': { title: 'ℹ️ Info trasporti', subtitle: 'Regole e accessibilità', parent: 'main' },
         'journey-dest': { title: '🧭 Trova percorso', subtitle: 'Partenza e destinazione', parent: 'main' },
         'journey-result': { title: '🧭 Percorso', subtitle: 'Il tuo viaggio', parent: 'journey-dest' }
@@ -4395,6 +4263,7 @@
         
         document.getElementById('journeyRoute').textContent = fromName + ' → ' + toName + ' • ~45 min';
         go('journey-result');
+        updateWalkElements();
     }
 
     function calcRitorno(from) {
@@ -4552,7 +4421,10 @@
         // Aggiorna contenuto risultato
         document.getElementById('ritorno-steps').innerHTML = stepsHtml;
         document.getElementById('ritorno-cost').innerHTML = '<strong>Costo totale:</strong> ' + data.cost;
-        
+
+        // Aggiorna elementi walk con GPS
+        updateWalkElements();
+
         // Naviga al risultato
         setTimeout(() => {
             go('ritorno-result');
@@ -4680,6 +4552,200 @@
         'lio-grando': ['Lio Grando', 'Lio Grando - Via Fausta']
     };
 
+    // =====================================================
+    // DATABASE COORDINATE FERMATE
+    // =====================================================
+    const fermateCoords = {
+        // Zone generiche (per match semplificato)
+        "Ca' Savio": { lat: 45.4535, lng: 12.4612 },
+        "Ca' Vio": { lat: 45.4612, lng: 12.4725 },
+        "Ca' Pasquali": { lat: 45.4685, lng: 12.4812 },
+        "Ca' Ballarin": { lat: 45.4735, lng: 12.4875 },
+        "Ca' di Valle": { lat: 45.4785, lng: 12.4945 },
+        'Cavallino': { lat: 45.4825, lng: 12.5012 },
+        'Treporti': { lat: 45.4445, lng: 12.4421 },
+        'Jesolo': { lat: 45.5085, lng: 12.6425 },
+        'Saccagnana': { lat: 45.4912, lng: 12.5125 },
+        'Lio Grando': { lat: 45.4565, lng: 12.4685 },
+        // Punta Sabbioni
+        'Punta Sabbioni': { lat: 45.4384, lng: 12.4287 },
+        'Punta Sabbioni - Park Aci': { lat: 45.4378, lng: 12.4275 },
+        // Treporti
+        'Treporti Ricevitoria': { lat: 45.4445, lng: 12.4421 },
+        'Treporti Chiesa': { lat: 45.4452, lng: 12.4435 },
+        'Treporti - Cimitero': { lat: 45.4460, lng: 12.4448 },
+        // Ca' Savio
+        "Ca' Savio - Via Fausta": { lat: 45.4521, lng: 12.4598 },
+        "Ca' Savio Centro": { lat: 45.4535, lng: 12.4612 },
+        "Ca' Savio Chiesa": { lat: 45.4542, lng: 12.4625 },
+        "Ca' Savio - Via Polveriera": { lat: 45.4528, lng: 12.4605 },
+        "Ca' Savio - Al Gondoliere": { lat: 45.4548, lng: 12.4632 },
+        "Ca' Savio Spiaggia": { lat: 45.4555, lng: 12.4645 },
+        "Ca' Savio - Al Funghetto": { lat: 45.4562, lng: 12.4658 },
+        "Ca' Savio - Centro Sportivo": { lat: 45.4515, lng: 12.4585 },
+        // Ca' Vio
+        "Ca' Vio - Chiesa": { lat: 45.4612, lng: 12.4725 },
+        "Ca' Vio - Via Pisani": { lat: 45.4625, lng: 12.4738 },
+        "Ca' Vio - Ai Cubi": { lat: 45.4638, lng: 12.4752 },
+        // Ca' Pasquali
+        "Ca' Pasquali": { lat: 45.4685, lng: 12.4812 },
+        "Ca' Pasquali - Casa Rossa": { lat: 45.4692, lng: 12.4825 },
+        // Ca' Ballarin
+        "Ca' Ballarin": { lat: 45.4735, lng: 12.4875 },
+        "Ca' Ballarin - La Fattoria": { lat: 45.4742, lng: 12.4888 },
+        "Ca' Ballarin - Radaelli": { lat: 45.4748, lng: 12.4895 },
+        'Camping Union': { lat: 45.4755, lng: 12.4905 },
+        // Ca' di Valle
+        "Ca' di Valle": { lat: 45.4785, lng: 12.4945 },
+        "Ca' di Valle - Istituto Dorotee": { lat: 45.4792, lng: 12.4958 },
+        // Cavallino
+        'Cavallino Centro': { lat: 45.4825, lng: 12.5012 },
+        'Cavallino Chiesa Nuova': { lat: 45.4832, lng: 12.5025 },
+        "Cavallino - Al Ghetto": { lat: 45.4838, lng: 12.5035 },
+        "Cavallino - Rist. Campiello": { lat: 45.4845, lng: 12.5048 },
+        'Ponte Cavallino': { lat: 45.4852, lng: 12.5058 },
+        "Cavallino - Alla Fontana": { lat: 45.4858, lng: 12.5068 },
+        "Cavallino - Via Equilia": { lat: 45.4865, lng: 12.5078 },
+        // Jesolo
+        'Lido di Jesolo - Autostazione': { lat: 45.5085, lng: 12.6425 },
+        'Lido di Jesolo - P.za Brescia': { lat: 45.5095, lng: 12.6445 },
+        'Lido di Jesolo - P.za Aurora': { lat: 45.5105, lng: 12.6465 },
+        'Lido di Jesolo - P.za Marina': { lat: 45.5115, lng: 12.6485 },
+        'Lido di Jesolo - Darsena': { lat: 45.5125, lng: 12.6505 },
+        'Caribe Bay': { lat: 45.5065, lng: 12.6385 },
+        // Saccagnana
+        'Saccagnana - Inc. Via Piccinino': { lat: 45.4912, lng: 12.5125 },
+        'Saccagnana - Bocciofila': { lat: 45.4918, lng: 12.5138 },
+        'Saccagnana - Pra': { lat: 45.4925, lng: 12.5148 },
+        'Saccagnana - Da Ferro': { lat: 45.4932, lng: 12.5158 },
+        'Saccagnana - Ponte Piccolo': { lat: 45.4938, lng: 12.5168 },
+        // Lio Grando
+        'Lio Grando': { lat: 45.4565, lng: 12.4685 },
+        'Lio Grando - Via Fausta': { lat: 45.4572, lng: 12.4698 }
+    };
+
+    // =====================================================
+    // GESTIONE GPS
+    // =====================================================
+    let userPosition = null;
+    let gpsAvailable = false;
+
+    // Formula Haversine per calcolare distanza in metri
+    function haversine(lat1, lng1, lat2, lng2) {
+        const R = 6371000; // Raggio Terra in metri
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLng = (lng2 - lng1) * Math.PI / 180;
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLng/2) * Math.sin(dLng/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    }
+
+    // Trova coordinate fermata (cerca esatto poi parziale)
+    function findFermataCoords(fermataName) {
+        // Prima cerca match esatto
+        if (fermateCoords[fermataName]) return fermateCoords[fermataName];
+
+        // Poi cerca match parziale (la fermata contiene il nome cercato o viceversa)
+        const searchName = fermataName.toLowerCase();
+        for (const [name, coords] of Object.entries(fermateCoords)) {
+            if (name.toLowerCase().includes(searchName) ||
+                searchName.includes(name.toLowerCase())) {
+                return coords;
+            }
+        }
+        return null;
+    }
+
+    // Calcola tempo camminata (80m/min)
+    function getWalkTime(fermataName) {
+        if (!userPosition) return null;
+        const coords = findFermataCoords(fermataName);
+        if (!coords) return null;
+        const distance = haversine(userPosition.lat, userPosition.lng, coords.lat, coords.lng);
+        const minutes = Math.ceil(distance / 80);
+        return minutes;
+    }
+
+    // Genera link Google Maps per una fermata
+    function getMapsLink(fermataName) {
+        const coords = findFermataCoords(fermataName);
+        if (!coords) return '#';
+        return `https://www.google.com/maps/dir/?api=1&destination=${coords.lat},${coords.lng}&travelmode=walking`;
+    }
+
+    // Aggiorna tutti gli elementi walk con tempo o bottone Maps
+    function updateWalkElements() {
+        document.querySelectorAll('.walk-step').forEach(step => {
+            const fermataName = step.dataset.fermata;
+            if (!fermataName) return;
+
+            const detail = step.querySelector('.step-detail');
+            if (!detail) return;
+
+            // Determina il tipo di fermata (bus o imbarcadero)
+            const isImbarcadero = detail.textContent.toLowerCase().includes('imbarcadero');
+            const prefix = isImbarcadero ? 'Imbarcadero' : 'Fermata bus';
+
+            if (gpsAvailable && userPosition) {
+                // GPS disponibile: mostra tempo reale nel detail
+                const walkTime = getWalkTime(fermataName);
+                if (walkTime !== null) {
+                    detail.innerHTML = `${prefix} ${fermataName} • <strong>~${walkTime} min a piedi</strong>`;
+                } else {
+                    detail.textContent = `${prefix} ${fermataName}`;
+                }
+            } else {
+                // GPS non disponibile: mostra link Maps nel detail
+                const mapsLink = getMapsLink(fermataName);
+                if (mapsLink !== '#') {
+                    detail.innerHTML = `${prefix} ${fermataName} • <a href="${mapsLink}" target="_blank" class="walk-maps-link">📍 Vedi su Maps</a>`;
+                } else {
+                    detail.textContent = `${prefix} ${fermataName}`;
+                }
+            }
+        });
+    }
+
+    // Richiedi permesso GPS all'apertura
+    function requestGPS() {
+        if (!navigator.geolocation) {
+            gpsAvailable = false;
+            updateWalkElements();
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                userPosition = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                gpsAvailable = true;
+                updateWalkElements();
+
+                // Aggiorna posizione ogni 30 secondi
+                navigator.geolocation.watchPosition(
+                    (pos) => {
+                        userPosition = {
+                            lat: pos.coords.latitude,
+                            lng: pos.coords.longitude
+                        };
+                        updateWalkElements();
+                    },
+                    () => {},
+                    { enableHighAccuracy: false, maximumAge: 30000 }
+                );
+            },
+            (error) => {
+                gpsAvailable = false;
+                updateWalkElements();
+            },
+            { enableHighAccuracy: false, timeout: 10000 }
+        );
+    }
+
     let selectedFrom = 'punta-sabbioni';
     let selectedTo = null;
     let selectedFermataFrom = null;
@@ -4787,6 +4853,7 @@
         
         document.getElementById('internoRoute').textContent = fromName + ' → ' + toName + ' • ~20 min';
         go('interno-result');
+        updateWalkElements();
     }
 
     // Ultimo mezzo
@@ -4910,7 +4977,10 @@
     }
 
     // Inizializza swipe al caricamento
-    document.addEventListener('DOMContentLoaded', initSwipe);
+    document.addEventListener('DOMContentLoaded', () => {
+        initSwipe();
+        requestGPS();
+    });
 </script>
 
 </body>

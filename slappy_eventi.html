@@ -137,30 +137,36 @@
         .header-subtitle { font-size: var(--font-body); opacity: 0.9; margin-top: 2px; }
 
         /* =====================================================
-           HERO DINAMICO - Sincronizzato con filtri
+           HERO DINAMICO - Banner weekend viola
            ===================================================== */
         .hero {
-            background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+            background: radial-gradient(ellipse at center, #e1bee7 0%, #c8a6ce 100%);
             color: var(--white);
-            padding: 20px var(--padding-page);
+            padding: 16px var(--padding-page);
+            margin: var(--padding-page);
+            border-radius: 16px;
             text-align: center;
         }
         .hero-period {
-            font-size: 18px;
-            font-weight: var(--weight-title);
-            margin-bottom: 8px;
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         .hero-summary {
             display: flex;
             justify-content: center;
-            gap: 16px;
-            font-size: var(--font-body);
-            opacity: 0.95;
+            gap: 20px;
+            font-size: 14px;
+            font-weight: 500;
         }
         .hero-stat {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
+            background: rgba(255,255,255,0.25);
+            padding: 6px 12px;
+            border-radius: 20px;
         }
 
         /* =====================================================
@@ -173,31 +179,32 @@
         }
         .filters-row {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             margin-bottom: 10px;
         }
         .filter-chip {
             flex: 1;
-            padding: 10px 8px;
-            background: var(--gray-50);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius-button);
-            font-size: var(--font-body);
+            padding: 10px 18px;
+            background: #ffffff;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
             font-weight: 500;
-            color: var(--gray-600);
+            color: #424242;
             cursor: pointer;
             text-align: center;
             transition: all 0.15s;
         }
-        .filter-chip:hover { border-color: var(--teal); }
+        .filter-chip:hover { border-color: #bdbdbd; }
         .filter-chip.active {
-            background: var(--teal);
-            border-color: var(--teal);
-            color: var(--white);
+            background: radial-gradient(ellipse at center, #e1bee7 0%, #c8a6ce 100%);
+            border: 2px solid #6A1B9A;
+            color: #ffffff;
+            font-weight: 600;
         }
         .filter-chip-count {
             display: block;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: var(--weight-meta);
             opacity: 0.8;
             margin-top: 2px;
@@ -211,8 +218,108 @@
             padding-top: 4px;
         }
         .filter-feedback strong {
-            color: var(--teal);
+            color: #7B1FA2;
             font-weight: 500;
+        }
+
+        /* =====================================================
+           CALENDARIO MENSILE
+           ===================================================== */
+        .calendar-section {
+            background: var(--white);
+            padding: var(--padding-card) var(--padding-page);
+            border-bottom: 1px solid var(--gray-100);
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .calendar-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+        .calendar-nav {
+            display: flex;
+            gap: 8px;
+        }
+        .calendar-nav-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--gray-200);
+            background: var(--white);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--gray-600);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+        .calendar-nav-btn:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-300);
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        .calendar-weekday {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--gray-500);
+            padding: 4px 0;
+        }
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--gray-700);
+            position: relative;
+            transition: all 0.15s;
+            background: var(--white);
+            border: 1px solid transparent;
+        }
+        .calendar-day:hover {
+            background: var(--gray-50);
+        }
+        .calendar-day.other-month {
+            color: var(--gray-300);
+        }
+        .calendar-day.today {
+            background: var(--purple-50);
+            border-color: #c8a6ce;
+            font-weight: 600;
+        }
+        .calendar-day.selected {
+            background: radial-gradient(ellipse at center, #e1bee7 0%, #c8a6ce 100%);
+            color: var(--white);
+            font-weight: 600;
+        }
+        .calendar-day.has-events::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            width: 6px;
+            height: 6px;
+            background: #7B1FA2;
+            border-radius: 50%;
+        }
+        .calendar-day.selected.has-events::after {
+            background: var(--white);
+        }
+        .calendar-day.other-month.has-events::after {
+            background: var(--gray-300);
         }
 
         /* =====================================================
@@ -666,6 +773,28 @@
                 </div>
                 <div class="filter-feedback" id="filterFeedback">
                     Stai vedendo: <strong>Weekend · 3 eventi</strong>
+                </div>
+            </div>
+
+            <!-- CALENDARIO MENSILE -->
+            <div class="calendar-section">
+                <div class="calendar-header">
+                    <span class="calendar-title" id="calendarTitle">Gennaio 2025</span>
+                    <div class="calendar-nav">
+                        <button class="calendar-nav-btn" onclick="changeMonth(-1)">‹</button>
+                        <button class="calendar-nav-btn" onclick="changeMonth(1)">›</button>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Giorni settimana -->
+                    <div class="calendar-weekday">Lun</div>
+                    <div class="calendar-weekday">Mar</div>
+                    <div class="calendar-weekday">Mer</div>
+                    <div class="calendar-weekday">Gio</div>
+                    <div class="calendar-weekday">Ven</div>
+                    <div class="calendar-weekday">Sab</div>
+                    <div class="calendar-weekday">Dom</div>
+                    <!-- Giorni generati da JS -->
                 </div>
             </div>
 
@@ -1163,9 +1292,137 @@
         }
     }
 
+    // =====================================================
+    // CALENDARIO MENSILE
+    // =====================================================
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
+    let selectedDate = null;
+
+    // Giorni con eventi (esempio - in produzione da API)
+    const eventDays = {
+        '2025-01': [4, 11, 12, 17, 18, 25, 26],
+        '2025-02': [1, 2, 8, 14, 15, 22],
+        '2025-03': [1, 8, 15, 22, 29],
+    };
+
+    const monthNames = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+                        'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
+
+    function renderCalendar() {
+        const grid = document.getElementById('calendarGrid');
+        const title = document.getElementById('calendarTitle');
+
+        // Mantieni i giorni della settimana
+        const weekdays = grid.querySelectorAll('.calendar-weekday');
+        grid.innerHTML = '';
+        weekdays.forEach(wd => grid.appendChild(wd));
+
+        // Titolo
+        title.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+        // Primo giorno del mese (0=Dom, 1=Lun, ...)
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        // Converti in Lun=0, Dom=6
+        const startDay = firstDay === 0 ? 6 : firstDay - 1;
+
+        // Giorni nel mese
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+        // Giorni del mese precedente
+        const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+        // Chiave per eventi
+        const monthKey = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
+        const eventsThisMonth = eventDays[monthKey] || [];
+
+        // Oggi
+        const today = new Date();
+        const isCurrentMonth = today.getMonth() === currentMonth && today.getFullYear() === currentYear;
+
+        // Giorni del mese precedente
+        for (let i = startDay - 1; i >= 0; i--) {
+            const day = daysInPrevMonth - i;
+            const div = document.createElement('div');
+            div.className = 'calendar-day other-month';
+            div.textContent = day;
+            grid.appendChild(div);
+        }
+
+        // Giorni del mese corrente
+        for (let day = 1; day <= daysInMonth; day++) {
+            const div = document.createElement('div');
+            div.className = 'calendar-day';
+            div.textContent = day;
+
+            // Oggi
+            if (isCurrentMonth && day === today.getDate()) {
+                div.classList.add('today');
+            }
+
+            // Ha eventi
+            if (eventsThisMonth.includes(day)) {
+                div.classList.add('has-events');
+            }
+
+            // Selezionato
+            if (selectedDate &&
+                selectedDate.getDate() === day &&
+                selectedDate.getMonth() === currentMonth &&
+                selectedDate.getFullYear() === currentYear) {
+                div.classList.add('selected');
+            }
+
+            div.onclick = () => selectDay(day);
+            grid.appendChild(div);
+        }
+
+        // Giorni del mese successivo per completare la griglia
+        const totalCells = startDay + daysInMonth;
+        const remaining = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+        for (let i = 1; i <= remaining; i++) {
+            const div = document.createElement('div');
+            div.className = 'calendar-day other-month';
+            div.textContent = i;
+            grid.appendChild(div);
+        }
+    }
+
+    function changeMonth(delta) {
+        currentMonth += delta;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        } else if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar();
+    }
+
+    function selectDay(day) {
+        selectedDate = new Date(currentYear, currentMonth, day);
+        renderCalendar();
+
+        // Aggiorna hero con la data selezionata
+        const dayName = selectedDate.toLocaleDateString('it-IT', { weekday: 'long' });
+        const dayNum = selectedDate.getDate();
+        const monthName = monthNames[currentMonth].substring(0, 3).toLowerCase();
+
+        document.getElementById('heroPeriod').textContent =
+            `${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${dayNum} ${monthName}`;
+
+        // Aggiorna feedback
+        document.getElementById('filterFeedback').innerHTML =
+            `Stai vedendo: <strong>${dayNum} ${monthName} · Eventi del giorno</strong>`;
+
+        // Rimuovi filtro attivo dai chip
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    }
+
     function toggleCalendar() {
-        // Placeholder per calendario completo
-        alert('Calendario completo: in arrivo!');
+        // Scroll al calendario
+        document.querySelector('.calendar-section').scrollIntoView({ behavior: 'smooth' });
     }
 
     // =====================================================
@@ -1173,12 +1430,12 @@
     // =====================================================
     document.addEventListener('DOMContentLoaded', () => {
         setFilter('weekend');
+        renderCalendar();
     });
 
     // Funzione calendario footer
     function filterByDate() {
-        // Mostra il filtro "Questa settimana"
-        setFilter('settimana');
+        toggleCalendar();
     }
 </script>
 </body>
