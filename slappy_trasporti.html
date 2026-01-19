@@ -2231,7 +2231,7 @@
 
         /* Tip box - base - Stile BLU uniforme trasporti */
         .tip-box {
-            background: radial-gradient(ellipse at center, #90caf9 0%, #78b2e0 100%);
+            background: radial-gradient(circle at center, #ffffff 0%, #1976D2 100%);
             border: none;
             border-radius: 16px;
             padding: 16px;
@@ -2241,7 +2241,7 @@
             margin-top: var(--gap-sections);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .tip-box::before {
@@ -2258,11 +2258,11 @@
             font-family: var(--font-system);
             font-size: 13px;
             line-height: 1.5;
-            color: #ffffff;
+            color: #333;
         }
 
         .tip-content strong {
-            color: #ffffff;
+            color: #1565C0;
             font-weight: 600;
         }
 
@@ -2272,7 +2272,7 @@
         .tip-box.warning,
         .tip-box.camping,
         .tip-box.cost {
-            background: radial-gradient(ellipse at center, #90caf9 0%, #78b2e0 100%);
+            background: radial-gradient(circle at center, #ffffff 0%, #1976D2 100%);
         }
         .tip-box.info::before,
         .tip-box.success::before,
@@ -2284,12 +2284,12 @@
         .tip-box.success .tip-content,
         .tip-box.warning .tip-content,
         .tip-box.camping .tip-content,
-        .tip-box.cost .tip-content { color: #ffffff; }
+        .tip-box.cost .tip-content { color: #333; }
 
         .tip-box.info .tip-content strong,
         .tip-box.success .tip-content strong,
         .tip-box.warning .tip-content strong,
-        .tip-box.camping .tip-content strong { color: #ffffff; font-weight: 600; }
+        .tip-box.camping .tip-content strong { color: #1565C0; font-weight: 600; }
 
         /* Card costo totale */
         .tip-box.cost .tip-icon { font-size: 24px; }
