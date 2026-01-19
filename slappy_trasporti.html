@@ -164,6 +164,7 @@
             overflow-y: auto;
             overflow-x: hidden;
             padding: var(--padding-page);
+            padding-top: 24px;
             padding-bottom: calc(var(--nav-height) + 16px);
             background: var(--gray-50);
             opacity: 0;
@@ -193,15 +194,35 @@
 
         /* ===== SECTION LABEL ===== */
         .section-label {
-            font-size: var(--font-meta);
-            font-weight: 500;
-            color: var(--gray-500);
+            border-left: 4px solid #78b2e0;
+            padding-left: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #424242;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin: 20px 0 8px;
+            letter-spacing: 0.5px;
+            margin: 32px 0 16px;
         }
 
-        .section-label:first-child { margin-top: 0; }
+        .section-label:first-child { margin-top: 8px; }
+
+        /* Titoli principali */
+        .section-label-main {
+            border-left: 4px solid #78b2e0;
+            padding-left: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #424242;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .section-label-main:first-child {
+            margin-top: 8px;
+        }
+        .section-label-main.accesso-rapido {
+            margin-top: 40px;
+        }
 
         /* ===== CATEGORY CARDS ===== */
         .category-grid {
@@ -524,30 +545,51 @@
 
         .quick-card {
             background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius-card);
-            padding: 14px;
+            border-radius: 16px;
+            padding: 16px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             cursor: pointer;
             transition: all 0.15s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quick-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #78b2e0;
         }
 
         .quick-card:hover {
-            border-color: var(--gray-300);
+            background: #f5f9ff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .quick-card.info::before {
+            background: #90a4ae;
         }
 
         .quick-icon {
-            width: var(--icon-size);
-            height: var(--icon-size);
-            background: var(--teal-100);
-            border-radius: var(--radius-icon);
+            width: 44px;
+            height: 44px;
+            background: #e3f2fd;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 20px;
             flex-shrink: 0;
+        }
+
+        .quick-card.info .quick-icon {
+            background: #eceff1;
         }
 
         .quick-text {
@@ -644,36 +686,89 @@
         .zone-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: var(--gap-sections);
+            gap: 12px;
+            margin-bottom: 32px;
         }
 
+        /* Chip PARTENZE - sfumatura azzurra */
         .zone-chip {
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius-badge);
-            padding: 8px 14px;
-            font-size: 13px;
-            font-weight: var(--weight-body);
-            color: var(--gray-700);
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border: 2px solid #90caf9;
+            border-radius: 25px;
+            padding: 14px 20px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #1565c0;
             cursor: pointer;
             transition: all 0.15s;
         }
 
         .zone-chip:hover {
-            border-color: var(--gray-300);
+            border-color: #42a5f5;
+            background: linear-gradient(135deg, #bbdefb 0%, #90caf9 100%);
         }
 
         .zone-chip.selected {
-            background: var(--teal-50);
-            border-color: var(--teal-100);
-            color: var(--teal-dark);
+            background: #90caf9;
+            border-color: #1976d2;
+            color: #1565c0;
+            font-weight: 600;
         }
 
         .zone-chip.disabled {
             opacity: 0.4;
             pointer-events: none;
         }
+
+        /* Chip DESTINAZIONI - colori tematici */
+        .zone-chip.dest-venezia {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%);
+            border-color: #ffc107;
+            color: #795548;
+        }
+        .zone-chip.dest-venezia.selected { background: #ffe082; border-color: #ff8f00; }
+
+        .zone-chip.dest-burano {
+            background: linear-gradient(135deg, #fce4ec 0%, #f48fb1 100%);
+            border-color: #ec407a;
+            color: #880e4f;
+        }
+        .zone-chip.dest-burano.selected { background: #f48fb1; border-color: #c2185b; }
+
+        .zone-chip.dest-murano {
+            background: linear-gradient(135deg, #ede7f6 0%, #b39ddb 100%);
+            border-color: #9575cd;
+            color: #4527a0;
+        }
+        .zone-chip.dest-murano.selected { background: #b39ddb; border-color: #7e57c2; }
+
+        .zone-chip.dest-lido {
+            background: linear-gradient(135deg, #e0f7fa 0%, #80deea 100%);
+            border-color: #26c6da;
+            color: #00695c;
+        }
+        .zone-chip.dest-lido.selected { background: #80deea; border-color: #00acc1; }
+
+        .zone-chip.dest-jesolo {
+            background: linear-gradient(135deg, #ffebee 0%, #ef9a9a 100%);
+            border-color: #ef5350;
+            color: #c62828;
+        }
+        .zone-chip.dest-jesolo.selected { background: #ef9a9a; border-color: #e53935; }
+
+        .zone-chip.dest-aeroporto {
+            background: linear-gradient(135deg, #eceff1 0%, #90a4ae 100%);
+            border-color: #78909c;
+            color: #37474f;
+        }
+        .zone-chip.dest-aeroporto.selected { background: #90a4ae; border-color: #546e7a; }
+
+        .zone-chip.dest-punta {
+            background: linear-gradient(135deg, #e0f2f1 0%, #80cbc4 100%);
+            border-color: #26a69a;
+            color: #004d40;
+        }
+        .zone-chip.dest-punta.selected { background: #80cbc4; border-color: #00897b; }
 
         /* Fermate select */
         .fermata-select {
@@ -703,25 +798,27 @@
         }
 
         .fermata-chip {
-            padding: 6px 12px;
-            border: 1px solid var(--gray-200);
-            border-radius: 16px;
+            padding: 8px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
             background: var(--white);
             font-family: var(--font-system);
-            font-size: var(--font-body);
+            font-size: 13px;
+            font-weight: 500;
             color: var(--gray-600);
             cursor: pointer;
             transition: all 0.15s;
         }
 
         .fermata-chip:hover {
-            border-color: var(--teal);
+            border-color: #78b2e0;
         }
 
         .fermata-chip.selected {
-            background: var(--teal);
-            border-color: var(--teal);
-            color: var(--white);
+            background: #e3f2fd;
+            border-color: #78b2e0;
+            color: #1565c0;
+            font-weight: 600;
         }
 
         /* ===== HIGHLIGHT BOX ===== */
@@ -2055,22 +2152,34 @@
 
         .action-btn {
             width: 100%;
-            padding: 14px;
-            background: var(--teal);
+            padding: 16px;
+            background: radial-gradient(ellipse at center, #4db6ac 0%, #26a69a 100%);
             color: var(--white);
             border: none;
-            border-radius: var(--radius-button);
+            border-radius: 16px;
             font-family: var(--font-system);
             font-size: 15px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.15s;
+            transition: all 0.15s;
+            box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
         }
 
-        .action-btn:hover { background: var(--teal-dark); }
-        .action-btn:disabled { background: var(--gray-300); cursor: not-allowed; }
-        .action-btn.secondary { background: var(--gray-200); color: var(--gray-700); }
-        .action-btn.secondary:hover { background: var(--gray-300); }
+        .action-btn:hover {
+            background: radial-gradient(ellipse at center, #26a69a 0%, #00897b 100%);
+            box-shadow: 0 6px 16px rgba(38, 166, 154, 0.4);
+        }
+        .action-btn:disabled { background: var(--gray-300); cursor: not-allowed; box-shadow: none; }
+        .action-btn.secondary {
+            background: transparent;
+            color: var(--gray-600);
+            border: 2px solid var(--gray-300);
+            box-shadow: none;
+        }
+        .action-btn.secondary:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-400);
+        }
 
         /* Journey result */
         .journey-result-header {
@@ -2089,42 +2198,63 @@
 
         .journey-steps {
             background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius-card);
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             overflow: hidden;
             margin-bottom: var(--gap-sections);
+            padding: 8px 0;
         }
 
         .journey-step {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 14px;
-            border-bottom: 1px solid var(--gray-100);
+            gap: 14px;
+            padding: 14px 16px;
+            position: relative;
         }
 
-        .journey-step:last-child { border-bottom: none; }
+        /* Timeline verticale */
+        .journey-step::before {
+            content: '';
+            position: absolute;
+            left: 36px;
+            top: 48px;
+            bottom: -14px;
+            width: 2px;
+            background: #e0e0e0;
+        }
+
+        .journey-step:last-child::before { display: none; }
 
         .step-icon {
-            width: var(--icon-size);
-            height: var(--icon-size);
-            border-radius: var(--radius-icon);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
             flex-shrink: 0;
+            z-index: 1;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .step-icon.walk { background: var(--gray-100); }
-        .step-icon.bus { background: var(--orange-100); }
-        .step-icon.ferry { background: var(--blue-100); }
-        .step-icon.arrive { background: var(--green-100); }
+        .step-icon.walk { background: #f5f5f5; }
+        .step-icon.bus { background: #fff3e0; }
+        .step-icon.ferry { background: #e3f2fd; }
+        .step-icon.arrive { background: #e8f5e9; }
 
         .step-content { flex: 1; }
-        .step-title { font-size: 13px; font-weight: 500; color: var(--gray-900); }
-        .step-detail { font-size: var(--font-body); color: var(--gray-500); margin-top: 2px; }
-        .step-time { font-size: var(--font-body); font-weight: 500; color: var(--gray-600); }
+        .step-title { font-size: 14px; font-weight: 600; color: #333; }
+        .step-detail { font-size: 12px; color: var(--gray-500); margin-top: 3px; }
+        .step-time {
+            font-size: 14px;
+            font-weight: 600;
+            color: #424242;
+            background: #f5f5f5;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
 
         /* Time picker chips */
         .time-chips-row {
@@ -2137,12 +2267,12 @@
 
         .time-chip-btn {
             padding: 10px 16px;
-            border: 1px solid var(--gray-200);
+            border: 2px solid #e0e0e0;
             border-radius: 20px;
             background: var(--white);
             font-family: var(--font-system);
-            font-size: var(--font-title);
-            font-weight: var(--weight-body);
+            font-size: 13px;
+            font-weight: 500;
             color: var(--gray-600);
             cursor: pointer;
             transition: all 0.15s;
@@ -2150,14 +2280,14 @@
         }
 
         .time-chip-btn:hover {
-            border-color: var(--gray-300);
+            border-color: #78b2e0;
         }
 
         .time-chip-btn.selected {
-            background: var(--teal);
-            border-color: var(--teal);
-            color: var(--white);
-            font-weight: 500;
+            background: #e3f2fd;
+            border-color: #78b2e0;
+            color: #1565c0;
+            font-weight: 600;
         }
 
         .time-chip-note {
@@ -2174,16 +2304,17 @@
 
         /* Tip box - base */
         .tip-box {
-            background: linear-gradient(135deg, var(--teal-50) 0%, #e0f7fa 100%);
-            border: 1px solid var(--teal-100);
-            border-radius: var(--radius-card);
-            padding: 14px 16px;
+            background: radial-gradient(ellipse at center, #ffffff 0%, #e0f2f1 100%);
+            border: 1px solid #b2dfdb;
+            border-radius: 16px;
+            padding: 16px;
             display: flex;
-            align-items: flex-start;
-            gap: 12px;
+            align-items: center;
+            gap: 14px;
             margin-top: var(--gap-sections);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
         .tip-box::before {
@@ -2193,7 +2324,7 @@
             left: 0;
             width: 4px;
             height: 100%;
-            background: var(--teal-500);
+            background: #26a69a;
         }
 
         .tip-icon {
@@ -2246,6 +2377,20 @@
         .tip-box.camping::before { background: #a855f7; }
         .tip-box.camping .tip-content { color: #6b21a8; }
         .tip-box.camping .tip-content strong { color: #7c3aed; }
+
+        /* Card costo totale */
+        .tip-box.cost {
+            background: radial-gradient(ellipse at center, #ffffff 0%, #e0f2f1 100%);
+            border-color: #80cbc4;
+        }
+        .tip-box.cost::before { background: #26a69a; }
+        .tip-box.cost .tip-icon { font-size: 24px; }
+        .tip-box.cost .tip-content { font-size: 14px; }
+        .tip-box.cost .tip-content strong {
+            font-size: 18px;
+            font-weight: 700;
+            color: #00695c;
+        }
 
         /* ===== ULTIMO MEZZO ===== */
         .ultimo-result {
@@ -2310,7 +2455,7 @@
     </style>
 <div class="app">
     <header class="header">
-        <a href="slappy_home.html" class="header-back">←</a>
+        <button class="header-back" onclick="goBack()">←</button>
         <div class="header-content">
             <div class="header-title" id="headerTitle">🚌 Trasporti</div>
             <div class="header-subtitle" id="headerSubtitle">Battelli, bus e info viaggio</div>
@@ -2320,16 +2465,8 @@
     <div class="screens">
         <!-- ========== MAIN SCREEN ========== -->
         <div class="screen active" id="screen-main">
-            <div class="info-card overview">
-                <div class="info-icon" style="background: var(--teal-100);">🚌</div>
-                <div>
-                    <div class="info-title">Come spostarti a Cavallino</div>
-                    <div class="info-subtitle">7 linee • ~30 min per Venezia • da €1,30</div>
-                </div>
-            </div>
-
             <!-- 4 CTA PRINCIPALI - Verticali -->
-            <div class="section-label">Cosa vuoi fare?</div>
+            <div class="section-label-main">Cosa vuoi fare?</div>
             <div class="main-cta-grid">
                 <div class="main-cta journey highlighted-green" onclick="go('journey-dest')">
                     <span class="main-cta-badge green">⭐ Consigliato</span>
@@ -2371,7 +2508,7 @@
             </div>
 
             <!-- SCORCIATOIE -->
-            <div class="section-label">Accesso rapido</div>
+            <div class="section-label-main accesso-rapido">Accesso rapido</div>
 
             <div class="quick-grid">
                 <div class="quick-card" onclick="go('battelli')">
@@ -2382,7 +2519,7 @@
                     </div>
                     <span class="quick-arrow">→</span>
                 </div>
-                <div class="quick-card" onclick="go('info-trasporti')">
+                <div class="quick-card info" onclick="go('info-trasporti')">
                     <div class="quick-icon">ℹ️</div>
                     <div class="quick-text">
                         <span class="quick-title">Info trasporti</span>
@@ -3477,12 +3614,12 @@
             <div class="section-label">📍 Dove sei adesso?</div>
 
             <div class="zone-grid" id="ultimoZone">
-                <div class="zone-chip" onclick="checkUltimo(this, 'venezia')">🏛️ Venezia</div>
-                <div class="zone-chip" onclick="checkUltimo(this, 'lido')">🏖️ Lido</div>
-                <div class="zone-chip" onclick="checkUltimo(this, 'burano')">🏘️ Burano</div>
-                <div class="zone-chip" onclick="checkUltimo(this, 'murano')">🔮 Murano</div>
-                <div class="zone-chip" onclick="checkUltimo(this, 'jesolo')">🎡 Jesolo</div>
-                <div class="zone-chip" onclick="checkUltimo(this, 'punta-sabbioni')">⛴️ Punta Sabbioni</div>
+                <div class="zone-chip dest-venezia" onclick="checkUltimo(this, 'venezia')">🏛️ Venezia</div>
+                <div class="zone-chip dest-lido" onclick="checkUltimo(this, 'lido')">🏖️ Lido</div>
+                <div class="zone-chip dest-burano" onclick="checkUltimo(this, 'burano')">🏘️ Burano</div>
+                <div class="zone-chip dest-murano" onclick="checkUltimo(this, 'murano')">🔮 Murano</div>
+                <div class="zone-chip dest-jesolo" onclick="checkUltimo(this, 'jesolo')">🎡 Jesolo</div>
+                <div class="zone-chip dest-punta" onclick="checkUltimo(this, 'punta-sabbioni')">⛴️ Punta Sabbioni</div>
                 <div class="zone-chip" onclick="checkUltimo(this, 'treporti')">Treporti</div>
                 <div class="zone-chip" onclick="checkUltimo(this, 'ca-savio')">Ca' Savio</div>
                 <div class="zone-chip" onclick="checkUltimo(this, 'ca-vio')">Ca' Vio</div>
@@ -3953,12 +4090,12 @@
             <div class="section-label">🎯 Dove vuoi andare?</div>
 
             <div class="zone-grid" id="journeyTo">
-                <div class="zone-chip" onclick="selectDest(this, 'venezia')">🏛️ Venezia</div>
-                <div class="zone-chip" onclick="selectDest(this, 'burano')">🏘️ Burano</div>
-                <div class="zone-chip" onclick="selectDest(this, 'murano')">🔮 Murano</div>
-                <div class="zone-chip" onclick="selectDest(this, 'lido')">🏖️ Lido</div>
-                <div class="zone-chip" onclick="selectDest(this, 'jesolo')">🎡 Jesolo</div>
-                <div class="zone-chip" onclick="selectDest(this, 'aeroporto')">✈️ Aeroporto</div>
+                <div class="zone-chip dest-venezia" onclick="selectDest(this, 'venezia')">🏛️ Venezia</div>
+                <div class="zone-chip dest-burano" onclick="selectDest(this, 'burano')">🏘️ Burano</div>
+                <div class="zone-chip dest-murano" onclick="selectDest(this, 'murano')">🔮 Murano</div>
+                <div class="zone-chip dest-lido" onclick="selectDest(this, 'lido')">🏖️ Lido</div>
+                <div class="zone-chip dest-jesolo" onclick="selectDest(this, 'jesolo')">🎡 Jesolo</div>
+                <div class="zone-chip dest-aeroporto" onclick="selectDest(this, 'aeroporto')">✈️ Aeroporto</div>
             </div>
 
             <button class="action-btn" id="btnCalcJourney" onclick="calcJourney()">🧭 Calcola percorso</button>
@@ -4016,12 +4153,10 @@
                 </div>
             </div>
 
-            <div class="tip-box">
+            <div class="tip-box cost">
                 <div class="tip-icon">💰</div>
                 <div class="tip-content"><strong>Costo totale:</strong> €1,50 (bus) + €9,50 (battello) = <strong>€11,00</strong></div>
             </div>
-
-            <button class="action-btn secondary" onclick="go('main')">← Torna ai trasporti</button>
         </div>
 
     </div>

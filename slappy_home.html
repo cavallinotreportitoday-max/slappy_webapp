@@ -1158,13 +1158,6 @@
                 if (rainTitle) rainTitle.textContent = rainForecast.title;
                 if (rainSub) rainSub.textContent = rainForecast.sub;
 
-                // Cambia colore card se bandiera gialla o rossa
-                if (infoCard) {
-                    infoCard.classList.remove('yellow', 'red');
-                    if (flag.color === 'yellow') infoCard.classList.add('yellow');
-                    if (flag.color === 'red') infoCard.classList.add('red');
-                }
-
             } catch (error) {
                 console.error('Errore caricamento meteo home:', error);
                 const flagTitle = document.getElementById('home-flag-title');
