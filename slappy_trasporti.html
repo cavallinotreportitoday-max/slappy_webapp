@@ -205,6 +205,12 @@
         }
 
         .section-label:first-child { margin-top: 8px; }
+        .section-label.subsection {
+            font-size: 12px;
+            margin: 16px 0 10px;
+            border-left-color: #81D4FA;
+            color: #616161;
+        }
 
         /* Titoli principali */
         .section-label-main {
@@ -693,7 +699,7 @@
         /* ===== CAPSULE - Stile globale TRASPORTI ===== */
         .zone-chip {
             background: #ffffff;
-            border: 1.5px solid #e0e0e0;
+            border: 1.5px solid #B3E5FC;
             border-radius: 8px;
             padding: 10px 18px;
             font-size: 14px;
@@ -709,7 +715,8 @@
         }
 
         .zone-chip:hover {
-            border-color: #bdbdbd;
+            border-color: #81D4FA;
+            background: #E1F5FE;
         }
 
         .zone-chip.selected {
@@ -821,7 +828,7 @@
         }
         .fermata-chip {
             background: var(--white);
-            border: 1px solid #e0e0e0;
+            border: 1px solid #B3E5FC;
             border-radius: 100px;
             padding: 10px 18px;
             font-size: 13px;
@@ -831,7 +838,8 @@
             transition: all 0.15s;
         }
         .fermata-chip:hover {
-            border-color: #bdbdbd;
+            border-color: #81D4FA;
+            background: #E1F5FE;
         }
         .fermata-chip.selected {
             background: radial-gradient(ellipse at center, #90caf9 0%, #78b2e0 100%);
@@ -2265,14 +2273,30 @@
         .step-content { flex: 1; }
         .step-title { font-size: 14px; font-weight: 600; color: #333; }
         .step-detail { font-size: 12px; color: var(--gray-500); margin-top: 3px; }
+        /* Evidenzia info "Prossimo: XX:XX" - info più importante */
+        .step-detail.prossimo {
+            display: inline-block;
+            background: linear-gradient(135deg, #E1F5FE 0%, #B3E5FC 100%);
+            color: #0277BD;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
         .step-time {
             font-size: 14px;
             font-weight: 600;
-            color: #424242;
-            background: #f5f5f5;
+            color: #333333;
+            background: #B3E5FC;
             padding: 4px 10px;
             border-radius: 12px;
         }
+        /* Sfumatura progressiva badge tempo - avvicinamento destinazione */
+        .step-time.step-1 { background: #64B5F6; color: #ffffff; } /* Inizio - blu */
+        .step-time.step-2 { background: #81D4FA; color: #333333; } /* Azzurro medio */
+        .step-time.step-3 { background: #B3E5FC; color: #333333; } /* Azzurro chiaro */
+        .step-time.step-4 { background: #E1F5FE; color: #333333; } /* Azzurro chiarissimo */
+        .step-time.step-arrive { background: #A5D6A7; color: #333333; } /* Verde arrivo */
         .maps-btn {
             display: inline-flex;
             align-items: center;
@@ -2346,7 +2370,7 @@
 
         /* Tip box - base - Stile BLU PASTELLO trasporti */
         .tip-box {
-            background: linear-gradient(135deg, #64B5F6 0%, #42A5F5 100%);
+            background: linear-gradient(135deg, #B3E5FC 0%, #81D4FA 100%);
             border: none;
             border-radius: 16px;
             padding: 16px;
@@ -2373,38 +2397,42 @@
             font-family: var(--font-system);
             font-size: 13px;
             line-height: 1.5;
-            color: #ffffff;
+            color: #333333;
         }
 
         .tip-content strong {
-            color: #ffffff;
+            color: #333333;
             font-weight: 600;
         }
 
-        /* Tutte le varianti usano lo stesso stile blu pastello */
+        /* Box INFO - blu pastello */
         .tip-box.info,
         .tip-box.success,
-        .tip-box.warning,
         .tip-box.camping,
         .tip-box.cost {
-            background: linear-gradient(135deg, #64B5F6 0%, #42A5F5 100%);
+            background: linear-gradient(135deg, #B3E5FC 0%, #81D4FA 100%);
         }
         .tip-box.info::before,
         .tip-box.success::before,
-        .tip-box.warning::before,
         .tip-box.camping::before,
         .tip-box.cost::before { display: none; }
 
         .tip-box.info .tip-content,
         .tip-box.success .tip-content,
-        .tip-box.warning .tip-content,
         .tip-box.camping .tip-content,
-        .tip-box.cost .tip-content { color: #ffffff; }
+        .tip-box.cost .tip-content { color: #333333; }
 
         .tip-box.info .tip-content strong,
         .tip-box.success .tip-content strong,
-        .tip-box.warning .tip-content strong,
-        .tip-box.camping .tip-content strong { color: #ffffff; font-weight: 600; }
+        .tip-box.camping .tip-content strong { color: #333333; font-weight: 600; }
+
+        /* Box WARNING - arancione pastello */
+        .tip-box.warning {
+            background: linear-gradient(135deg, #FFE0B2 0%, #FFCC80 100%);
+        }
+        .tip-box.warning::before { display: none; }
+        .tip-box.warning .tip-content { color: #333333; }
+        .tip-box.warning .tip-content strong { color: #333333; font-weight: 600; }
 
         /* Card costo totale */
         .tip-box.cost .tip-icon { font-size: 24px; }
@@ -3577,20 +3605,10 @@
             </div>
 
             <button class="action-btn" id="btnCalcInterno" onclick="calcInternoNew()">🚌 Calcola percorso interno</button>
-
-            <div class="tip-box">
-                <div class="tip-icon">💰</div>
-                <div class="tip-content"><strong>Costo:</strong> €1,30 (biglietto urbano)</div>
-            </div>
         </div>
 
         <!-- ========== RISULTATO INTERNO ========== -->
         <div class="screen" id="screen-interno-result">
-            <div class="section-label">🕐 Quando vuoi partire?</div>
-            <div class="time-chips-row" id="interno-time-chips">
-                <!-- Generato da JS -->
-            </div>
-
             <div class="section-label" id="internoRoute">Ca' Savio → Jesolo • ~20 min</div>
 
             <div class="journey-steps" id="interno-steps">
@@ -3685,48 +3703,68 @@
 
         <!-- ========== RITORNO STRUTTURA ========== -->
         <div class="screen" id="screen-ritorno-struttura">
+            <!-- Box destinazione automatica -->
+            <div class="tip-box" id="ritornoDestBox">
+                <div class="tip-icon">🏕️</div>
+                <div class="tip-content" id="ritornoDestContent">
+                    <strong>Destinazione:</strong> <span id="ritornoDestNome">Camping Marina di Venezia</span><br>
+                    <strong>Fermata arrivo:</strong> <span id="ritornoDestFermata">Marina di Venezia (Linea 96)</span>
+                </div>
+            </div>
+            <div class="tip-box warning hidden" id="ritornoNoStruttura">
+                <div class="tip-icon">⚠️</div>
+                <div class="tip-content">
+                    <strong>Struttura non impostata</strong><br>
+                    <a href="#" onclick="go('impostazioni'); return false;" style="color: #0277BD;">Imposta la tua struttura →</a>
+                </div>
+            </div>
+
             <div class="section-label">📍 Da dove parti?</div>
 
-            <div class="zone-grid" id="ritornoZone">
-                <div class="zone-chip destination" onclick="calcRitorno('venezia')">Venezia</div>
-                <div class="zone-chip destination" onclick="calcRitorno('lido')">Lido</div>
-                <div class="zone-chip destination" onclick="calcRitorno('burano')">Burano</div>
-                <div class="zone-chip destination" onclick="calcRitorno('murano')">Murano</div>
-                <div class="zone-chip destination" onclick="calcRitorno('jesolo')">Jesolo</div>
-                <div class="zone-chip" onclick="calcRitorno('punta-sabbioni')">Punta Sabbioni</div>
-                <div class="zone-chip" onclick="calcRitorno('treporti')">Treporti</div>
-                <div class="zone-chip" onclick="calcRitorno('ca-savio')">Ca' Savio</div>
-                <div class="zone-chip" onclick="calcRitorno('ca-vio')">Ca' Vio</div>
-                <div class="zone-chip" onclick="calcRitorno('ca-pasquali')">Ca' Pasquali</div>
-                <div class="zone-chip" onclick="calcRitorno('ca-ballarin')">Ca' Ballarin</div>
-                <div class="zone-chip" onclick="calcRitorno('ca-di-valle')">Ca' di Valle</div>
-                <div class="zone-chip" onclick="calcRitorno('cavallino')">Cavallino</div>
-                <div class="zone-chip" onclick="calcRitorno('saccagnana')">Saccagnana</div>
-                <div class="zone-chip" onclick="calcRitorno('lio-grando')">Lio Grando</div>
+            <div class="section-label subsection">🌍 Fuori dal Litorale</div>
+            <div class="zone-grid" id="ritornoZoneEsterne">
+                <div class="zone-chip destination" onclick="selectZoneRitorno(this, 'venezia')">Venezia</div>
+                <div class="zone-chip destination" onclick="selectZoneRitorno(this, 'lido')">Lido</div>
+                <div class="zone-chip destination" onclick="selectZoneRitorno(this, 'burano')">Burano</div>
+                <div class="zone-chip destination" onclick="selectZoneRitorno(this, 'murano')">Murano</div>
+                <div class="zone-chip destination" onclick="selectZoneRitorno(this, 'jesolo')">Jesolo</div>
             </div>
+
+            <!-- Fermata specifica zone esterne -->
+            <div class="fermata-section hidden" id="ritornoFermataEsternaSection">
+                <div class="section-label">🚏 Fermata specifica</div>
+                <div class="fermata-grid" id="ritornoFermataEsternaGrid"></div>
+            </div>
+
+            <div class="section-label subsection">🏖️ Cavallino-Treporti</div>
+            <div class="zone-grid" id="ritornoZoneInterne">
+                <div class="zone-chip" onclick="selectZoneRitorno(this, 'punta-sabbioni')">Punta Sabbioni</div>
+                <div class="zone-chip" onclick="selectZoneRitorno(this, 'treporti')">Treporti</div>
+                <div class="zone-chip" onclick="selectZoneRitorno(this, 'ca-savio')">Ca' Savio</div>
+                <div class="zone-chip" onclick="selectZoneRitorno(this, 'ca-vio')">Ca' Vio</div>
+                <div class="zone-chip" onclick="selectZoneRitorno(this, 'ca-pasquali')">Ca' Pasquali</div>
+                <div class="zone-chip" onclick="selectZoneRitorno(this, 'ca-ballarin')">Ca' Ballarin</div>
+                <div class="zone-chip" onclick="selectZoneRitorno(this, 'ca-di-valle')">Ca' di Valle</div>
+                <div class="zone-chip" onclick="selectZoneRitorno(this, 'cavallino')">Cavallino</div>
+                <div class="zone-chip" onclick="selectZoneRitorno(this, 'saccagnana')">Saccagnana</div>
+            </div>
+
+            <!-- Fermata specifica zone interne -->
+            <div class="fermata-section hidden" id="ritornoFermataInternaSection">
+                <div class="section-label">🚏 Fermata specifica</div>
+                <div class="fermata-grid" id="ritornoFermataInternaGrid"></div>
+            </div>
+
+            <button class="action-btn" id="btnCalcRitorno" onclick="calcRitornoNew()">🏕️ Calcola percorso di ritorno</button>
 
             <div class="tip-box warning">
                 <div class="tip-icon">⚠️</div>
                 <div class="tip-content"><strong>Ultimo traghetto da Venezia:</strong> 23:41 • Ultimo bus da P. Sabbioni: 23:00</div>
             </div>
-
-            <div class="tip-box camping">
-                <div class="tip-icon">🏕️</div>
-                <div class="tip-content">
-                    <strong>La tua struttura:</strong> Camping Marina di Venezia<br>
-                    <strong>Zona:</strong> Ca' Ballarin – Via Pordelio<br>
-                    <strong>Fermata:</strong> Linea 96 – Marina di Venezia
-                </div>
-            </div>
         </div>
 
         <!-- ========== RITORNO RESULT ========== -->
         <div class="screen" id="screen-ritorno-result">
-            <div class="section-label">🕐 Quando vuoi partire?</div>
-            <div class="time-chips-row" id="ritorno-time-chips">
-                <!-- Generato da JS -->
-            </div>
-
             <div class="section-label">Il tuo percorso</div>
             <div class="journey-steps" id="ritorno-steps">
                 <!-- Popolato da JS -->
@@ -4130,11 +4168,6 @@
 
         <!-- ========== JOURNEY RESULT ========== -->
         <div class="screen" id="screen-journey-result">
-            <div class="section-label">🕐 Quando vuoi partire?</div>
-            <div class="time-chips-row" id="journey-time-chips">
-                <!-- Generato da JS -->
-            </div>
-
             <div class="section-label" id="journeyRoute">Ca' Savio → Venezia San Marco • ~45 min</div>
 
             <div class="journey-steps" id="journey-steps">
@@ -4522,10 +4555,136 @@
         updateWalkElements();
     }
 
+    // =====================================================
+    // RITORNO AL CAMPING - Sistema a 2 livelli
+    // =====================================================
+
+    // Database campeggi → fermata più vicina
+    const campeggi = {
+        "Marina di Venezia Camping Village": { fermata: "Ca' Ballarin - Via Pordelio", zona: "Ca' Ballarin", linea: "96" },
+        "Vela Blu Camping Village": { fermata: "Ca' Ballarin - Radaelli", zona: "Ca' Ballarin", linea: "96" },
+        "Ca' Berton Village": { fermata: "Ca' Ballarin - Via Pordelio", zona: "Ca' Ballarin", linea: "96" },
+        "Camping Village Al Boschetto": { fermata: "Ca' Ballarin", zona: "Ca' Ballarin", linea: "23A" },
+        "Ca' Pasquali Village": { fermata: "Ca' Pasquali", zona: "Ca' Pasquali", linea: "23A" },
+        "Camping Village Dei Fiori": { fermata: "Ca' Pasquali - Via Pordelio", zona: "Ca' Pasquali", linea: "96" },
+        "Camping Ca' Savio": { fermata: "Ca' Savio Centro", zona: "Ca' Savio", linea: "23A" },
+        "Ca' Bodi Agricamping": { fermata: "Ca' Savio Chiesa", zona: "Ca' Savio", linea: "96" },
+        "Camping Silva": { fermata: "Ca' Savio - Via Fausta", zona: "Ca' Savio", linea: "23A" },
+        "Camping Village Mediterraneo": { fermata: "Ca' Vio", zona: "Ca' Vio", linea: "23A" },
+        "Camping Klaus": { fermata: "Ca' Vio Chiesa", zona: "Ca' Vio", linea: "96" },
+        "Union Lido Camping Park": { fermata: "Cavallino - Via Fausta", zona: "Cavallino", linea: "23A" },
+        "Europa Village Camping Sandaya": { fermata: "Cavallino - Via Fausta", zona: "Cavallino", linea: "23A" },
+        "Italy Camping Village": { fermata: "Cavallino - Via Fausta", zona: "Cavallino", linea: "23A" },
+        "Joker Camping": { fermata: "Cavallino - Via Fausta", zona: "Cavallino", linea: "23A" },
+        "Camping Village Scarpiland": { fermata: "Cavallino - Via Fausta", zona: "Cavallino", linea: "23A" },
+        "Camping Santin": { fermata: "Cavallino - Via Fausta", zona: "Cavallino", linea: "23A" },
+        "Camping Mayer": { fermata: "Cavallino - Via Fausta", zona: "Cavallino", linea: "23A" },
+        "Camping Village Garden Paradiso": { fermata: "Via F. Baracca", zona: "Cavallino", linea: "23A" },
+        "Camping Sant'Angelo Village": { fermata: "Via F. Baracca", zona: "Cavallino", linea: "23A" },
+        "Residence Village": { fermata: "Via F. Baracca", zona: "Cavallino", linea: "23A" },
+        "Camping Village Cavallino": { fermata: "Camping Union", zona: "Cavallino", linea: "23A" },
+        "Camping Darisi": { fermata: "Camping Union", zona: "Cavallino", linea: "23A" },
+        "Villa Al Mare Camping": { fermata: "Punta Sabbioni Terminal", zona: "Punta Sabbioni", linea: "23A" },
+        "Camping Village Enzo Stella Maris": { fermata: "Faro", zona: "Punta Sabbioni", linea: "23A" },
+        "Camping Village del Sole": { fermata: "Punta Sabbioni (ATVO)", zona: "Punta Sabbioni", linea: "23A" },
+        "Miramare Camping Village": { fermata: "Punta Sabbioni Terminal", zona: "Punta Sabbioni", linea: "23A" }
+    };
+
+    // Struttura utente corrente (default o da localStorage)
+    let strutturaUtente = localStorage.getItem('slappy_struttura') || "Marina di Venezia Camping Village";
+
+    // Aggiorna box destinazione in base alla struttura
+    function updateRitornoDestinazione() {
+        const info = campeggi[strutturaUtente];
+        const destBox = document.getElementById('ritornoDestBox');
+        const noStrutturaBox = document.getElementById('ritornoNoStruttura');
+
+        if (info) {
+            document.getElementById('ritornoDestNome').textContent = strutturaUtente;
+            document.getElementById('ritornoDestFermata').textContent = info.fermata + ' (Linea ' + info.linea + ')';
+            destBox.classList.remove('hidden');
+            noStrutturaBox.classList.add('hidden');
+        } else {
+            destBox.classList.add('hidden');
+            noStrutturaBox.classList.remove('hidden');
+        }
+    }
+
+    // Chiamata iniziale
+    document.addEventListener('DOMContentLoaded', updateRitornoDestinazione);
+
+    const fermateRitornoEsterne = {
+        'jesolo': ["Lido di Jesolo (Autostazione)", "Piazza Trieste", "Piazza Brescia", "Piazza Internazionale", "Piazza Aurora", "Piazza Nember", "Piazza Mazzini"],
+        'venezia': ["S.Marco - S.Zaccaria", "Piazzale Roma", "Fondamente Nove"],
+        'lido': ["Lido S.M.E.", "Lido S.Nicolò"],
+        'burano': ["Burano"],
+        'murano': ["Murano", "Murano Faro"]
+    };
+    const fermateRitornoInterne = {
+        'punta-sabbioni': ["Punta Sabbioni Terminal", "Punta Sabbioni (ATVO)", "Faro"],
+        'treporti': ["Treporti", "Ricevitoria"],
+        'ca-savio': ["Ca' Savio - Via Fausta", "Ca' Savio Centro", "Ca' Savio Chiesa", "Ca' Savio - Via Polveriera", "Ca' Savio - Al Gondoliere", "Ca' Savio Spiaggia"],
+        'ca-vio': ["Ca' Vio", "Ca' Vio Chiesa", "Ca' Vio (Via Pordelio)"],
+        'ca-pasquali': ["Ca' Pasquali", "Ca' Pasquali (Via Pordelio)"],
+        'ca-ballarin': ["Ca' Ballarin", "Ca' Ballarin - La Fattoria", "Ca' Ballarin - Radaelli", "Camping Union"],
+        'ca-di-valle': ["Ca' di Valle"],
+        'cavallino': ["Cavallino (paese)", "Cimitero", "Ponte Cavallino", "Via F. Baracca", "Incrocio Via Anna Frank", "Darsena"],
+        'saccagnana': ["Saccagnana", "Lio Grando"]
+    };
+
+    let ritornoZoneSelected = null;
+    let ritornoFermataSelected = null;
+    let ritornoIsEsterna = false;
+
+    function selectZoneRitorno(chip, zone) {
+        // Deseleziona tutte le zone
+        document.querySelectorAll('#ritornoZoneEsterne .zone-chip, #ritornoZoneInterne .zone-chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+
+        ritornoZoneSelected = zone;
+        ritornoFermataSelected = null;
+
+        // Nascondi entrambe le sezioni fermate
+        document.getElementById('ritornoFermataEsternaSection').classList.add('hidden');
+        document.getElementById('ritornoFermataInternaSection').classList.add('hidden');
+
+        // Determina se è zona esterna o interna
+        ritornoIsEsterna = !!fermateRitornoEsterne[zone];
+        const fermate = ritornoIsEsterna ? fermateRitornoEsterne[zone] : fermateRitornoInterne[zone];
+        const sectionId = ritornoIsEsterna ? 'ritornoFermataEsternaSection' : 'ritornoFermataInternaSection';
+        const gridId = ritornoIsEsterna ? 'ritornoFermataEsternaGrid' : 'ritornoFermataInternaGrid';
+
+        if (!fermate || fermate.length === 0) return;
+
+        // Genera chips fermate
+        let html = '';
+        fermate.forEach(f => {
+            html += '<div class="fermata-chip" onclick="selectFermataRitorno(this, \'' + f.replace(/'/g, "\\'") + '\')">' + f + '</div>';
+        });
+        document.getElementById(gridId).innerHTML = html;
+        document.getElementById(sectionId).classList.remove('hidden');
+    }
+
+    function selectFermataRitorno(chip, fermata) {
+        const gridId = ritornoIsEsterna ? 'ritornoFermataEsternaGrid' : 'ritornoFermataInternaGrid';
+        document.querySelectorAll('#' + gridId + ' .fermata-chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+        ritornoFermataSelected = fermata;
+    }
+
+    function calcRitornoNew() {
+        if (!ritornoZoneSelected) {
+            alert('Seleziona da dove parti');
+            return;
+        }
+        // Usa la fermata se selezionata, altrimenti la zona
+        const from = ritornoFermataSelected || ritornoZoneSelected;
+        calcRitorno(ritornoZoneSelected);
+    }
+
     function calcRitorno(from) {
-        // Seleziona l'opzione
-        document.querySelectorAll('#ritornoZone .zone-chip').forEach(o => o.classList.remove('selected'));
-        event.target.closest('.zone-chip').classList.add('selected');
+        // Seleziona l'opzione (legacy support)
+        document.querySelectorAll('#ritornoZoneEsterne .zone-chip, #ritornoZoneInterne .zone-chip').forEach(o => o.classList.remove('selected'));
         
         // Aggiorna il risultato in base alla partenza
         const results = {
@@ -5100,6 +5259,35 @@
                 if (timeDiv && !timeDiv.textContent.trim()) {
                     timeDiv.innerHTML = '✓';
                 }
+            }
+        });
+
+        // Applica sfumatura progressiva ai badge tempo
+        document.querySelectorAll('.journey-steps').forEach(container => {
+            const steps = container.querySelectorAll('.journey-step');
+            const total = steps.length;
+            steps.forEach((step, i) => {
+                const timeDiv = step.querySelector('.step-time');
+                if (!timeDiv) return;
+                // Rimuovi classi precedenti
+                timeDiv.classList.remove('step-1', 'step-2', 'step-3', 'step-4', 'step-arrive');
+                // Ultimo step = arrivo (verde)
+                if (i === total - 1) {
+                    timeDiv.classList.add('step-arrive');
+                } else {
+                    // Distribuisci colori dall'inizio alla fine
+                    const stepClass = Math.min(Math.floor((i / (total - 1)) * 4) + 1, 4);
+                    timeDiv.classList.add('step-' + stepClass);
+                }
+            });
+        });
+
+        // Evidenzia info "Prossimo:" nei dettagli step
+        document.querySelectorAll('.step-detail').forEach(detail => {
+            if (detail.textContent.includes('Prossimo:')) {
+                detail.classList.add('prossimo');
+            } else {
+                detail.classList.remove('prossimo');
             }
         });
     }
