@@ -2229,9 +2229,9 @@
             display: none !important;
         }
 
-        /* Tip box - base - Stile BLU uniforme trasporti */
+        /* Tip box - base - Stile BLU PASTELLO trasporti */
         .tip-box {
-            background: radial-gradient(circle at center, #ffffff 0%, #1976D2 100%);
+            background: linear-gradient(135deg, #64B5F6 0%, #42A5F5 100%);
             border: none;
             border-radius: 16px;
             padding: 16px;
@@ -2241,7 +2241,7 @@
             margin-top: var(--gap-sections);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         .tip-box::before {
@@ -2258,21 +2258,21 @@
             font-family: var(--font-system);
             font-size: 13px;
             line-height: 1.5;
-            color: #333;
+            color: #ffffff;
         }
 
         .tip-content strong {
-            color: #1565C0;
+            color: #ffffff;
             font-weight: 600;
         }
 
-        /* Tutte le varianti usano lo stesso stile blu */
+        /* Tutte le varianti usano lo stesso stile blu pastello */
         .tip-box.info,
         .tip-box.success,
         .tip-box.warning,
         .tip-box.camping,
         .tip-box.cost {
-            background: radial-gradient(circle at center, #ffffff 0%, #1976D2 100%);
+            background: linear-gradient(135deg, #64B5F6 0%, #42A5F5 100%);
         }
         .tip-box.info::before,
         .tip-box.success::before,
@@ -2284,12 +2284,12 @@
         .tip-box.success .tip-content,
         .tip-box.warning .tip-content,
         .tip-box.camping .tip-content,
-        .tip-box.cost .tip-content { color: #333; }
+        .tip-box.cost .tip-content { color: #ffffff; }
 
         .tip-box.info .tip-content strong,
         .tip-box.success .tip-content strong,
         .tip-box.warning .tip-content strong,
-        .tip-box.camping .tip-content strong { color: #1565C0; font-weight: 600; }
+        .tip-box.camping .tip-content strong { color: #ffffff; font-weight: 600; }
 
         /* Card costo totale */
         .tip-box.cost .tip-icon { font-size: 24px; }
