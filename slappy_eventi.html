@@ -324,6 +324,44 @@
             background: var(--gray-300);
         }
 
+        /* EVENTI DEL GIORNO SELEZIONATO */
+        .day-events-section {
+            margin-top: var(--gap-sections);
+            padding-top: var(--gap-sections);
+            border-top: 1px solid var(--gray-200);
+        }
+        .day-events-header {
+            font-size: var(--font-title);
+            font-weight: var(--weight-title);
+            color: var(--gray-900);
+            margin-bottom: var(--gap-cards);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .day-events-date {
+            background: var(--purple-100);
+            color: #7c3aed;
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: var(--font-meta);
+            font-weight: 500;
+        }
+        .no-events-message {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: var(--radius-card);
+            padding: 20px;
+            text-align: center;
+            color: var(--gray-500);
+            font-size: var(--font-body);
+        }
+        .no-events-message span {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
         /* =====================================================
            MAIN CONTENT
            ===================================================== */
@@ -803,6 +841,14 @@
                     <div class="calendar-weekday">Dom</div>
                     <!-- Giorni generati da JS -->
                 </div>
+
+                <!-- Eventi del giorno selezionato -->
+                <div class="day-events-section hidden" id="dayEventsSection">
+                    <div class="day-events-header">
+                        Eventi del <span class="day-events-date" id="dayEventsDate"></span>
+                    </div>
+                    <div id="dayEventsList"></div>
+                </div>
             </div>
 
             <!-- MAIN CONTENT -->
@@ -1223,6 +1269,7 @@
         const calendarSection = document.getElementById('calendarSection');
         const eventsList = document.getElementById('eventsList');
         const filterFeedback = document.getElementById('filterFeedback');
+        const dayEventsSection = document.getElementById('dayEventsSection');
 
         // 2. Gestisci vista calendario vs lista eventi
         if (filter === 'calendario') {
@@ -1230,6 +1277,11 @@
             calendarSection.classList.remove('hidden');
             eventsList.classList.add('hidden');
             filterFeedback.classList.add('hidden');
+            // Nascondi sezione eventi giorno (fino a selezione)
+            dayEventsSection.classList.add('hidden');
+            // Reset selezione
+            selectedDate = null;
+            renderCalendar();
 
             // Aggiorna hero per calendario
             document.getElementById('heroPeriod').textContent = 'Calendario eventi';
@@ -1237,8 +1289,9 @@
             return;
         }
 
-        // Per altri filtri: nascondi calendario, mostra lista
+        // Per altri filtri: nascondi calendario e sezione eventi giorno, mostra lista
         calendarSection.classList.add('hidden');
+        dayEventsSection.classList.add('hidden');
         eventsList.classList.remove('hidden');
         filterFeedback.classList.remove('hidden');
 
@@ -1332,10 +1385,38 @@
 
     // Giorni con eventi (esempio - in produzione da API)
     const eventDays = {
-        '2025-01': [4, 11, 12, 17, 18, 25, 26],
-        '2025-02': [1, 2, 8, 14, 15, 22],
-        '2025-03': [1, 8, 15, 22, 29],
+        '2026-01': [20, 22, 24, 25, 26, 31],
+        '2026-02': [1, 7, 8, 14, 15, 21, 22, 28],
+        '2026-03': [1, 7, 8, 14, 15, 21, 22, 28, 29],
     };
+
+    // Array dettagliato eventi (in produzione: da API)
+    const calendarEvents = [
+        { date: '2026-01-20', title: 'Mercatino dell\'Antiquariato', time: '09:00', location: 'Piazza Treporti', type: 'free', icon: '🛍️' },
+        { date: '2026-01-22', title: 'Concerto Jazz', time: '21:00', location: 'Marina Cavallino', type: 'music', icon: '🎵' },
+        { date: '2026-01-24', title: 'Yoga sulla Spiaggia', time: '08:00', location: 'Spiaggia Ca\' Savio', type: 'outdoor', icon: '🧘' },
+        { date: '2026-01-25', title: 'Passeggiata Naturalistica', time: '10:00', location: 'Oasi di Ca\' Savio', type: 'outdoor', icon: '🌿' },
+        { date: '2026-01-25', title: 'Laboratorio Ceramica Bambini', time: '15:00', location: 'Centro Civico', type: 'family', icon: '🎨' },
+        { date: '2026-01-26', title: 'Brunch in Vigna', time: '11:00', location: 'Tenuta Venissa', type: 'food', icon: '🍷' },
+        { date: '2026-01-31', title: 'Serata Astronomia', time: '20:00', location: 'Faro Punta Sabbioni', type: 'outdoor', icon: '🔭' },
+        { date: '2026-02-01', title: 'Mercatino Vintage', time: '09:00', location: 'Centro Cavallino', type: 'free', icon: '🏺' },
+        { date: '2026-02-07', title: 'Carnevale dei Bambini', time: '15:00', location: 'Piazza Treporti', type: 'family', icon: '🎭' },
+        { date: '2026-02-08', title: 'Sfilata Maschere', time: '16:00', location: 'Via Fausta', type: 'family', icon: '🎪' },
+        { date: '2026-02-14', title: 'Cena San Valentino', time: '20:00', location: 'Ristorante Al Faro', type: 'food', icon: '❤️' },
+        { date: '2026-02-15', title: 'Concerto Acustico', time: '21:00', location: 'Teatro Ca\' Savio', type: 'music', icon: '🎸' },
+        { date: '2026-02-21', title: 'Tour in Kayak', time: '10:00', location: 'Porto Sile', type: 'outdoor', icon: '🚣' },
+        { date: '2026-02-22', title: 'Festa del Pesce', time: '12:00', location: 'Porto Pescatori', type: 'food', icon: '🐟' },
+        { date: '2026-02-28', title: 'Escursione Laguna', time: '09:00', location: 'Lio Piccolo', type: 'outdoor', icon: '🦅' },
+        { date: '2026-03-01', title: 'Mercato Primaverile', time: '08:00', location: 'Centro Cavallino', type: 'free', icon: '🌸' },
+        { date: '2026-03-07', title: 'Corsa sulla Spiaggia', time: '09:00', location: 'Spiaggia Union Lido', type: 'outdoor', icon: '🏃' },
+        { date: '2026-03-08', title: 'Festa della Donna', time: '18:00', location: 'Piazza Centrale', type: 'music', icon: '💐' },
+        { date: '2026-03-14', title: 'Workshop Fotografia', time: '10:00', location: 'Oasi Ca\' Savio', type: 'workshop', icon: '📷' },
+        { date: '2026-03-15', title: 'Gara di Pesca', time: '07:00', location: 'Laguna Nord', type: 'outdoor', icon: '🎣' },
+        { date: '2026-03-21', title: 'Primo giorno Primavera', time: '17:00', location: 'Via del Respiro', type: 'outdoor', icon: '🌷' },
+        { date: '2026-03-22', title: 'Tour in Bicicletta', time: '09:30', location: 'Via del Respiro', type: 'outdoor', icon: '🚴' },
+        { date: '2026-03-28', title: 'Aperitivo Tramonto', time: '18:30', location: 'Spiaggia Cavallino', type: 'food', icon: '🌅' },
+        { date: '2026-03-29', title: 'Concerto di Primavera', time: '20:30', location: 'Teatro Comunale', type: 'music', icon: '🎵' },
+    ];
 
     const monthNames = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
                         'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
@@ -1443,12 +1524,59 @@
         document.getElementById('heroPeriod').textContent =
             `${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${dayNum} ${monthName}`;
 
-        // Aggiorna feedback
-        document.getElementById('filterFeedback').innerHTML =
-            `Stai vedendo: <strong>${dayNum} ${monthName} · Eventi del giorno</strong>`;
-
         // Rimuovi filtro attivo dai chip
         document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+
+        // Mostra eventi del giorno selezionato
+        showDayEvents(day);
+    }
+
+    function showDayEvents(day) {
+        const dayEventsSection = document.getElementById('dayEventsSection');
+        const dayEventsList = document.getElementById('dayEventsList');
+        const dayEventsDate = document.getElementById('dayEventsDate');
+
+        // Formatta la data per confronto
+        const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+        // Filtra eventi per questa data
+        const eventsForDay = calendarEvents.filter(e => e.date === dateStr);
+
+        // Aggiorna etichetta data
+        const monthName = monthNames[currentMonth].substring(0, 3).toLowerCase();
+        dayEventsDate.textContent = `${day} ${monthName}`;
+
+        // Mostra sezione
+        dayEventsSection.classList.remove('hidden');
+
+        // Genera HTML eventi
+        if (eventsForDay.length === 0) {
+            dayEventsList.innerHTML = `
+                <div class="no-events-message">
+                    <span>📅</span>
+                    Nessun evento per questo giorno
+                </div>
+            `;
+        } else {
+            dayEventsList.innerHTML = eventsForDay.map(event => `
+                <div class="event-card">
+                    <div class="event-time ${event.type}">
+                        <span class="event-time-hour">${event.time}</span>
+                    </div>
+                    <div class="event-body">
+                        <div class="event-title">${event.icon} ${event.title}</div>
+                        <div class="event-where">📍 ${event.location}</div>
+                    </div>
+                    <span class="event-arrow">›</span>
+                </div>
+            `).join('');
+        }
+
+        // Aggiorna hero summary con conteggio eventi
+        const count = eventsForDay.length;
+        document.getElementById('heroSummary').innerHTML = count > 0
+            ? `<span class="hero-stat">📅 ${count} event${count > 1 ? 'i' : 'o'}</span>`
+            : `<span class="hero-stat">📅 Nessun evento</span>`;
     }
 
     function toggleCalendar() {

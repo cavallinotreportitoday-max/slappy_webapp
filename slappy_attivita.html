@@ -141,13 +141,17 @@
         /* TAB NAVIGAZIONE CATEGORIE */
         .category-tabs { display: flex; gap: 8px; padding: 0 0 var(--gap-sections); overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
         .category-tabs::-webkit-scrollbar { display: none; }
-        .category-tab { flex-shrink: 0; height: var(--button-height); padding: 0 var(--button-padding-x); background: var(--white); border: var(--border-default); border-radius: var(--radius-button); font-size: var(--button-font-size); font-weight: var(--button-font-weight); color: var(--gray-600); cursor: pointer; transition: border-color 0.15s; white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; }
+        .category-tab { flex-shrink: 0; height: var(--button-height); padding: 0 var(--button-padding-x); background: var(--white); border: var(--border-default); border-radius: var(--radius-button); font-size: var(--button-font-size); font-weight: var(--button-font-weight); color: var(--gray-600); cursor: pointer; transition: border-color 0.15s, background 0.15s; white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; }
         .category-tab:hover { border-color: var(--gray-300); }
-        .category-tab.active { background: var(--primary); border-color: var(--primary); color: var(--white); }
-        .category-tab.movimento.active { background: var(--green); border-color: var(--green); }
-        .category-tab.natura.active { background: var(--cyan); border-color: var(--cyan); }
-        .category-tab.acqua.active { background: var(--blue); border-color: var(--blue); }
-        .category-tab.relax.active { background: var(--purple); border-color: var(--purple); }
+        .category-tab.movimento { background: radial-gradient(ellipse at center, var(--white) 0%, #c8e6c9 100%); border-color: #a5d6a7; }
+        .category-tab.natura { background: radial-gradient(ellipse at center, var(--white) 0%, #d7ccc8 100%); border-color: #bcaaa4; }
+        .category-tab.acqua { background: radial-gradient(ellipse at center, var(--white) 0%, #b3e5fc 100%); border-color: #81d4fa; }
+        .category-tab.relax { background: radial-gradient(ellipse at center, var(--white) 0%, #e1bee7 100%); border-color: #ce93d8; }
+        .category-tab.active { color: var(--gray-900); font-weight: 600; }
+        .category-tab.movimento.active { background: radial-gradient(ellipse at center, #e8f5e9 0%, #a5d6a7 100%); border-color: #66bb6a; }
+        .category-tab.natura.active { background: radial-gradient(ellipse at center, #efebe9 0%, #bcaaa4 100%); border-color: #8d6e63; }
+        .category-tab.acqua.active { background: radial-gradient(ellipse at center, #e1f5fe 0%, #81d4fa 100%); border-color: #29b6f6; }
+        .category-tab.relax.active { background: radial-gradient(ellipse at center, #f3e5f5 0%, #ce93d8 100%); border-color: #ab47bc; }
 
         /* SWIPE CARDS */
         .swipe-section { margin-bottom: var(--gap-sections); }
@@ -190,10 +194,10 @@
         .section-label.purple { border-left-color: #7c3aed; }
 
         /* Swipe section con sfondo colorato */
-        .swipe-section.green { background: #d1fae5; border-radius: var(--radius-card); padding: 12px; margin: -12px; margin-bottom: var(--gap-sections); }
-        .swipe-section.cyan { background: #cffafe; border-radius: var(--radius-card); padding: 12px; margin: -12px; margin-bottom: var(--gap-sections); }
-        .swipe-section.blue { background: #dbeafe; border-radius: var(--radius-card); padding: 12px; margin: -12px; margin-bottom: var(--gap-sections); }
-        .swipe-section.purple { background: #ede9fe; border-radius: var(--radius-card); padding: 12px; margin: -12px; margin-bottom: var(--gap-sections); }
+        .swipe-section.green { background: rgba(200, 230, 201, 0.4); border-radius: var(--radius-card); padding: 12px; margin: -12px; margin-bottom: var(--gap-sections); }
+        .swipe-section.cyan { background: rgba(215, 204, 200, 0.4); border-radius: var(--radius-card); padding: 12px; margin: -12px; margin-bottom: var(--gap-sections); }
+        .swipe-section.blue { background: rgba(179, 229, 252, 0.4); border-radius: var(--radius-card); padding: 12px; margin: -12px; margin-bottom: var(--gap-sections); }
+        .swipe-section.purple { background: rgba(225, 190, 231, 0.4); border-radius: var(--radius-card); padding: 12px; margin: -12px; margin-bottom: var(--gap-sections); }
 
         /* ACTIVITY CARDS */
         .activity-card { background: var(--white); border: var(--border-default); border-radius: var(--radius-card); padding: var(--padding-card); margin-bottom: var(--gap-cards); display: flex; align-items: center; gap: var(--gap-inner); cursor: pointer; transition: border-color 0.15s; }
@@ -427,12 +431,6 @@
                 <button class="category-tab natura" onclick="guideChoice('natura')">🦅 Natura</button>
                 <button class="category-tab acqua" onclick="guideChoice('acqua')">🏄 Acqua</button>
                 <button class="category-tab relax" onclick="guideChoice('relax')">👨‍👩‍👧 Relax</button>
-            </div>
-
-            <!-- Hero -->
-            <div class="hero-compact" style="background: linear-gradient(135deg, var(--green), #059669);">
-                <div class="hero-compact-title">Muoversi & Percorsi</div>
-                <div class="hero-compact-subtitle">40+ km di ciclabili, trekking, passeggiate</div>
             </div>
 
             <!-- Consigliati Swipe -->
@@ -1097,12 +1095,6 @@
                 <button class="category-tab relax" onclick="guideChoice('relax')">👨‍👩‍👧 Relax</button>
             </div>
 
-            <!-- Hero -->
-            <div class="hero-compact" style="background: linear-gradient(135deg, var(--cyan), #0891b2);">
-                <div class="hero-compact-title">Natura & Scoperta</div>
-                <div class="hero-compact-subtitle">50+ specie, laguna, dune, tramonti</div>
-            </div>
-
             <!-- Consigliati Swipe -->
             <div class="swipe-section cyan">
                 <div class="swipe-header">
@@ -1482,12 +1474,6 @@
                 <button class="category-tab natura" onclick="guideChoice('natura')">🦅 Natura</button>
                 <button class="category-tab acqua active">🏄 Acqua</button>
                 <button class="category-tab relax" onclick="guideChoice('relax')">👨‍👩‍👧 Relax</button>
-            </div>
-
-            <!-- Hero -->
-            <div class="hero-compact" style="background: linear-gradient(135deg, var(--blue), #2563eb);">
-                <div class="hero-compact-title">Acqua & Avventura</div>
-                <div class="hero-compact-subtitle">SUP, kayak, vela, pesca in laguna</div>
             </div>
 
             <!-- Consigliati Swipe -->
@@ -1921,12 +1907,6 @@
                 <button class="category-tab natura" onclick="guideChoice('natura')">🦅 Natura</button>
                 <button class="category-tab acqua" onclick="guideChoice('acqua')">🏄 Acqua</button>
                 <button class="category-tab relax active">👨‍👩‍👧 Relax</button>
-            </div>
-
-            <!-- Hero -->
-            <div class="hero-compact" style="background: linear-gradient(135deg, var(--purple), #7c3aed);">
-                <div class="hero-compact-title">Relax & Famiglia</div>
-                <div class="hero-compact-subtitle">Attività facili, gratuite, adatte a bambini</div>
             </div>
 
             <!-- Consigliati Swipe -->
