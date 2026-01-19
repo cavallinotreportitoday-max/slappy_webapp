@@ -2207,6 +2207,36 @@
             border-color: var(--gray-400);
         }
 
+        /* Select campeggio */
+        .campeggio-select {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 15px;
+            font-family: var(--font-system);
+            border: 2px solid #B3E5FC;
+            border-radius: 12px;
+            background: #ffffff;
+            color: #333;
+            cursor: pointer;
+            margin-bottom: 16px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+        .campeggio-select:focus {
+            outline: none;
+            border-color: #64B5F6;
+            box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+        }
+        .campeggio-info {
+            margin-top: 16px;
+        }
+        .campeggio-info.hidden {
+            display: none;
+        }
+
         /* Journey result */
         .journey-result-header {
             background: linear-gradient(135deg, var(--teal), var(--teal-dark));
@@ -2575,6 +2605,14 @@
                     <div class="quick-text">
                         <span class="quick-title">Info trasporti</span>
                         <span class="quick-sub">Regole, accessibilità, bici, animali</span>
+                    </div>
+                    <span class="quick-arrow">→</span>
+                </div>
+                <div class="quick-card" onclick="go('impostazioni')">
+                    <div class="quick-icon">⚙️</div>
+                    <div class="quick-text">
+                        <span class="quick-title">Impostazioni</span>
+                        <span class="quick-sub">Imposta la tua struttura</span>
                     </div>
                     <span class="quick-arrow">→</span>
                 </div>
@@ -3763,6 +3801,77 @@
             </div>
         </div>
 
+        <!-- ========== IMPOSTAZIONI STRUTTURA ========== -->
+        <div class="screen" id="screen-impostazioni">
+            <div class="section-label">🏕️ La tua struttura</div>
+
+            <div class="tip-box">
+                <div class="tip-icon">ℹ️</div>
+                <div class="tip-content">Seleziona il campeggio dove alloggi. Verrà usato come destinazione automatica per "Rientra al camping".</div>
+            </div>
+
+            <div class="section-label">Seleziona campeggio</div>
+            <select id="selectCampeggio" class="campeggio-select" onchange="salvaCampeggio()">
+                <option value="">-- Seleziona il tuo campeggio --</option>
+                <optgroup label="Ca' Ballarin">
+                    <option value="Marina di Venezia Camping Village">Marina di Venezia Camping Village</option>
+                    <option value="Vela Blu Camping Village">Vela Blu Camping Village</option>
+                    <option value="Ca' Berton Village">Ca' Berton Village</option>
+                    <option value="Camping Village Al Boschetto">Camping Village Al Boschetto</option>
+                </optgroup>
+                <optgroup label="Ca' Pasquali">
+                    <option value="Ca' Pasquali Village">Ca' Pasquali Village</option>
+                    <option value="Camping Village Dei Fiori">Camping Village Dei Fiori</option>
+                </optgroup>
+                <optgroup label="Ca' Savio">
+                    <option value="Camping Ca' Savio">Camping Ca' Savio</option>
+                    <option value="Ca' Bodi Agricamping">Ca' Bodi Agricamping</option>
+                    <option value="Camping Silva">Camping Silva</option>
+                </optgroup>
+                <optgroup label="Ca' Vio">
+                    <option value="Camping Village Mediterraneo">Camping Village Mediterraneo</option>
+                    <option value="Camping Klaus">Camping Klaus</option>
+                </optgroup>
+                <optgroup label="Cavallino - Via Fausta">
+                    <option value="Union Lido Camping Park">Union Lido Camping Park</option>
+                    <option value="Europa Village Camping Sandaya">Europa Village Camping Sandaya</option>
+                    <option value="Italy Camping Village">Italy Camping Village</option>
+                    <option value="Joker Camping">Joker Camping</option>
+                    <option value="Camping Village Scarpiland">Camping Village Scarpiland</option>
+                    <option value="Camping Santin">Camping Santin</option>
+                    <option value="Camping Mayer">Camping Mayer</option>
+                </optgroup>
+                <optgroup label="Cavallino - Via Baracca">
+                    <option value="Camping Village Garden Paradiso">Camping Village Garden Paradiso</option>
+                    <option value="Camping Sant'Angelo Village">Camping Sant'Angelo Village</option>
+                    <option value="Residence Village">Residence Village</option>
+                </optgroup>
+                <optgroup label="Cavallino - Batterie">
+                    <option value="Camping Village Cavallino">Camping Village Cavallino</option>
+                    <option value="Camping Darisi">Camping Darisi</option>
+                </optgroup>
+                <optgroup label="Punta Sabbioni">
+                    <option value="Villa Al Mare Camping">Villa Al Mare Camping</option>
+                    <option value="Camping Village Enzo Stella Maris">Camping Village Enzo Stella Maris</option>
+                    <option value="Camping Village del Sole">Camping Village del Sole</option>
+                    <option value="Miramare Camping Village">Miramare Camping Village</option>
+                </optgroup>
+            </select>
+
+            <div id="campeggioInfo" class="campeggio-info hidden">
+                <div class="tip-box">
+                    <div class="tip-icon">✅</div>
+                    <div class="tip-content">
+                        <strong>Struttura selezionata:</strong> <span id="campeggioNome"></span><br>
+                        <strong>Fermata più vicina:</strong> <span id="campeggioFermata"></span><br>
+                        <strong>Linea bus:</strong> <span id="campeggioLinea"></span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="action-btn secondary" onclick="go('main')" style="margin-top: 20px;">← Torna alla home</button>
+        </div>
+
         <!-- ========== RITORNO RESULT ========== -->
         <div class="screen" id="screen-ritorno-result">
             <div class="section-label">Il tuo percorso</div>
@@ -4266,6 +4375,7 @@
         'ultimo-mezzo': { title: '⏰ Ultimo mezzo', subtitle: 'Ce la fai a tornare?', parent: 'main' },
         'ritorno-struttura': { title: '🏕️ Rientra al camping', subtitle: 'Scegli da dove parti', parent: 'main' },
         'ritorno-result': { title: '🏕️ Percorso di ritorno', subtitle: 'Orari e costi per tornare', parent: 'ritorno-struttura' },
+        'impostazioni': { title: '⚙️ Impostazioni', subtitle: 'La tua struttura', parent: 'main' },
         'info-access': { title: 'Accessibilità', subtitle: 'Info disabilità', parent: 'info-trasporti' },
         'info-bici': { title: 'Biciclette', subtitle: 'Regole trasporto', parent: 'info-trasporti' },
         'info-animali': { title: 'Animali', subtitle: 'Cani e altri', parent: 'info-trasporti' },
@@ -4610,8 +4720,47 @@
         }
     }
 
+    // Salva campeggio selezionato
+    function salvaCampeggio() {
+        const select = document.getElementById('selectCampeggio');
+        const nome = select.value;
+
+        if (!nome) {
+            document.getElementById('campeggioInfo').classList.add('hidden');
+            return;
+        }
+
+        const info = campeggi[nome];
+        if (info) {
+            // Salva in localStorage
+            localStorage.setItem('slappy_struttura', nome);
+            strutturaUtente = nome;
+
+            // Mostra info
+            document.getElementById('campeggioNome').textContent = nome;
+            document.getElementById('campeggioFermata').textContent = info.fermata;
+            document.getElementById('campeggioLinea').textContent = info.linea;
+            document.getElementById('campeggioInfo').classList.remove('hidden');
+
+            // Aggiorna anche box ritorno
+            updateRitornoDestinazione();
+        }
+    }
+
+    // Inizializza select con valore salvato
+    function initImpostazioni() {
+        const select = document.getElementById('selectCampeggio');
+        if (select && strutturaUtente) {
+            select.value = strutturaUtente;
+            salvaCampeggio(); // Mostra info
+        }
+    }
+
     // Chiamata iniziale
-    document.addEventListener('DOMContentLoaded', updateRitornoDestinazione);
+    document.addEventListener('DOMContentLoaded', function() {
+        updateRitornoDestinazione();
+        initImpostazioni();
+    });
 
     const fermateRitornoEsterne = {
         'jesolo': ["Lido di Jesolo (Autostazione)", "Piazza Trieste", "Piazza Brescia", "Piazza Internazionale", "Piazza Aurora", "Piazza Nember", "Piazza Mazzini"],
