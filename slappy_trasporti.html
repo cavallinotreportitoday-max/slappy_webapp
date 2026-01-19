@@ -724,6 +724,121 @@
             pointer-events: none;
         }
 
+        /* ===== ZONE ACCORDION ===== */
+        .selected-stop {
+            background: var(--blue-50);
+            border: 1px solid var(--blue-200);
+            border-radius: var(--radius-card);
+            padding: 10px 14px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--blue-dark);
+        }
+        .zone-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .zone-group {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+        }
+        .zone-header {
+            padding: 12px 14px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-700);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.15s;
+        }
+        .zone-header:hover {
+            background: var(--gray-50);
+        }
+        .zone-header.expanded {
+            background: var(--blue-50);
+            color: var(--blue-dark);
+        }
+        .zone-arrow {
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+        .zone-header.expanded .zone-arrow {
+            transform: rotate(90deg);
+        }
+        .zone-stops {
+            padding: 8px 12px 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-top: 1px solid var(--gray-200);
+        }
+        .zone-stops.hidden {
+            display: none;
+        }
+        .stop-chip {
+            background: var(--white);
+            border: 1px solid var(--gray-300);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .stop-chip:hover {
+            border-color: var(--blue);
+            background: var(--blue-50);
+        }
+        .stop-chip.selected {
+            background: linear-gradient(135deg, #64B5F6, #42A5F5);
+            border-color: #1976D2;
+            color: var(--white);
+        }
+
+        /* ===== FERMATA SECTION (2 LIVELLI) ===== */
+        .fermata-section {
+            margin-top: 12px;
+        }
+        .fermata-section.hidden {
+            display: none;
+        }
+        .fermata-section .section-label {
+            border-left: 4px solid #78b2e0;
+            padding-left: 12px;
+        }
+        .fermata-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .fermata-chip {
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 100px;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #424242;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .fermata-chip:hover {
+            border-color: #bdbdbd;
+        }
+        .fermata-chip.selected {
+            background: radial-gradient(ellipse at center, #90caf9 0%, #78b2e0 100%);
+            border: 2px solid #0D47A1;
+            color: #ffffff;
+            font-weight: 600;
+        }
 
         /* ===== HIGHLIGHT BOX ===== */
         .highlight-box {
@@ -3425,43 +3540,47 @@
         <div class="screen" id="screen-interni">
             <div class="section-label">📍 Da dove parti?</div>
 
-            <div class="zone-grid" id="zoneFrom">
-                <div class="zone-chip selected" onclick="selectZoneFrom(this, 'punta-sabbioni')">Punta Sabbioni</div>
-                <div class="zone-chip" onclick="selectZoneFrom(this, 'treporti')">Treporti</div>
-                <div class="zone-chip" onclick="selectZoneFrom(this, 'ca-savio')">Ca' Savio</div>
-                <div class="zone-chip" onclick="selectZoneFrom(this, 'ca-vio')">Ca' Vio</div>
-                <div class="zone-chip" onclick="selectZoneFrom(this, 'ca-pasquali')">Ca' Pasquali</div>
-                <div class="zone-chip" onclick="selectZoneFrom(this, 'ca-ballarin')">Ca' Ballarin</div>
-                <div class="zone-chip" onclick="selectZoneFrom(this, 'ca-di-valle')">Ca' di Valle</div>
-                <div class="zone-chip" onclick="selectZoneFrom(this, 'cavallino')">Cavallino</div>
-                <div class="zone-chip" onclick="selectZoneFrom(this, 'jesolo')">Jesolo</div>
-                <div class="zone-chip" onclick="selectZoneFrom(this, 'saccagnana')">Saccagnana</div>
-                <div class="zone-chip" onclick="selectZoneFrom(this, 'lio-grando')">Lio Grando</div>
+            <div class="zone-grid" id="internoZoneFrom">
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'from', 'ca-ballarin')">Ca' Ballarin</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'from', 'ca-savio')">Ca' Savio</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'from', 'ca-vio')">Ca' Vio</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'from', 'ca-pasquali')">Ca' Pasquali</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'from', 'ca-di-valle')">Ca' di Valle</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'from', 'cavallino')">Cavallino</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'from', 'treporti')">Treporti</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'from', 'punta-sabbioni')">Punta Sabbioni</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'from', 'saccagnana')">Saccagnana</div>
             </div>
 
-
-            <div class="section-label">📍 Dove vuoi andare?</div>
-
-            <div class="zone-grid" id="zoneTo">
-                <div class="zone-chip" onclick="selectZoneTo(this, 'punta-sabbioni')">Punta Sabbioni</div>
-                <div class="zone-chip" onclick="selectZoneTo(this, 'treporti')">Treporti</div>
-                <div class="zone-chip" onclick="selectZoneTo(this, 'ca-savio')">Ca' Savio</div>
-                <div class="zone-chip" onclick="selectZoneTo(this, 'ca-vio')">Ca' Vio</div>
-                <div class="zone-chip" onclick="selectZoneTo(this, 'ca-pasquali')">Ca' Pasquali</div>
-                <div class="zone-chip" onclick="selectZoneTo(this, 'ca-ballarin')">Ca' Ballarin</div>
-                <div class="zone-chip" onclick="selectZoneTo(this, 'ca-di-valle')">Ca' di Valle</div>
-                <div class="zone-chip" onclick="selectZoneTo(this, 'cavallino')">Cavallino</div>
-                <div class="zone-chip" onclick="selectZoneTo(this, 'jesolo')">Jesolo</div>
-                <div class="zone-chip" onclick="selectZoneTo(this, 'saccagnana')">Saccagnana</div>
-                <div class="zone-chip" onclick="selectZoneTo(this, 'lio-grando')">Lio Grando</div>
+            <div class="fermata-section hidden" id="internoFermataFromSection">
+                <div class="section-label">🚏 Fermata specifica</div>
+                <div class="fermata-grid" id="internoFermataFromGrid"></div>
             </div>
 
+            <div class="section-label" style="margin-top: 20px;">📍 Dove vuoi andare?</div>
 
-            <button class="action-btn" id="btnCalcInterno" onclick="calcInterno()">🚌 Calcola percorso interno</button>
+            <div class="zone-grid" id="internoZoneTo">
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'to', 'ca-ballarin')">Ca' Ballarin</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'to', 'ca-savio')">Ca' Savio</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'to', 'ca-vio')">Ca' Vio</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'to', 'ca-pasquali')">Ca' Pasquali</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'to', 'ca-di-valle')">Ca' di Valle</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'to', 'cavallino')">Cavallino</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'to', 'treporti')">Treporti</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'to', 'punta-sabbioni')">Punta Sabbioni</div>
+                <div class="zone-chip" onclick="selectZoneInterno(this, 'to', 'saccagnana')">Saccagnana</div>
+            </div>
+
+            <div class="fermata-section hidden" id="internoFermataToSection">
+                <div class="section-label">🚏 Fermata specifica</div>
+                <div class="fermata-grid" id="internoFermataToGrid"></div>
+            </div>
+
+            <button class="action-btn" id="btnCalcInterno" onclick="calcInternoNew()">🚌 Calcola percorso interno</button>
 
             <div class="tip-box">
                 <div class="tip-icon">💰</div>
-                <div class="tip-content"><strong>Costo:</strong> €1,30 (urbano) - €3,50 (extraurbano Jesolo)</div>
+                <div class="tip-content"><strong>Costo:</strong> €1,30 (biglietto urbano)</div>
             </div>
         </div>
 
@@ -3968,33 +4087,45 @@
         <div class="screen" id="screen-journey-dest">
             <div class="section-label">📍 Da dove parti?</div>
 
-            <div class="zone-grid" id="journeyFrom">
-                <div class="zone-chip selected" onclick="selectJourneyFrom(this, 'punta-sabbioni')">Punta Sabbioni</div>
-                <div class="zone-chip" onclick="selectJourneyFrom(this, 'treporti')">Treporti</div>
-                <div class="zone-chip" onclick="selectJourneyFrom(this, 'ca-savio')">Ca' Savio</div>
-                <div class="zone-chip" onclick="selectJourneyFrom(this, 'ca-vio')">Ca' Vio</div>
-                <div class="zone-chip" onclick="selectJourneyFrom(this, 'ca-pasquali')">Ca' Pasquali</div>
-                <div class="zone-chip" onclick="selectJourneyFrom(this, 'ca-ballarin')">Ca' Ballarin</div>
-                <div class="zone-chip" onclick="selectJourneyFrom(this, 'ca-di-valle')">Ca' di Valle</div>
-                <div class="zone-chip" onclick="selectJourneyFrom(this, 'cavallino')">Cavallino</div>
-                <div class="zone-chip" onclick="selectJourneyFrom(this, 'jesolo')">Jesolo</div>
-                <div class="zone-chip" onclick="selectJourneyFrom(this, 'saccagnana')">Saccagnana</div>
-                <div class="zone-chip" onclick="selectJourneyFrom(this, 'lio-grando')">Lio Grando</div>
+            <div class="zone-grid" id="zoneGridFrom">
+                <div class="zone-chip" onclick="selectZone2L(this, 'from', 'ca-ballarin')">Ca' Ballarin</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'from', 'ca-savio')">Ca' Savio</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'from', 'ca-vio')">Ca' Vio</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'from', 'ca-pasquali')">Ca' Pasquali</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'from', 'ca-di-valle')">Ca' di Valle</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'from', 'cavallino')">Cavallino</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'from', 'treporti')">Treporti</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'from', 'punta-sabbioni')">Punta Sabbioni</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'from', 'jesolo')">Jesolo</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'from', 'saccagnana')">Saccagnana</div>
             </div>
 
-
-            <div class="section-label">🎯 Dove vuoi andare?</div>
-
-            <div class="zone-grid destinations" id="journeyTo">
-                <div class="zone-chip destination" onclick="selectDest(this, 'venezia')">Venezia</div>
-                <div class="zone-chip destination" onclick="selectDest(this, 'burano')">Burano</div>
-                <div class="zone-chip destination" onclick="selectDest(this, 'murano')">Murano</div>
-                <div class="zone-chip destination" onclick="selectDest(this, 'lido')">Lido</div>
-                <div class="zone-chip destination" onclick="selectDest(this, 'jesolo')">Jesolo</div>
-                <div class="zone-chip destination" onclick="selectDest(this, 'aeroporto')">Aeroporto</div>
+            <div class="fermata-section hidden" id="fermataFromSection">
+                <div class="section-label">🚏 Fermata specifica</div>
+                <div class="fermata-grid" id="fermataFromGrid"></div>
             </div>
 
-            <button class="action-btn" id="btnCalcJourney" onclick="calcJourney()">🧭 Calcola percorso</button>
+            <div class="section-label" style="margin-top: 20px;">🎯 Dove vuoi andare?</div>
+
+            <div class="zone-grid" id="zoneGridTo">
+                <div class="zone-chip" onclick="selectZone2L(this, 'to', 'ca-ballarin')">Ca' Ballarin</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'to', 'ca-savio')">Ca' Savio</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'to', 'ca-vio')">Ca' Vio</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'to', 'ca-pasquali')">Ca' Pasquali</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'to', 'ca-di-valle')">Ca' di Valle</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'to', 'cavallino')">Cavallino</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'to', 'treporti')">Treporti</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'to', 'punta-sabbioni')">Punta Sabbioni</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'to', 'jesolo')">Jesolo</div>
+                <div class="zone-chip" onclick="selectZone2L(this, 'to', 'saccagnana')">Saccagnana</div>
+            </div>
+
+            <div class="fermata-section hidden" id="fermataToSection">
+                <div class="section-label">🚏 Fermata specifica</div>
+                <div class="fermata-grid" id="fermataToGrid"></div>
+            </div>
+
+            <button class="action-btn" id="btnCalcJourney" onclick="calcJourney2L()">🧭 Calcola percorso</button>
         </div>
 
         <!-- ========== JOURNEY RESULT ========== -->
@@ -4210,6 +4341,149 @@
         journeyDest = dest;
     }
 
+    // Dropdown route planner
+    let selectedPartenza = null;
+    let selectedDestinazione = null;
+
+    function updatePartenza(value) {
+        selectedPartenza = value;
+    }
+
+    function updateDestinazione(value) {
+        selectedDestinazione = value;
+    }
+
+    // Sistema a 2 livelli - Zona + Fermata
+    let selected2LZoneFrom = null;
+    let selected2LZoneTo = null;
+    let selected2LFermataFrom = null;
+    let selected2LFermataTo = null;
+
+    const fermatePerZona2L = {
+        'ca-ballarin': ["Ca' Ballarin", "Ca' Ballarin - La Fattoria", "Ca' Ballarin - Radaelli", "Camping Union"],
+        'ca-savio': ["Ca' Savio - Via Fausta", "Ca' Savio Centro", "Ca' Savio Chiesa", "Ca' Savio - Via Polveriera", "Ca' Savio - Al Gondoliere", "Ca' Savio Spiaggia"],
+        'ca-vio': ["Ca' Vio", "Ca' Vio Chiesa", "Ca' Vio (Via Pordelio)"],
+        'ca-pasquali': ["Ca' Pasquali", "Ca' Pasquali (Via Pordelio)"],
+        'ca-di-valle': ["Ca' di Valle"],
+        'cavallino': ["Cavallino (paese)", "Cimitero", "Ponte Cavallino", "Via F. Baracca"],
+        'treporti': ["Treporti", "Ricevitoria"],
+        'punta-sabbioni': ["Punta Sabbioni Terminal", "Punta Sabbioni (ATVO)", "Faro"],
+        'jesolo': ["Lido di Jesolo (Autostazione)", "Piazza Mazzini", "Piazza Aurora"],
+        'saccagnana': ["Saccagnana", "Lio Grando"]
+    };
+
+    // Aggiorna chip disabilitati (Trova percorso)
+    function updateDisabled2L() {
+        // Disabilita zone: se stessa zona selezionata nell'altra direzione
+        document.querySelectorAll('#zoneGridFrom .zone-chip').forEach(c => {
+            const zone = c.getAttribute('onclick').match(/'([^']+)'\)$/)[1];
+            if (zone === selected2LZoneTo) {
+                c.classList.add('disabled');
+            } else {
+                c.classList.remove('disabled');
+            }
+        });
+        document.querySelectorAll('#zoneGridTo .zone-chip').forEach(c => {
+            const zone = c.getAttribute('onclick').match(/'([^']+)'\)$/)[1];
+            if (zone === selected2LZoneFrom) {
+                c.classList.add('disabled');
+            } else {
+                c.classList.remove('disabled');
+            }
+        });
+        // Disabilita fermate specifiche
+        document.querySelectorAll('#fermataFromGrid .fermata-chip').forEach(c => {
+            if (c.textContent === selected2LFermataTo) {
+                c.classList.add('disabled');
+            } else {
+                c.classList.remove('disabled');
+            }
+        });
+        document.querySelectorAll('#fermataToGrid .fermata-chip').forEach(c => {
+            if (c.textContent === selected2LFermataFrom) {
+                c.classList.add('disabled');
+            } else {
+                c.classList.remove('disabled');
+            }
+        });
+    }
+
+    function selectZone2L(chip, direction, zone) {
+        if (chip.classList.contains('disabled')) return;
+
+        const gridId = direction === 'from' ? 'zoneGridFrom' : 'zoneGridTo';
+        const sectionId = direction === 'from' ? 'fermataFromSection' : 'fermataToSection';
+        const fermataGridId = direction === 'from' ? 'fermataFromGrid' : 'fermataToGrid';
+
+        // Rimuovi selezione da tutte le zone
+        document.querySelectorAll('#' + gridId + ' .zone-chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+
+        // Salva zona selezionata
+        if (direction === 'from') {
+            selected2LZoneFrom = zone;
+            selected2LFermataFrom = null;
+        } else {
+            selected2LZoneTo = zone;
+            selected2LFermataTo = null;
+        }
+
+        // Mostra fermate per questa zona
+        const fermate = fermatePerZona2L[zone] || [];
+        const fermataGrid = document.getElementById(fermataGridId);
+        const section = document.getElementById(sectionId);
+
+        if (fermate.length === 0) {
+            section.classList.add('hidden');
+            updateDisabled2L();
+            return;
+        }
+
+        let html = '';
+        fermate.forEach(f => {
+            html += '<div class="fermata-chip" onclick="selectFermata2L(this, \'' + direction + '\', \'' + f.replace(/'/g, "\\'") + '\')">' + f + '</div>';
+        });
+        fermataGrid.innerHTML = html;
+        section.classList.remove('hidden');
+        updateDisabled2L();
+    }
+
+    function selectFermata2L(chip, direction, fermata) {
+        if (chip.classList.contains('disabled')) return;
+
+        const fermataGridId = direction === 'from' ? 'fermataFromGrid' : 'fermataToGrid';
+
+        // Rimuovi selezione da tutte le fermate
+        document.querySelectorAll('#' + fermataGridId + ' .fermata-chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+
+        // Salva fermata selezionata
+        if (direction === 'from') {
+            selected2LFermataFrom = fermata;
+        } else {
+            selected2LFermataTo = fermata;
+        }
+        updateDisabled2L();
+    }
+
+    function calcJourney2L() {
+        if (!selected2LZoneFrom) {
+            alert('Seleziona una zona di partenza');
+            return;
+        }
+        if (!selected2LZoneTo) {
+            alert('Seleziona una zona di destinazione');
+            return;
+        }
+
+        const fromName = selected2LFermataFrom || selected2LZoneFrom;
+        const toName = selected2LFermataTo || selected2LZoneTo;
+
+        document.getElementById('journeyRoute').textContent = fromName + ' → ' + toName + ' • ~30 min';
+        go('journey-result');
+        updateWalkElements();
+    }
+
     function calcJourney() {
         if (!journeyDest) {
             alert('Seleziona una destinazione');
@@ -4217,7 +4491,8 @@
         }
         
         const destNames = {
-            'venezia': 'Venezia San Marco',
+            'san-marco': 'Venezia San Marco',
+            'piazzale-roma': 'Venezia P.le Roma',
             'burano': 'Burano',
             'murano': 'Murano',
             'lido': 'Lido',
@@ -4518,7 +4793,137 @@
     }
 
     // Spostamenti interni
-    // Database fermate per zona
+    // Database fermate per zona (solo Cavallino-Treporti)
+    const fermateInternoPerZona = {
+        'ca-ballarin': ["Ca' Ballarin", "Ca' Ballarin - La Fattoria", "Ca' Ballarin - Radaelli", "Camping Union"],
+        'ca-savio': ["Ca' Savio - Via Fausta", "Ca' Savio Centro", "Ca' Savio Chiesa", "Ca' Savio - Via Polveriera", "Ca' Savio - Al Gondoliere", "Ca' Savio Spiaggia"],
+        'ca-vio': ["Ca' Vio", "Ca' Vio Chiesa", "Ca' Vio (Via Pordelio)"],
+        'ca-pasquali': ["Ca' Pasquali", "Ca' Pasquali (Via Pordelio)"],
+        'ca-di-valle': ["Ca' di Valle"],
+        'cavallino': ["Cavallino (paese)", "Cimitero", "Ponte Cavallino", "Via F. Baracca", "Incrocio Via Anna Frank", "Darsena"],
+        'treporti': ["Treporti", "Ricevitoria"],
+        'punta-sabbioni': ["Punta Sabbioni Terminal", "Punta Sabbioni (ATVO)", "Faro"],
+        'saccagnana': ["Saccagnana", "Lio Grando"]
+    };
+
+    // Sistema a 2 livelli per Spostamenti Interni
+    let internoZoneFrom = null;
+    let internoZoneTo = null;
+    let internoFermataFrom = null;
+    let internoFermataTo = null;
+
+    function updateDisabledInterno() {
+        // Disabilita zone: se stessa zona selezionata nell'altra direzione
+        document.querySelectorAll('#internoZoneFrom .zone-chip').forEach(c => {
+            const zone = c.getAttribute('onclick').match(/'([^']+)'\)$/)[1];
+            if (zone === internoZoneTo) {
+                c.classList.add('disabled');
+            } else {
+                c.classList.remove('disabled');
+            }
+        });
+        document.querySelectorAll('#internoZoneTo .zone-chip').forEach(c => {
+            const zone = c.getAttribute('onclick').match(/'([^']+)'\)$/)[1];
+            if (zone === internoZoneFrom) {
+                c.classList.add('disabled');
+            } else {
+                c.classList.remove('disabled');
+            }
+        });
+        // Disabilita fermate: se stessa fermata selezionata nell'altra direzione
+        document.querySelectorAll('#internoFermataFromGrid .fermata-chip').forEach(c => {
+            if (c.textContent === internoFermataTo) {
+                c.classList.add('disabled');
+            } else {
+                c.classList.remove('disabled');
+            }
+        });
+        document.querySelectorAll('#internoFermataToGrid .fermata-chip').forEach(c => {
+            if (c.textContent === internoFermataFrom) {
+                c.classList.add('disabled');
+            } else {
+                c.classList.remove('disabled');
+            }
+        });
+    }
+
+    function selectZoneInterno(chip, direction, zone) {
+        if (chip.classList.contains('disabled')) return;
+
+        const gridId = direction === 'from' ? 'internoZoneFrom' : 'internoZoneTo';
+        const sectionId = direction === 'from' ? 'internoFermataFromSection' : 'internoFermataToSection';
+        const fermataGridId = direction === 'from' ? 'internoFermataFromGrid' : 'internoFermataToGrid';
+
+        // Rimuovi selezione da tutte le zone
+        document.querySelectorAll('#' + gridId + ' .zone-chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+
+        // Salva zona selezionata
+        if (direction === 'from') {
+            internoZoneFrom = zone;
+            internoFermataFrom = null;
+        } else {
+            internoZoneTo = zone;
+            internoFermataTo = null;
+        }
+
+        // Mostra fermate per questa zona
+        const fermate = fermateInternoPerZona[zone] || [];
+        const fermataGrid = document.getElementById(fermataGridId);
+        const section = document.getElementById(sectionId);
+
+        if (fermate.length === 0) {
+            section.classList.add('hidden');
+            updateDisabledInterno();
+            return;
+        }
+
+        let html = '';
+        fermate.forEach(f => {
+            html += '<div class="fermata-chip" onclick="selectFermataInterno(this, \'' + direction + '\', \'' + f.replace(/'/g, "\\'") + '\')">' + f + '</div>';
+        });
+        fermataGrid.innerHTML = html;
+        section.classList.remove('hidden');
+        updateDisabledInterno();
+    }
+
+    function selectFermataInterno(chip, direction, fermata) {
+        if (chip.classList.contains('disabled')) return;
+
+        const fermataGridId = direction === 'from' ? 'internoFermataFromGrid' : 'internoFermataToGrid';
+
+        // Rimuovi selezione da tutte le fermate
+        document.querySelectorAll('#' + fermataGridId + ' .fermata-chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+
+        // Salva fermata selezionata
+        if (direction === 'from') {
+            internoFermataFrom = fermata;
+        } else {
+            internoFermataTo = fermata;
+        }
+        updateDisabledInterno();
+    }
+
+    function calcInternoNew() {
+        if (!internoZoneFrom) {
+            alert('Seleziona una zona di partenza');
+            return;
+        }
+        if (!internoZoneTo) {
+            alert('Seleziona una zona di destinazione');
+            return;
+        }
+
+        const fromName = internoFermataFrom || internoZoneFrom;
+        const toName = internoFermataTo || internoZoneTo;
+
+        document.getElementById('internoRoute').textContent = fromName + ' → ' + toName + ' • ~15 min';
+        go('interno-result');
+        updateWalkElements();
+    }
+
+    // Database fermate per zona (legacy)
     const fermatePerZona = {
         'punta-sabbioni': ['Punta Sabbioni', 'Punta Sabbioni - Park Aci'],
         'treporti': ['Treporti Ricevitoria', 'Treporti Chiesa', 'Treporti - Cimitero'],
@@ -4663,6 +5068,7 @@
             if (!fermataName) return;
 
             const detail = step.querySelector('.step-detail');
+            const timeDiv = step.querySelector('.step-time');
             if (!detail) return;
 
             // Determina il tipo di fermata (bus o imbarcadero)
@@ -4670,20 +5076,29 @@
             const prefix = isImbarcadero ? 'Imbarcadero' : 'Fermata bus';
 
             if (gpsAvailable && userPosition) {
-                // GPS disponibile: mostra tempo reale nel detail
+                // GPS disponibile: mostra tempo reale nel .step-time
                 const walkTime = getWalkTime(fermataName);
-                if (walkTime !== null) {
-                    detail.innerHTML = `${prefix} ${fermataName} • <strong>~${walkTime} min a piedi</strong>`;
-                } else {
-                    detail.textContent = `${prefix} ${fermataName}`;
+                detail.textContent = `${prefix} ${fermataName}`;
+                if (walkTime !== null && timeDiv) {
+                    timeDiv.innerHTML = `${walkTime} min`;
                 }
             } else {
-                // GPS non disponibile: mostra link Maps nel detail
+                // GPS non disponibile: mostra link Maps nel .step-time a destra
+                detail.textContent = `${prefix} ${fermataName}`;
                 const mapsLink = getMapsLink(fermataName);
-                if (mapsLink !== '#') {
-                    detail.innerHTML = `${prefix} ${fermataName} • <a href="${mapsLink}" target="_blank" class="walk-maps-link">📍 Vedi su Maps</a>`;
-                } else {
-                    detail.textContent = `${prefix} ${fermataName}`;
+                if (mapsLink !== '#' && timeDiv) {
+                    timeDiv.innerHTML = `<a href="${mapsLink}" target="_blank" class="maps-btn">📍 Maps</a>`;
+                }
+            }
+        });
+
+        // Aggiorna step di arrivo con badge
+        document.querySelectorAll('.journey-step').forEach(step => {
+            const icon = step.querySelector('.step-icon');
+            if (icon && icon.classList.contains('arrive')) {
+                const timeDiv = step.querySelector('.step-time');
+                if (timeDiv && !timeDiv.textContent.trim()) {
+                    timeDiv.innerHTML = '✓';
                 }
             }
         });
