@@ -2208,6 +2208,63 @@
         }
 
         /* Select campeggio */
+        /* Banner setup struttura */
+        .setup-banner {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border: 2px solid #90CAF9;
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.2s;
+        }
+        .setup-banner:hover {
+            border-color: #64B5F6;
+            background: linear-gradient(135deg, #BBDEFB 0%, #90CAF9 100%);
+        }
+        .setup-banner.configured {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            border-color: #81C784;
+        }
+        .setup-banner.configured:hover {
+            border-color: #66BB6A;
+            background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%);
+        }
+        .setup-banner-icon {
+            font-size: 24px;
+        }
+        .setup-banner-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .setup-banner-text strong {
+            font-size: 14px;
+            color: #1565C0;
+        }
+        .setup-banner.configured .setup-banner-text strong {
+            color: #2E7D32;
+        }
+        .setup-banner-text span {
+            font-size: 12px;
+            color: #1976D2;
+        }
+        .setup-banner.configured .setup-banner-text span {
+            color: #388E3C;
+        }
+        .setup-banner-arrow {
+            font-size: 18px;
+            color: #1976D2;
+            font-weight: bold;
+        }
+        .setup-banner.configured .setup-banner-arrow {
+            color: #388E3C;
+        }
+
         .campeggio-select {
             width: 100%;
             padding: 14px 16px;
@@ -2546,6 +2603,16 @@
     <div class="screens">
         <!-- ========== MAIN SCREEN ========== -->
         <div class="screen active" id="screen-main">
+            <!-- Banner impostazioni struttura -->
+            <div class="setup-banner" id="setupBanner" onclick="go('impostazioni')">
+                <div class="setup-banner-icon">🏕️</div>
+                <div class="setup-banner-text">
+                    <strong id="setupBannerTitle">Imposta la tua struttura</strong>
+                    <span id="setupBannerSub">Per avere la destinazione automatica</span>
+                </div>
+                <span class="setup-banner-arrow">→</span>
+            </div>
+
             <!-- 4 CTA PRINCIPALI - Verticali -->
             <div class="section-label-main">Cosa vuoi fare?</div>
             <div class="main-cta-grid">
@@ -4742,8 +4809,28 @@
             document.getElementById('campeggioLinea').textContent = info.linea;
             document.getElementById('campeggioInfo').classList.remove('hidden');
 
-            // Aggiorna anche box ritorno
+            // Aggiorna anche box ritorno e banner
             updateRitornoDestinazione();
+            updateSetupBanner();
+        }
+    }
+
+    // Aggiorna banner setup nella home
+    function updateSetupBanner() {
+        const banner = document.getElementById('setupBanner');
+        const title = document.getElementById('setupBannerTitle');
+        const sub = document.getElementById('setupBannerSub');
+        if (!banner) return;
+
+        const info = campeggi[strutturaUtente];
+        if (info) {
+            banner.classList.add('configured');
+            title.textContent = strutturaUtente;
+            sub.textContent = 'Fermata: ' + info.fermata;
+        } else {
+            banner.classList.remove('configured');
+            title.textContent = 'Imposta la tua struttura';
+            sub.textContent = 'Per avere la destinazione automatica';
         }
     }
 
@@ -4754,6 +4841,7 @@
             select.value = strutturaUtente;
             salvaCampeggio(); // Mostra info
         }
+        updateSetupBanner();
     }
 
     // Chiamata iniziale
