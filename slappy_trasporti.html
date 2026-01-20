@@ -2225,8 +2225,8 @@
             background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%);
         }
         .setup-banner.configured {
-            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
-            border: 2px solid #81C784;
+            background: linear-gradient(135deg, #A5D6A7 0%, #81C784 100%);
+            border: none;
         }
         .setup-banner.configured:hover {
             border-color: #66BB6A;
@@ -5438,23 +5438,23 @@
         if (!banner) return;
 
         if (strutturaData) {
+            // STRUTTURA CONFIGURATA: sfondo verde pieno
             banner.classList.add('configured');
             if (strutturaData.tipo === 'camping') {
                 icon.textContent = '🏕️';
-                title.innerHTML = strutturaData.nome + ' <span class="setup-banner-edit">✏️</span>';
             } else if (strutturaData.tipo === 'hotel') {
                 icon.textContent = '🏠';
-                title.innerHTML = strutturaData.nome + ' <span class="setup-banner-edit">✏️</span>';
             } else if (strutturaData.tipo === 'passaggio') {
                 icon.textContent = '🚗';
-                title.innerHTML = strutturaData.nome + ' <span class="setup-banner-edit">✏️</span>';
             }
+            title.innerHTML = strutturaData.nome + ' <span class="setup-banner-edit">✏️</span>';
             sub.textContent = 'Fermata: ' + strutturaData.fermata + ' • Tocca per cambiare';
         } else {
+            // STRUTTURA NON CONFIGURATA: bordo tratteggiato, invita al click
             banner.classList.remove('configured');
-            icon.textContent = '📍';
-            title.textContent = 'Dove alloggi?';
-            sub.textContent = 'Imposta la tua struttura per percorsi personalizzati';
+            icon.textContent = '🏕️';
+            title.textContent = 'Imposta dove alloggi';
+            sub.innerHTML = 'Tocca per personalizzare i percorsi <span style="font-weight:bold;">→</span>';
         }
     }
 
