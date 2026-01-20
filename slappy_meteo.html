@@ -1515,12 +1515,12 @@ function renderPage(weather, marine) {
         <div class="section-title" style="margin-top: 0;">${dataOggi}</div>
 
         <!-- INFO CARD (identico a home) -->
-        <div class="info-card ${flag.color === 'green' ? '' : flag.color}">
+        <div class="info-card ${flag.color === 'green' ? '' : flag.color}" id="cardMeteo">
             <div class="info-row">
-                <div class="info-item">
+                <div class="info-item" id="balneazione">
                     <div class="info-item-icon-wrapper">
                         <div class="info-item-dot ${flag.color}"></div>
-                        <span style="font-size: 18px;">${weatherInfo.icon}</span>
+                        <span style="font-size: 18px;" id="iconaMeteo">${weatherInfo.icon}</span>
                         <span style="font-size: 14px; font-weight: 600; color: var(--text-dark);">${Math.round(current.temperature_2m)}°</span>
                     </div>
                     <div class="info-item-value">${flag.title}</div>
@@ -1659,6 +1659,34 @@ function renderPage(weather, marine) {
     `;
 
     document.getElementById('mainContent').innerHTML = html;
+
+    // Applica tema giorno/notte dopo il render
+    applyTheme();
+}
+
+// =====================================================
+// TEMA GIORNO/NOTTE
+// =====================================================
+function applyTheme() {
+    const ora = new Date().getHours();
+    const isNotte = ora >= 20 || ora < 6;
+
+    const cardMeteo = document.getElementById('cardMeteo');
+    const iconaMeteo = document.getElementById('iconaMeteo');
+    const balneazione = document.getElementById('balneazione');
+
+    if (!cardMeteo || !iconaMeteo || !balneazione) return;
+
+    if (isNotte) {
+        // TEMA NOTTE (20:00 - 06:00)
+        cardMeteo.style.background = 'linear-gradient(135deg, #B3E5FC, #81D4FA)';
+        cardMeteo.style.borderColor = '#64B5F6';
+        iconaMeteo.textContent = '🌙';
+        balneazione.style.display = 'none';
+    } else {
+        // TEMA GIORNO (06:00 - 20:00) - valori default
+        balneazione.style.display = 'block';
+    }
 }
 
 document.addEventListener('DOMContentLoaded', loadWeatherData);

@@ -2207,11 +2207,10 @@
             border-color: var(--gray-400);
         }
 
-        /* Select campeggio */
         /* Banner setup struttura */
         .setup-banner {
-            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
-            border: 2px solid #90CAF9;
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            border: 2px dashed #81C784;
             border-radius: 12px;
             padding: 14px 16px;
             display: flex;
@@ -2222,12 +2221,12 @@
             transition: all 0.2s;
         }
         .setup-banner:hover {
-            border-color: #64B5F6;
-            background: linear-gradient(135deg, #BBDEFB 0%, #90CAF9 100%);
+            border-color: #66BB6A;
+            background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%);
         }
         .setup-banner.configured {
             background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
-            border-color: #81C784;
+            border: 2px solid #81C784;
         }
         .setup-banner.configured:hover {
             border-color: #66BB6A;
@@ -2244,25 +2243,53 @@
         }
         .setup-banner-text strong {
             font-size: 14px;
-            color: #1565C0;
-        }
-        .setup-banner.configured .setup-banner-text strong {
             color: #2E7D32;
         }
         .setup-banner-text span {
             font-size: 12px;
-            color: #1976D2;
-        }
-        .setup-banner.configured .setup-banner-text span {
             color: #388E3C;
         }
         .setup-banner-arrow {
             font-size: 18px;
-            color: #1976D2;
+            color: #388E3C;
             font-weight: bold;
         }
-        .setup-banner.configured .setup-banner-arrow {
-            color: #388E3C;
+        .setup-banner-edit {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-left: 4px;
+        }
+
+        /* Box fermata manuale per "Altro" */
+        .altro-fermata-box {
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+            border: 2px solid #FFD54F;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .altro-fermata-box.hidden {
+            display: none;
+        }
+        .altro-fermata-box .section-label {
+            margin: 0 0 12px 0;
+            border-left-color: #FFB300;
+        }
+        .altro-fermata-input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 15px;
+            font-family: var(--font-system);
+            border: 2px solid #FFD54F;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #333;
+            box-sizing: border-box;
+        }
+        .altro-fermata-input:focus {
+            outline: none;
+            border-color: #FFB300;
+            box-shadow: 0 0 0 3px rgba(255, 183, 0, 0.2);
         }
 
         .campeggio-select {
@@ -2590,6 +2617,226 @@
             color: var(--gray-600);
             font-style: italic;
         }
+
+        /* ========== ONBOARDING SCREEN ========== */
+        .onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #E3F2FD 0%, #BBDEFB 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .onboarding-overlay.hidden {
+            display: none;
+        }
+
+        .onboarding-header {
+            text-align: center;
+            padding: 30px 0 20px;
+        }
+
+        .onboarding-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .onboarding-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .onboarding-subtitle {
+            font-size: 16px;
+            color: var(--gray-600);
+        }
+
+        .onboarding-section {
+            margin-top: 24px;
+        }
+
+        .onboarding-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            padding-left: 4px;
+        }
+
+        .onboarding-option {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .onboarding-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .onboarding-option:active {
+            transform: scale(0.98);
+        }
+
+        .onboarding-option.camping {
+            border-left: 4px solid #4CAF50;
+        }
+
+        .onboarding-option.hotel {
+            border-left: 4px solid #FF9800;
+        }
+
+        .onboarding-option.passaggio {
+            border-left: 4px solid #9E9E9E;
+        }
+
+        .onboarding-option-icon {
+            font-size: 28px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #F5F5F5;
+            border-radius: 10px;
+        }
+
+        .onboarding-option-text {
+            flex: 1;
+        }
+
+        .onboarding-option-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .onboarding-option-sub {
+            font-size: 13px;
+            color: var(--gray-600);
+            margin-top: 2px;
+        }
+
+        .onboarding-option-arrow {
+            color: var(--gray-400);
+            font-size: 20px;
+        }
+
+        /* Camping list in onboarding */
+        .onboarding-camping-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .onboarding-camping-list.expanded {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .onboarding-camping-item {
+            background: #F1F8E9;
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin: 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--gray-800);
+            transition: all 0.2s;
+        }
+
+        .onboarding-camping-item:hover {
+            background: #DCEDC8;
+        }
+
+        .onboarding-camping-item span {
+            flex: 1;
+        }
+
+        .onboarding-camping-item small {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        /* Hotel/Appartamento form */
+        .onboarding-form {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 10px;
+        }
+
+        .onboarding-form.visible {
+            display: block;
+        }
+
+        .onboarding-form label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+
+        .onboarding-form select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-bottom: 12px;
+            background: white;
+        }
+
+        .onboarding-form select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .onboarding-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .onboarding-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .onboarding-btn:disabled {
+            background: #BDBDBD;
+            cursor: not-allowed;
+        }
     </style>
 <div class="app">
     <header class="header">
@@ -2601,14 +2848,110 @@
     </header>
 
     <div class="screens">
+        <!-- ========== ONBOARDING OVERLAY ========== -->
+        <div class="onboarding-overlay hidden" id="onboardingOverlay">
+            <div class="onboarding-header">
+                <div class="onboarding-icon">🏕️</div>
+                <div class="onboarding-title">Dove alloggi?</div>
+                <div class="onboarding-subtitle">Per offrirti percorsi personalizzati</div>
+            </div>
+
+            <div class="onboarding-section">
+                <div class="onboarding-section-title">Campeggi della zona</div>
+                <div class="onboarding-option camping" onclick="toggleCampingList()">
+                    <div class="onboarding-option-icon">🏕️</div>
+                    <div class="onboarding-option-text">
+                        <div class="onboarding-option-title">Campeggio</div>
+                        <div class="onboarding-option-sub">27 strutture convenzionate</div>
+                    </div>
+                    <span class="onboarding-option-arrow" id="campingArrow">▼</span>
+                </div>
+                <div class="onboarding-camping-list" id="onboardingCampingList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <div class="onboarding-section">
+                <div class="onboarding-section-title">Altre opzioni</div>
+                <div class="onboarding-option hotel" onclick="showHotelForm()">
+                    <div class="onboarding-option-icon">🏠</div>
+                    <div class="onboarding-option-text">
+                        <div class="onboarding-option-title">Hotel / Appartamento</div>
+                        <div class="onboarding-option-sub">Indica la fermata più vicina</div>
+                    </div>
+                    <span class="onboarding-option-arrow">›</span>
+                </div>
+                <div class="onboarding-form" id="hotelForm">
+                    <label>Seleziona la fermata più vicina a te:</label>
+                    <select id="onboardingFermataSelect">
+                        <option value="">-- Scegli fermata --</option>
+                        <optgroup label="Cavallino-Treporti">
+                            <option value="Punta Sabbioni Terminal">Punta Sabbioni Terminal</option>
+                            <option value="Punta Sabbioni (ATVO)">Punta Sabbioni (ATVO)</option>
+                            <option value="Faro">Faro</option>
+                            <option value="Treporti">Treporti</option>
+                            <option value="Ricevitoria">Ricevitoria</option>
+                            <option value="Ca' Savio - Via Fausta">Ca' Savio - Via Fausta</option>
+                            <option value="Ca' Savio Centro">Ca' Savio Centro</option>
+                            <option value="Ca' Savio Chiesa">Ca' Savio Chiesa</option>
+                            <option value="Ca' Vio">Ca' Vio</option>
+                            <option value="Ca' Vio Chiesa">Ca' Vio Chiesa</option>
+                            <option value="Ca' Pasquali">Ca' Pasquali</option>
+                            <option value="Ca' Pasquali - Via Pordelio">Ca' Pasquali - Via Pordelio</option>
+                            <option value="Ca' Ballarin">Ca' Ballarin</option>
+                            <option value="Ca' Ballarin - Via Pordelio">Ca' Ballarin - Via Pordelio</option>
+                            <option value="Ca' Ballarin - Radaelli">Ca' Ballarin - Radaelli</option>
+                            <option value="Camping Union">Camping Union</option>
+                            <option value="Ca' di Valle">Ca' di Valle</option>
+                            <option value="Cavallino (paese)">Cavallino (paese)</option>
+                            <option value="Cavallino - Via Fausta">Cavallino - Via Fausta</option>
+                            <option value="Via F. Baracca">Via F. Baracca</option>
+                            <option value="Ponte Cavallino">Ponte Cavallino</option>
+                            <option value="Saccagnana">Saccagnana</option>
+                            <option value="Lio Grando">Lio Grando</option>
+                        </optgroup>
+                        <optgroup label="Jesolo">
+                            <option value="Lido di Jesolo (Autostazione)">Lido di Jesolo (Autostazione)</option>
+                            <option value="Piazza Trieste">Piazza Trieste</option>
+                            <option value="Piazza Brescia">Piazza Brescia</option>
+                            <option value="Piazza Aurora">Piazza Aurora</option>
+                            <option value="Piazza Mazzini">Piazza Mazzini</option>
+                        </optgroup>
+                        <optgroup label="Venezia">
+                            <option value="S.Marco - S.Zaccaria">S.Marco - S.Zaccaria</option>
+                            <option value="Piazzale Roma">Piazzale Roma</option>
+                            <option value="Fondamente Nove">Fondamente Nove</option>
+                        </optgroup>
+                        <optgroup label="Isole">
+                            <option value="Lido S.M.E.">Lido S.M.E.</option>
+                            <option value="Lido S.Nicolò">Lido S.Nicolò</option>
+                            <option value="Burano">Burano</option>
+                            <option value="Murano">Murano</option>
+                            <option value="Murano Faro">Murano Faro</option>
+                        </optgroup>
+                    </select>
+                    <button class="onboarding-btn" onclick="saveHotelOnboarding()">Conferma</button>
+                </div>
+
+                <div class="onboarding-option passaggio" onclick="savePassaggioOnboarding()">
+                    <div class="onboarding-option-icon">🚗</div>
+                    <div class="onboarding-option-text">
+                        <div class="onboarding-option-title">Sono di passaggio</div>
+                        <div class="onboarding-option-sub">Usa Punta Sabbioni come riferimento</div>
+                    </div>
+                    <span class="onboarding-option-arrow">›</span>
+                </div>
+            </div>
+        </div>
+
         <!-- ========== MAIN SCREEN ========== -->
         <div class="screen active" id="screen-main">
             <!-- Banner impostazioni struttura -->
             <div class="setup-banner" id="setupBanner" onclick="go('impostazioni')">
-                <div class="setup-banner-icon">🏕️</div>
+                <div class="setup-banner-icon" id="setupBannerIcon">📍</div>
                 <div class="setup-banner-text">
-                    <strong id="setupBannerTitle">Imposta la tua struttura</strong>
-                    <span id="setupBannerSub">Per avere la destinazione automatica</span>
+                    <strong id="setupBannerTitle">Dove alloggi?</strong>
+                    <span id="setupBannerSub">Imposta la tua struttura per percorsi personalizzati</span>
                 </div>
                 <span class="setup-banner-arrow">→</span>
             </div>
@@ -3923,7 +4266,63 @@
                     <option value="Camping Village del Sole">Camping Village del Sole</option>
                     <option value="Miramare Camping Village">Miramare Camping Village</option>
                 </optgroup>
+                <optgroup label="Altro">
+                    <option value="altro">🏠 Alloggio fuori Cavallino-Treporti</option>
+                </optgroup>
             </select>
+
+            <!-- Box fermata manuale per "Altro" -->
+            <div id="altroFermataBox" class="altro-fermata-box hidden">
+                <div class="section-label">🚏 Qual è la fermata più vicina a te?</div>
+                <select id="altroFermataSelect" class="campeggio-select">
+                    <option value="">-- Seleziona fermata --</option>
+                    <optgroup label="Cavallino-Treporti">
+                        <option value="Punta Sabbioni Terminal">Punta Sabbioni Terminal</option>
+                        <option value="Punta Sabbioni (ATVO)">Punta Sabbioni (ATVO)</option>
+                        <option value="Faro">Faro</option>
+                        <option value="Treporti">Treporti</option>
+                        <option value="Ricevitoria">Ricevitoria</option>
+                        <option value="Ca' Savio - Via Fausta">Ca' Savio - Via Fausta</option>
+                        <option value="Ca' Savio Centro">Ca' Savio Centro</option>
+                        <option value="Ca' Savio Chiesa">Ca' Savio Chiesa</option>
+                        <option value="Ca' Vio">Ca' Vio</option>
+                        <option value="Ca' Vio Chiesa">Ca' Vio Chiesa</option>
+                        <option value="Ca' Pasquali">Ca' Pasquali</option>
+                        <option value="Ca' Pasquali - Via Pordelio">Ca' Pasquali - Via Pordelio</option>
+                        <option value="Ca' Ballarin">Ca' Ballarin</option>
+                        <option value="Ca' Ballarin - Via Pordelio">Ca' Ballarin - Via Pordelio</option>
+                        <option value="Ca' Ballarin - Radaelli">Ca' Ballarin - Radaelli</option>
+                        <option value="Camping Union">Camping Union</option>
+                        <option value="Ca' di Valle">Ca' di Valle</option>
+                        <option value="Cavallino (paese)">Cavallino (paese)</option>
+                        <option value="Cavallino - Via Fausta">Cavallino - Via Fausta</option>
+                        <option value="Via F. Baracca">Via F. Baracca</option>
+                        <option value="Ponte Cavallino">Ponte Cavallino</option>
+                        <option value="Saccagnana">Saccagnana</option>
+                        <option value="Lio Grando">Lio Grando</option>
+                    </optgroup>
+                    <optgroup label="Jesolo">
+                        <option value="Lido di Jesolo (Autostazione)">Lido di Jesolo (Autostazione)</option>
+                        <option value="Piazza Trieste">Piazza Trieste</option>
+                        <option value="Piazza Brescia">Piazza Brescia</option>
+                        <option value="Piazza Aurora">Piazza Aurora</option>
+                        <option value="Piazza Mazzini">Piazza Mazzini</option>
+                    </optgroup>
+                    <optgroup label="Venezia">
+                        <option value="S.Marco - S.Zaccaria">S.Marco - S.Zaccaria</option>
+                        <option value="Piazzale Roma">Piazzale Roma</option>
+                        <option value="Fondamente Nove">Fondamente Nove</option>
+                    </optgroup>
+                    <optgroup label="Isole">
+                        <option value="Lido S.M.E.">Lido S.M.E.</option>
+                        <option value="Lido S.Nicolò">Lido S.Nicolò</option>
+                        <option value="Burano">Burano</option>
+                        <option value="Murano">Murano</option>
+                        <option value="Murano Faro">Murano Faro</option>
+                    </optgroup>
+                </select>
+                <button class="action-btn" onclick="salvaAltroFermata()" style="margin-top: 12px;">✓ Salva fermata</button>
+            </div>
 
             <div id="campeggioInfo" class="campeggio-info hidden">
                 <div class="tip-box">
@@ -4764,21 +5163,187 @@
         "Villa Al Mare Camping": { fermata: "Punta Sabbioni Terminal", zona: "Punta Sabbioni", linea: "23A" },
         "Camping Village Enzo Stella Maris": { fermata: "Faro", zona: "Punta Sabbioni", linea: "23A" },
         "Camping Village del Sole": { fermata: "Punta Sabbioni (ATVO)", zona: "Punta Sabbioni", linea: "23A" },
-        "Miramare Camping Village": { fermata: "Punta Sabbioni Terminal", zona: "Punta Sabbioni", linea: "23A" }
+        "Miramare Camping Village": { fermata: "Punta Sabbioni Terminal", zona: "Punta Sabbioni", linea: "23A" },
+        "altro": { fermata: "manuale", zona: "altro", linea: "" }
     };
 
-    // Struttura utente corrente (default o da localStorage)
-    let strutturaUtente = localStorage.getItem('slappy_struttura') || "Marina di Venezia Camping Village";
+    // Lista TUTTE le fermate per selezione manuale
+    const tutteLeFermate = [
+        // Cavallino-Treporti
+        "Punta Sabbioni Terminal", "Punta Sabbioni (ATVO)", "Faro",
+        "Treporti", "Ricevitoria",
+        "Ca' Savio - Via Fausta", "Ca' Savio Centro", "Ca' Savio Chiesa",
+        "Ca' Vio", "Ca' Vio Chiesa",
+        "Ca' Pasquali", "Ca' Pasquali - Via Pordelio",
+        "Ca' Ballarin", "Ca' Ballarin - Via Pordelio", "Ca' Ballarin - Radaelli", "Camping Union",
+        "Ca' di Valle",
+        "Cavallino (paese)", "Cavallino - Via Fausta", "Via F. Baracca", "Ponte Cavallino",
+        "Saccagnana", "Lio Grando",
+        // Jesolo
+        "Lido di Jesolo (Autostazione)", "Piazza Trieste", "Piazza Brescia", "Piazza Aurora", "Piazza Mazzini",
+        // Venezia
+        "S.Marco - S.Zaccaria", "Piazzale Roma", "Fondamente Nove",
+        // Isole
+        "Lido S.M.E.", "Lido S.Nicolò", "Burano", "Murano", "Murano Faro"
+    ];
+
+    // =====================================================
+    // ONBOARDING E GESTIONE STRUTTURA UTENTE
+    // =====================================================
+
+    // Carica struttura utente da localStorage (nuovo formato JSON o legacy)
+    function loadStrutturaUtente() {
+        const saved = localStorage.getItem('slappy_struttura');
+        if (!saved) return null;
+
+        // Prova a parsare come JSON (nuovo formato)
+        try {
+            const data = JSON.parse(saved);
+            if (data && data.tipo) {
+                return data;
+            }
+        } catch(e) {
+            // Se non è JSON, è il vecchio formato (stringa nome campeggio)
+            const info = campeggi[saved];
+            if (info) {
+                return {
+                    tipo: 'camping',
+                    nome: saved,
+                    fermata: info.fermata,
+                    zona: info.zona
+                };
+            } else if (saved === 'altro') {
+                const altroFermata = localStorage.getItem('slappy_altro_fermata') || '';
+                return {
+                    tipo: 'hotel',
+                    nome: 'Alloggio fuori zona',
+                    fermata: altroFermata,
+                    zona: 'altro'
+                };
+            }
+        }
+        return null;
+    }
+
+    // Salva struttura utente in localStorage (formato JSON)
+    function saveStrutturaUtente(data) {
+        localStorage.setItem('slappy_struttura', JSON.stringify(data));
+        strutturaData = data;
+        strutturaUtente = data.nome;
+    }
+
+    // Dati struttura corrente
+    let strutturaData = loadStrutturaUtente();
+    let strutturaUtente = strutturaData ? strutturaData.nome : null;
+
+    // =====================================================
+    // FUNZIONI ONBOARDING
+    // =====================================================
+
+    function checkOnboarding() {
+        const overlay = document.getElementById('onboardingOverlay');
+        if (!strutturaData) {
+            // Mostra onboarding
+            overlay.classList.remove('hidden');
+            populateOnboardingCampeggi();
+        } else {
+            overlay.classList.add('hidden');
+        }
+    }
+
+    function populateOnboardingCampeggi() {
+        const list = document.getElementById('onboardingCampingList');
+        list.innerHTML = '';
+
+        for (const nome in campeggi) {
+            if (nome === 'altro') continue;
+            const info = campeggi[nome];
+            const item = document.createElement('div');
+            item.className = 'onboarding-camping-item';
+            item.innerHTML = `<span>${nome}</span><small>${info.zona}</small>`;
+            item.onclick = () => saveCampingOnboarding(nome);
+            list.appendChild(item);
+        }
+    }
+
+    function toggleCampingList() {
+        const list = document.getElementById('onboardingCampingList');
+        const arrow = document.getElementById('campingArrow');
+        list.classList.toggle('expanded');
+        arrow.textContent = list.classList.contains('expanded') ? '▲' : '▼';
+    }
+
+    function saveCampingOnboarding(nome) {
+        const info = campeggi[nome];
+        saveStrutturaUtente({
+            tipo: 'camping',
+            nome: nome,
+            fermata: info.fermata,
+            zona: info.zona
+        });
+        closeOnboarding();
+    }
+
+    function showHotelForm() {
+        const form = document.getElementById('hotelForm');
+        form.classList.toggle('visible');
+    }
+
+    function saveHotelOnboarding() {
+        const select = document.getElementById('onboardingFermataSelect');
+        const fermata = select.value;
+        if (!fermata) {
+            alert('Seleziona la fermata più vicina');
+            return;
+        }
+
+        // Determina la zona dalla fermata
+        let zona = 'altro';
+        if (fermata.includes('Ca\'') || fermata.includes('Punta') || fermata.includes('Treporti') || fermata.includes('Cavallino') || fermata.includes('Faro') || fermata.includes('Ricevitoria') || fermata.includes('Saccagnana') || fermata.includes('Lio Grando')) {
+            zona = 'Cavallino-Treporti';
+        } else if (fermata.includes('Jesolo') || fermata.includes('Piazza')) {
+            zona = 'Jesolo';
+        } else if (fermata.includes('Venezia') || fermata.includes('Marco') || fermata.includes('Roma') || fermata.includes('Fondamente')) {
+            zona = 'Venezia';
+        } else if (fermata.includes('Lido') || fermata.includes('Burano') || fermata.includes('Murano')) {
+            zona = 'Isole';
+        }
+
+        saveStrutturaUtente({
+            tipo: 'hotel',
+            nome: 'Hotel/Appartamento',
+            fermata: fermata,
+            zona: zona
+        });
+        closeOnboarding();
+    }
+
+    function savePassaggioOnboarding() {
+        saveStrutturaUtente({
+            tipo: 'passaggio',
+            nome: 'Di passaggio',
+            fermata: 'Punta Sabbioni Terminal',
+            zona: 'Punta Sabbioni'
+        });
+        closeOnboarding();
+    }
+
+    function closeOnboarding() {
+        document.getElementById('onboardingOverlay').classList.add('hidden');
+        updateSetupBanner();
+        updateRitornoDestinazione();
+    }
 
     // Aggiorna box destinazione in base alla struttura
     function updateRitornoDestinazione() {
-        const info = campeggi[strutturaUtente];
         const destBox = document.getElementById('ritornoDestBox');
         const noStrutturaBox = document.getElementById('ritornoNoStruttura');
 
-        if (info) {
-            document.getElementById('ritornoDestNome').textContent = strutturaUtente;
-            document.getElementById('ritornoDestFermata').textContent = info.fermata + ' (Linea ' + info.linea + ')';
+        if (strutturaData && strutturaData.fermata) {
+            const info = campeggi[strutturaData.nome];
+            const linea = info ? info.linea : '-';
+            document.getElementById('ritornoDestNome').textContent = strutturaData.nome;
+            document.getElementById('ritornoDestFermata').textContent = strutturaData.fermata + ' (Linea ' + linea + ')';
             destBox.classList.remove('hidden');
             noStrutturaBox.classList.add('hidden');
         } else {
@@ -4792,22 +5357,43 @@
         const select = document.getElementById('selectCampeggio');
         const nome = select.value;
 
+        const altroBox = document.getElementById('altroFermataBox');
+        const campeggioInfo = document.getElementById('campeggioInfo');
+
         if (!nome) {
-            document.getElementById('campeggioInfo').classList.add('hidden');
+            campeggioInfo.classList.add('hidden');
+            altroBox.classList.add('hidden');
             return;
         }
 
+        // Gestione "altro" (fuori zona)
+        if (nome === 'altro') {
+            campeggioInfo.classList.add('hidden');
+            altroBox.classList.remove('hidden');
+            // Carica fermata salvata se esiste
+            const savedFermata = localStorage.getItem('slappy_altro_fermata') || '';
+            document.getElementById('altroFermataSelect').value = savedFermata;
+            return;
+        }
+
+        // Nascondi box altro
+        altroBox.classList.add('hidden');
+
         const info = campeggi[nome];
         if (info) {
-            // Salva in localStorage
-            localStorage.setItem('slappy_struttura', nome);
-            strutturaUtente = nome;
+            // Salva in localStorage (nuovo formato JSON)
+            saveStrutturaUtente({
+                tipo: 'camping',
+                nome: nome,
+                fermata: info.fermata,
+                zona: info.zona
+            });
 
             // Mostra info
             document.getElementById('campeggioNome').textContent = nome;
             document.getElementById('campeggioFermata').textContent = info.fermata;
             document.getElementById('campeggioLinea').textContent = info.linea;
-            document.getElementById('campeggioInfo').classList.remove('hidden');
+            campeggioInfo.classList.remove('hidden');
 
             // Aggiorna anche box ritorno e banner
             updateRitornoDestinazione();
@@ -4815,37 +5401,92 @@
         }
     }
 
+    // Salva fermata per "Altro" (fuori zona)
+    function salvaAltroFermata() {
+        const select = document.getElementById('altroFermataSelect');
+        const fermata = select.value;
+        if (!fermata) {
+            alert('Seleziona la fermata più vicina');
+            return;
+        }
+
+        // Salva in localStorage (nuovo formato JSON)
+        saveStrutturaUtente({
+            tipo: 'hotel',
+            nome: 'Alloggio fuori zona',
+            fermata: fermata,
+            zona: 'altro'
+        });
+
+        // Mostra conferma
+        document.getElementById('campeggioNome').textContent = 'Alloggio fuori zona';
+        document.getElementById('campeggioFermata').textContent = fermata;
+        document.getElementById('campeggioLinea').textContent = '-';
+        document.getElementById('campeggioInfo').classList.remove('hidden');
+        document.getElementById('altroFermataBox').classList.add('hidden');
+
+        updateRitornoDestinazione();
+        updateSetupBanner();
+    }
+
     // Aggiorna banner setup nella home
     function updateSetupBanner() {
         const banner = document.getElementById('setupBanner');
+        const icon = document.getElementById('setupBannerIcon');
         const title = document.getElementById('setupBannerTitle');
         const sub = document.getElementById('setupBannerSub');
         if (!banner) return;
 
-        const info = campeggi[strutturaUtente];
-        if (info) {
+        if (strutturaData) {
             banner.classList.add('configured');
-            title.textContent = strutturaUtente;
-            sub.textContent = 'Fermata: ' + info.fermata;
+            if (strutturaData.tipo === 'camping') {
+                icon.textContent = '🏕️';
+                title.innerHTML = strutturaData.nome + ' <span class="setup-banner-edit">✏️</span>';
+            } else if (strutturaData.tipo === 'hotel') {
+                icon.textContent = '🏠';
+                title.innerHTML = strutturaData.nome + ' <span class="setup-banner-edit">✏️</span>';
+            } else if (strutturaData.tipo === 'passaggio') {
+                icon.textContent = '🚗';
+                title.innerHTML = strutturaData.nome + ' <span class="setup-banner-edit">✏️</span>';
+            }
+            sub.textContent = 'Fermata: ' + strutturaData.fermata + ' • Tocca per cambiare';
         } else {
             banner.classList.remove('configured');
-            title.textContent = 'Imposta la tua struttura';
-            sub.textContent = 'Per avere la destinazione automatica';
+            icon.textContent = '📍';
+            title.textContent = 'Dove alloggi?';
+            sub.textContent = 'Imposta la tua struttura per percorsi personalizzati';
         }
     }
 
     // Inizializza select con valore salvato
     function initImpostazioni() {
         const select = document.getElementById('selectCampeggio');
-        if (select && strutturaUtente) {
-            select.value = strutturaUtente;
-            salvaCampeggio(); // Mostra info
+        const campeggioInfo = document.getElementById('campeggioInfo');
+        const altroBox = document.getElementById('altroFermataBox');
+
+        if (select && strutturaData) {
+            if (strutturaData.tipo === 'camping' && campeggi[strutturaData.nome]) {
+                select.value = strutturaData.nome;
+                const info = campeggi[strutturaData.nome];
+                document.getElementById('campeggioNome').textContent = strutturaData.nome;
+                document.getElementById('campeggioFermata').textContent = info.fermata;
+                document.getElementById('campeggioLinea').textContent = info.linea;
+                campeggioInfo.classList.remove('hidden');
+            } else if (strutturaData.tipo === 'hotel' || strutturaData.tipo === 'passaggio') {
+                // Mostra info per hotel/passaggio
+                select.value = 'altro';
+                document.getElementById('campeggioNome').textContent = strutturaData.nome;
+                document.getElementById('campeggioFermata').textContent = strutturaData.fermata;
+                document.getElementById('campeggioLinea').textContent = '-';
+                campeggioInfo.classList.remove('hidden');
+            }
         }
         updateSetupBanner();
     }
 
     // Chiamata iniziale
     document.addEventListener('DOMContentLoaded', function() {
+        checkOnboarding();
         updateRitornoDestinazione();
         initImpostazioni();
     });
